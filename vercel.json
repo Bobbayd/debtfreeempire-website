@@ -47,5 +47,11 @@
     "api/admin-content.js": {
       "maxDuration": 30
     }
-  }
+  },
+  "crons": [
+    {
+      "path": "/api/admin-health",
+      "schedule": "0 14 * * *"
+    }
+  ]
 }

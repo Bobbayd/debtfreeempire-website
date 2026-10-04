@@ -1,3 +1,4 @@
+import { timingSafeEqual } from 'node:crypto';
 import { isLoggedIn, noStore } from './_adminAuth.js';
 import { redis } from './_redis.js';
 
@@ -13,6 +14,13 @@ const OUTSIDE = [
 ];
 
 async function check(name, url, soft) {
+  const first = await checkOnce(name, url, soft);
+  if (first.level !== 'fail') return first;
+  await new Promise((r) => setTimeout(r, 1500));
+  return checkOnce(name, url, soft); // one retry so a single hiccup does not raise an alarm
+}
+
+async function checkOnce(name, url, soft) {
   const t = Date.now();
   try {
     const r = await fetch(url, { method: 'GET', redirect: 'follow', signal: AbortSignal.timeout(8000), headers: { 'User-Agent': 'Mozilla/5.0 (DebtFreeEmpire site check)', Range: 'bytes=0-2048' } });
@@ -25,10 +33,41 @@ async function check(name, url, soft) {
   }
 }
 
+// Vercel Cron calls this daily with "Authorization: Bearer <CRON_SECRET>".
+function isCron(req) {
+  const secret = process.env.CRON_SECRET;
+  const got = String(req.headers.authorization || '');
+  if (!secret || got.length !== secret.length + 7) return false;
+  return timingSafeEqual(Buffer.from(got), Buffer.from('Bearer ' + secret));
+}
+
+// Emails the owner when the set of failing items changes (new problem, or all clear again).
+async function alertIfChanged(failing, redisOk) {
+  const items = failing.map((f) => `${f.name} (${f.status || 'no reply'})`);
+  if (!redisOk) items.push('Signup/settings database (Upstash)');
+  const now = items.slice().sort().join('|');
+  let before = '';
+  try { const [v] = await redis([['HGET', 'health:last', 'alerted']]); before = v || ''; } catch (e) { /* ignore */ }
+  const key = process.env.RESEND_API_KEY;
+  if (now === before || !key) return;
+  const bad = items.length > 0;
+  const lines = bad ? items.map((i) => '- ' + i).join('\n') : '';
+  const subject = bad ? `Site alert: ${items.length} problem${items.length === 1 ? '' : 's'} on debtfreeempire.com` : 'Site recovered: everything on debtfreeempire.com is working again';
+  const text = bad
+    ? `The automatic site check found problems:\n\n${lines}\n\nDetails: ${SITE}/admin/health/\n\nYou will only get another email if this list changes.`
+    : `All pages and store links are responding normally again.\n\nDetails: ${SITE}/admin/health/`;
+  try {
+    await fetch('https://api.resend.com/emails', { method: 'POST', headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' }, signal: AbortSignal.timeout(8000),
+      body: JSON.stringify({ from: process.env.RESEND_FROM || 'Debt Free Empire <hello@debtfreeempire.com>', to: ['hello@debtfreeempire.com'], subject, text }) });
+  } catch (e) { /* ignore: the red badge still shows */ }
+  try { await redis([['HSET', 'health:last', 'alerted', now]]); } catch (e) { /* ignore */ }
+}
+
 export default async function handler(req, res) {
   noStore(res);
   if (req.method !== 'GET') return res.status(405).json({ error: 'Method not allowed' });
-  if (!isLoggedIn(req)) return res.status(401).json({ error: 'Please log in.' });
+  const cron = isCron(req);
+  if (!cron && !isLoggedIn(req)) return res.status(401).json({ error: 'Please log in.' });
 
   const jobs = [...PAGES.map((p) => check(p === '/' ? 'Home page' : p, SITE + p, false)), ...OUTSIDE.map((o) => check(o.name, o.url, true))];
   try {
@@ -39,6 +78,11 @@ export default async function handler(req, res) {
   const results = await Promise.all(jobs);
   let redisOk = true;
   try { await redis([['PING']]); } catch (e) { redisOk = false; }
+  const failing = results.filter((r) => r.level === 'fail');
+  if (cron) await alertIfChanged(failing, redisOk);
+  const items = failing.map((f) => `${f.name} (${f.status || 'no reply'})`);
+  if (!redisOk) items.push('Signup/settings database (Upstash)');
+  try { await redis([['HSET', 'health:last', 'failing', items.slice().sort().join('|'), 'count', String(items.length), 'at', new Date().toISOString()]]); } catch (e) { /* ignore */ }
   return res.status(200).json({
     checkedAt: new Date().toISOString(),
     site: results.filter((r) => r.url.startsWith(SITE)),

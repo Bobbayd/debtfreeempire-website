@@ -18,7 +18,10 @@ async function getHash(key) { const [flat] = await redis([['HGETALL', key]]); re
 // ---------- GET ----------
 const readers = {
   async support() { const m = rows(await getHash(K.support)).sort(byDateDesc); return { messages: m, unread: m.filter((x) => x.status === 'unread').length }; },
-  async badge() { const m = rows(await getHash(K.support)); return { unread: m.filter((x) => x.status === 'unread').length }; },
+  async badge() {
+    const [flat, h] = await redis([['HGETALL', K.support], ['HGET', 'health:last', 'count']]);
+    return { unread: rows(flat).filter((x) => x.status === 'unread').length, healthFails: Number(h) || 0 };
+  },
   async announcement() {
     const flat = await getHash(K.announcement); const a = {};
     for (let i = 0; i + 1 < flat.length; i += 2) a[flat[i]] = flat[i + 1];

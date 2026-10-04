@@ -22,6 +22,8 @@
       if (!a || !x.ok) return;
       var old = a.querySelector('.badge'); if (old) old.remove();
       if (x.j.unread > 0) a.appendChild(cell('span', String(x.j.unread), 'badge'));
+      var h = document.querySelector('.bar-nav a[href="/admin/health/"]');
+      if (h) { var oh = h.querySelector('.badge'); if (oh) oh.remove(); if (x.j.healthFails > 0) h.appendChild(cell('span', '!', 'badge red')); }
     }).catch(function () {});
   }
   window.addEventListener('admin:badge', badge);
