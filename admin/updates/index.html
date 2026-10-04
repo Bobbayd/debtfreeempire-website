@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+<title>What's New updates (private)</title>
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="stylesheet" href="/admin/admin.css">
+</head>
+<body>
+<header class="bar">
+  <a class="bar-brand" href="/admin/">Debt Free Empire · Admin</a>
+  <nav class="bar-nav" aria-label="Admin"><a href="/admin/">Dashboard</a><a href="/admin/support/">Support</a><a href="/admin/announcement/">Announcement</a><a href="/admin/products/">Products</a><a href="/admin/updates/" aria-current="page">Updates</a><a href="/admin/promos/">Promo codes</a><a href="/admin/broadcast/">Broadcast</a><a href="/admin/emails/">Email signups</a><a href="/admin/health/">Site health</a><a href="/admin/store-links/">Store links</a><a href="/admin/links/">Quick links</a><a href="/" target="_blank" rel="noopener">View site</a><button type="button" id="logoutBtn" hidden>Log out</button></nav>
+</header>
+<div class="wrap">
+  <div class="card" id="loginCard" hidden>
+    <h1>Admin login</h1>
+    <p class="sub">Private. Not linked anywhere and hidden from search engines.</p>
+    <form id="loginForm" autocomplete="off">
+      <label for="pw">Password</label>
+      <input type="password" id="pw" autocomplete="current-password" required>
+      <div class="row"><button type="submit" class="btn" id="loginBtn">Log in</button></div>
+      <p class="msg" id="loginMsg" role="status" aria-live="polite"></p>
+    </form>
+  </div>
+  <div id="app" hidden>
+    <h1>What's New</h1>
+    <p class="sub">Updates shown in the "What's New at Debt Free Empire" section on the homepage (the 3 newest published ones). The section hides itself when nothing is published. Changes go live within about a minute.</p>
+    <div class="card">
+      <h2 id="formTitle">New update</h2>
+      <form id="f" novalidate>
+        <label for="title">Title</label><input type="text" id="title" class="field wide" maxlength="150">
+        <div class="two"><div><label for="date">Date</label><input type="date" id="date" class="field wide"></div>
+        <div><label for="status">Status</label><select id="status" class="field wide"><option value="published">Published</option><option value="draft">Draft (not shown)</option></select></div></div>
+        <label for="body">Text</label>
+        <div class="row" style="margin:0 0 8px"><button type="button" class="mini" data-fmt="bold"><b>B</b> Bold</button><button type="button" class="mini" data-fmt="italic"><i>I</i> Italic</button><button type="button" class="mini" data-fmt="bullet">• Bullets</button></div>
+        <textarea id="body" class="field wide" rows="8" maxlength="20000"></textarea>
+        <p class="note">Select text and press Bold or Italic. Start a line with "- " for a bullet. Leave a blank line between paragraphs.</p>
+        <label class="check"><input type="checkbox" id="visible" checked> Visible on the site (turn off to hide without deleting)</label>
+        <div class="section-h">Preview</div><div id="preview" class="post-preview"></div>
+        <div class="row"><button type="submit" class="btn" id="save">Save</button><button type="button" class="btn secondary" id="cancel" hidden>Cancel edit</button></div>
+        <p class="msg" id="toast" role="status" aria-live="polite"></p>
+      </form>
+    </div>
+    <div class="section-h">All updates</div><div id="list"></div>
+  </div>
+</div>
+<script src="/site-dynamic.js"></script>
+<script src="/admin/admin.js"></script>
+<script>
+
+(function () {
+  var A = window.Admin, $ = function (i) { return document.getElementById(i); }, say = A.say($('toast')), posts = [], editing = null;
+  var body = $('body');
+  function today() { return new Date().toISOString().slice(0, 10); }
+  function preview() { var p = $('preview'); p.textContent = ''; if (!body.value.trim()) { p.textContent = 'Nothing to preview yet.'; return; } p.appendChild(window.DFE.renderRich(body.value)); }
+  function wrapSel(a, b) {
+    var s = body.selectionStart, e = body.selectionEnd, v = body.value, sel = v.slice(s, e) || 'text';
+    body.value = v.slice(0, s) + a + sel + b + v.slice(e); body.focus(); body.setSelectionRange(s + a.length, s + a.length + sel.length); preview();
+  }
+  function bullets() {
+    var s = body.selectionStart, e = body.selectionEnd, v = body.value, ls = v.lastIndexOf('\n', s - 1) + 1, le = v.indexOf('\n', e); if (le < 0) le = v.length;
+    var block = v.slice(ls, le).split('\n').map(function (l) { return /^\s*[-•]\s/.test(l) ? l : '- ' + l; }).join('\n');
+    body.value = v.slice(0, ls) + block + v.slice(le); body.focus(); preview();
+  }
+  document.querySelectorAll('[data-fmt]').forEach(function (b) { b.addEventListener('click', function () {
+    var k = b.getAttribute('data-fmt'); if (k === 'bold') wrapSel('**', '**'); else if (k === 'italic') wrapSel('*', '*'); else bullets(); }); });
+  body.addEventListener('input', preview);
+  function reset() { editing = null; $('title').value = ''; body.value = ''; $('date').value = today(); $('status').value = 'published'; $('visible').checked = true; $('formTitle').textContent = 'New update'; $('cancel').hidden = true; preview(); }
+  $('cancel').addEventListener('click', reset);
+  function edit(p) { editing = p.id; $('title').value = p.title; body.value = p.body; $('date').value = p.date; $('status').value = p.status; $('visible').checked = p.visible !== false; $('formTitle').textContent = 'Edit update'; $('cancel').hidden = false; preview(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+  function send(extra) { return A.act('posts', extra); }
+  function reload() { return A.get('posts').then(function (x) { if (x.ok) { posts = x.j.posts; render(); } }); }
+  $('f').addEventListener('submit', function (e) {
+    e.preventDefault(); $('save').disabled = true;
+    send({ action: 'save', id: editing, title: $('title').value, date: $('date').value, body: body.value, status: $('status').value, visible: $('visible').checked }).then(function (x) {
+      if (!x.ok) { say(x.j.error); return; }
+      say($('status').value === 'published' && $('visible').checked ? 'Saved and published. Live within about a minute.' : 'Saved (not shown on the site).'); reset(); return reload();
+    }).catch(function () { say('Could not reach the server.'); }).then(function () { $('save').disabled = false; });
+  });
+  function render() {
+    var l = $('list'); l.textContent = '';
+    if (!posts.length) { l.appendChild(A.cell('p', 'No updates yet.', 'empty')); return; }
+    var live = posts.filter(function (p) { return p.status === 'published' && p.visible !== false; }).slice(0, 3).map(function (p) { return p.id; });
+    posts.forEach(function (p) {
+      var c = document.createElement('section'); c.className = 'card msg-card';
+      var h = document.createElement('div'); h.className = 'msg-head'; h.appendChild(A.cell('div', p.title, 'msg-subject'));
+      var pills = document.createElement('span');
+      pills.appendChild(A.cell('span', p.status === 'published' ? 'Published' : 'Draft', 'pill ' + (p.status === 'published' ? 'ok' : 'warn')));
+      if (p.status === 'published' && p.visible === false) pills.appendChild(A.cell('span', 'Hidden', 'pill fail'));
+      if (live.indexOf(p.id) !== -1) pills.appendChild(A.cell('span', 'On homepage', 'pill info'));
+      h.appendChild(pills); c.appendChild(h); c.appendChild(A.cell('div', p.date, 'msg-meta'));
+      var row = document.createElement('div'); row.className = 'row';
+      row.appendChild(A.btn('Edit', 'mini', function () { edit(p); }));
+      row.appendChild(A.btn(p.visible === false ? 'Show' : 'Hide', 'mini', function () { send({ action: 'save', id: p.id, title: p.title, date: p.date, body: p.body, status: p.status, visible: p.visible === false }).then(reload); }));
+      row.appendChild(A.btn(p.status === 'published' ? 'Unpublish' : 'Publish', 'mini', function () { send({ action: 'save', id: p.id, title: p.title, date: p.date, body: p.body, status: p.status === 'published' ? 'draft' : 'published', visible: p.visible !== false }).then(reload); }));
+      row.appendChild(A.btn('Delete', 'mini danger', function () { if (!confirm('Delete "' + p.title + '"? This cannot be undone.')) return; send({ action: 'delete', id: p.id }).then(function (x) { say(x.ok ? 'Deleted.' : x.j.error); reload(); }); }));
+      c.appendChild(row); l.appendChild(c);
+    });
+  }
+  A.init(function () {
+    return A.get('posts').then(function (x) {
+      if (x.status === 401) return 'unauthorized'; if (!x.ok) throw new Error('failed'); posts = x.j.posts; render(); if (!editing && !$('date').value) reset();
+    });
+  });
+})();
+</script>
+</body>
+</html>

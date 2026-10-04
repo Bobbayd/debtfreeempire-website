@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+<title>Promo codes (private)</title>
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="stylesheet" href="/admin/admin.css">
+</head>
+<body>
+<header class="bar">
+  <a class="bar-brand" href="/admin/">Debt Free Empire · Admin</a>
+  <nav class="bar-nav" aria-label="Admin"><a href="/admin/">Dashboard</a><a href="/admin/support/">Support</a><a href="/admin/announcement/">Announcement</a><a href="/admin/products/">Products</a><a href="/admin/updates/">Updates</a><a href="/admin/promos/" aria-current="page">Promo codes</a><a href="/admin/broadcast/">Broadcast</a><a href="/admin/emails/">Email signups</a><a href="/admin/health/">Site health</a><a href="/admin/store-links/">Store links</a><a href="/admin/links/">Quick links</a><a href="/" target="_blank" rel="noopener">View site</a><button type="button" id="logoutBtn" hidden>Log out</button></nav>
+</header>
+<div class="wrap">
+  <div class="card" id="loginCard" hidden>
+    <h1>Admin login</h1>
+    <p class="sub">Private. Not linked anywhere and hidden from search engines.</p>
+    <form id="loginForm" autocomplete="off">
+      <label for="pw">Password</label>
+      <input type="password" id="pw" autocomplete="current-password" required>
+      <div class="row"><button type="submit" class="btn" id="loginBtn">Log in</button></div>
+      <p class="msg" id="loginMsg" role="status" aria-live="polite"></p>
+    </form>
+  </div>
+  <div id="app" hidden>
+    <h1>Promo codes</h1>
+    <p class="sub">Keeps track of your discount codes. <strong>These codes do not apply discounts at checkout on their own.</strong> Create the same code in Gumroad (or whichever store you use) so shoppers can use it. Use the +1 button to record a redemption when you see one.</p>
+    <div class="card">
+      <h2>New code</h2>
+      <form id="f" novalidate>
+        <div class="two"><div><label for="code">Code</label><input type="text" id="code" class="field wide" maxlength="30" placeholder="LAUNCH20" style="text-transform:uppercase"></div>
+        <div><label for="product">Applies to</label><select id="product" class="field wide"><option value="all">All products</option><option value="pp">Paper &amp; Prosperity</option><option value="eld">Empire Life Dashboard</option><option value="workbooks">Workbooks</option><option value="gs">Grind &amp; Save</option><option value="arcade">Empire Arcade</option></select></div></div>
+        <div class="two"><div><label for="type">Discount type</label><select id="type" class="field wide"><option value="percent">Percentage (%)</option><option value="fixed">Fixed amount ($)</option></select></div>
+        <div><label for="amount">Amount</label><input type="number" id="amount" class="field wide" min="0" step="any" placeholder="20"></div></div>
+        <div class="two"><div><label for="expires">Expiry date (optional)</label><input type="date" id="expires" class="field wide"></div>
+        <div><label for="limit">Usage limit (0 = unlimited)</label><input type="number" id="limit" class="field wide" min="0" step="1" value="0"></div></div>
+        <div class="row"><button type="submit" class="btn">Create code</button></div>
+      </form>
+      <p class="msg" id="toast" role="status" aria-live="polite"></p>
+    </div>
+    <div class="filters"><select id="fStatus" class="field" aria-label="Filter"><option value="">All codes</option><option value="active">Active</option><option value="inactive">Expired, used up or deactivated</option></select></div>
+    <div id="list"></div>
+  </div>
+</div>
+<script src="/site-dynamic.js"></script>
+<script src="/admin/admin.js"></script>
+<script>
+
+(function () {
+  var A = window.Admin, $ = function (i) { return document.getElementById(i); }, say = A.say($('toast')), promos = [];
+  var NAMES = { pp: 'Paper & Prosperity', eld: 'Empire Life Dashboard', workbooks: 'Workbooks', gs: 'Grind & Save', arcade: 'Empire Arcade', all: 'All products' };
+  function today() { return new Date().toISOString().slice(0, 10); }
+  function state(p) {
+    if (!p.active) return ['Deactivated', 'warn'];
+    if (p.expires && p.expires < today()) return ['Expired', 'fail'];
+    if (p.limit > 0 && p.used >= p.limit) return ['Used up', 'fail'];
+    return ['Active', 'ok'];
+  }
+  function reload() { return A.get('promos').then(function (x) { if (x.ok) { promos = x.j.promos; render(); } }); }
+  $('f').addEventListener('submit', function (e) {
+    e.preventDefault();
+    A.act('promos', { action: 'create', code: $('code').value, type: $('type').value, amount: $('amount').value, expires: $('expires').value, limit: $('limit').value, product: $('product').value }).then(function (x) {
+      if (!x.ok) { say(x.j.error); return; } say('Code created.'); $('code').value = ''; $('amount').value = ''; $('expires').value = ''; $('limit').value = '0'; return reload();
+    }).catch(function () { say('Could not reach the server.'); });
+  });
+  $('fStatus').addEventListener('input', render);
+  function render() {
+    var f = $('fStatus').value, l = $('list'); l.textContent = '';
+    var shown = promos.filter(function (p) { var ok = state(p)[0] === 'Active'; return !f || (f === 'active' ? ok : !ok); });
+    if (!shown.length) { l.appendChild(A.cell('p', promos.length ? 'No codes match.' : 'No codes yet.', 'empty')); return; }
+    shown.forEach(function (p) {
+      var st = state(p), c = document.createElement('section'); c.className = 'card msg-card ' + (st[0] === 'Active' ? '' : 'resolved');
+      var h = document.createElement('div'); h.className = 'msg-head'; h.appendChild(A.cell('div', p.code, 'msg-subject')); h.appendChild(A.cell('span', st[0], 'pill ' + st[1])); c.appendChild(h);
+      var off = p.type === 'percent' ? p.amount + '% off' : '$' + p.amount + ' off';
+      c.appendChild(A.cell('div', off + ' · ' + NAMES[p.product] + ' · ' + (p.expires ? 'expires ' + p.expires : 'no expiry'), 'msg-meta'));
+      c.appendChild(A.cell('div', 'Used ' + p.used + (p.limit > 0 ? ' of ' + p.limit : ' times (no limit)'), 'msg-meta'));
+      var row = document.createElement('div'); row.className = 'row';
+      row.appendChild(A.btn('Copy code', 'mini', function () { (navigator.clipboard ? navigator.clipboard.writeText(p.code) : Promise.reject()).then(function () { say('Copied ' + p.code + '.'); }, function () { say('Could not copy. Select the code and copy it by hand.'); }); }));
+      row.appendChild(A.btn('+1 used', 'mini', function () { A.act('promos', { action: 'use', id: p.id, delta: 1 }).then(reload); }));
+      row.appendChild(A.btn('−1', 'mini', function () { A.act('promos', { action: 'use', id: p.id, delta: -1 }).then(reload); }));
+      row.appendChild(A.btn(p.active ? 'Deactivate' : 'Reactivate', 'mini', function () { A.act('promos', { action: 'toggle', id: p.id }).then(reload); }));
+      row.appendChild(A.btn('Delete', 'mini danger', function () { if (!confirm('Delete code ' + p.code + '? This cannot be undone.')) return; A.act('promos', { action: 'delete', id: p.id }).then(function () { say('Deleted.'); reload(); }); }));
+      c.appendChild(row); l.appendChild(c);
+    });
+  }
+  A.init(function () {
+    return A.get('promos').then(function (x) { if (x.status === 401) return 'unauthorized'; if (!x.ok) throw new Error('failed'); promos = x.j.promos; render(); });
+  });
+})();
+</script>
+</body>
+</html>

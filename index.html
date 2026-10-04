@@ -1,0 +1,2379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="48x48" href="/favicon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<title>Debt Free Empire — Approachable tools for your money</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;900&family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300&display=swap');
+
+  :root {
+    /* Backgrounds */
+    --bg-main: #FFF9F3;
+    --bg-alt: #F4F0F8;
+    --card-white: #FFFFFF;
+
+    /* Text */
+    --text-primary: #1A1A1A;
+    --text-secondary: #55515B;
+
+    /* Lavender — primary interactive color */
+    --lavender: #8A72B8;
+    --lavender-hover: #725C9F;
+    --lavender-soft: #E6E1F3;
+    --lavender-tint: rgba(138,114,184,0.14);
+
+    /* Gold — accent, never a dominant fill */
+    --gold-deep: #C89B45;
+    --gold-soft: #E4C590;
+    --gold-surface: #FAF3E3;
+
+    /* Structural */
+    --border: #DDD5E5;
+    --sage: #527A5A;
+    --sage-tint: rgba(82,122,90,0.14);
+
+    /* Footer */
+    --footer-bg: #26222B;
+    --footer-text: #FFF9F3;
+    --footer-text-secondary: #D1CAD7;
+
+    /* Paper & Prosperity homepage-card preview accent (scoped to that card only) */
+    --pp-card-surface: #EEE8F6;
+
+    --overlay-tint: rgba(255,249,243,0.85);
+
+    --quizbar-h: 34px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .ticker-track { animation: none !important; }
+    .popup-box, .email-popup-box { animation: none !important; }
+    .hero-quote { transition: none !important; }
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  /* ICON SYSTEM — one consistent line-icon family, sized/colored per context */
+  .icon-svg { fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+  .icon-nav { width: 16px; height: 16px; }
+  .icon-md { width: 30px; height: 30px; }
+  .icon-lg { width: 40px; height: 40px; }
+  .icon-sm { width: 20px; height: 20px; }
+
+  body {
+    font-family: 'Montserrat', sans-serif;
+    background: var(--bg-main);
+    color: var(--text-primary);
+    min-height: 100vh;
+    overflow-x: hidden;
+    padding-top: var(--quizbar-h);
+  }
+
+  /* QUIZ BAR */
+  .quiz-bar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: var(--quizbar-h);
+    z-index: 70;
+    background: var(--bg-main);
+    color: var(--text-primary);
+    border-bottom: 1px solid var(--gold-soft);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 0 12px;
+  }
+  .quiz-bar a { color: var(--lavender); text-decoration: none; font-weight: 800; margin-left: 4px; white-space: nowrap; }
+  .quiz-bar a:hover { color: var(--lavender-hover); text-decoration: underline; }
+  @media (max-width: 560px) {
+    .quiz-bar { height: auto; min-height: var(--quizbar-h); padding: 6px 12px; }
+    .quiz-bar-lead { display: none; }
+  }
+
+  .hero-image-section {
+    position: relative;
+    width: 100%;
+    height: 260px;
+    overflow: hidden;
+  }
+  .hero-image-section::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(255,249,243,0.2);
+  }
+  .hero-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 50%;
+    display: block;
+  }
+  @media (max-width: 700px) {
+    .hero-image-section { height: 200px; }
+  }
+
+  .welcome-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 60px 24px 46px;
+    background: var(--bg-main);
+  }
+
+  .crown { font-size: 48px; margin-bottom: 16px; display: block; }
+
+  .hero-brand {
+    font-size: clamp(32px, 6vw, 68px);
+    font-weight: 900;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    line-height: 1;
+    margin-bottom: 20px;
+    color: var(--text-primary);
+  }
+
+  .hero-eyebrow {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--lavender);
+    margin-bottom: 14px;
+  }
+
+  .hero-headline {
+    font-size: clamp(28px, 5vw, 52px);
+    font-weight: 900;
+    line-height: 1.15;
+    max-width: 780px;
+    margin-bottom: 16px;
+    color: var(--text-primary);
+  }
+
+  .hero-subtitle {
+    font-size: clamp(14px, 2vw, 18px);
+    font-weight: 400;
+    color: var(--text-secondary);
+    max-width: 560px;
+    margin-bottom: 24px;
+  }
+
+  .hero-quote {
+    font-size: 15px;
+    font-style: italic;
+    font-family: 'Cormorant Garamond', serif;
+    color: var(--gold-deep);
+    min-height: 24px;
+    margin-bottom: 36px;
+    transition: opacity 0.4s ease;
+  }
+  .hero-quote.fade { opacity: 0; }
+
+  .hero-cta-btn {
+    display: inline-block;
+    background: var(--lavender);
+    border: 1.5px solid var(--lavender);
+    color: var(--card-white);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 14px 28px;
+    border-radius: 8px;
+    transition: background 0.25s ease, border-color 0.25s ease;
+  }
+  .hero-cta-btn:hover { background: var(--lavender-hover); border-color: var(--lavender-hover); }
+
+  .hero-divider {
+    width: 100%;
+    max-width: 1100px;
+    height: 1px;
+    background: var(--gold-soft);
+    margin-top: 40px;
+  }
+
+  .hero-cta-btn-secondary {
+    display: inline-block;
+    background: var(--card-white);
+    border: 1.5px solid var(--gold-deep);
+    color: var(--text-primary);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 14px 28px;
+    border-radius: 8px;
+    transition: background 0.25s ease;
+  }
+  .hero-cta-btn-secondary:hover { background: var(--gold-surface); }
+  .hero-cta-btn:focus-visible, .hero-cta-btn-secondary:focus-visible { outline: 2px solid var(--lavender); outline-offset: 2px; }
+
+  .hero-cta-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px; margin-bottom: 18px; }
+
+  .hero-reassurance {
+    font-size: 12.5px;
+    color: var(--text-secondary);
+    font-style: italic;
+    font-family: 'Cormorant Garamond', serif;
+    margin-bottom: 8px;
+  }
+
+  /* QUOTE BANNER */
+  .quote-banner {
+    max-width: 700px;
+    margin: 0 auto 40px;
+    min-height: 84px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    text-align: center;
+    background: var(--gold-surface);
+    border: 1px solid var(--gold-soft);
+    border-radius: 12px;
+    padding: 20px 28px;
+  }
+  .quote-banner-line {
+    flex: 1;
+    max-width: 90px;
+    height: 1px;
+    background: var(--gold-deep);
+  }
+  .quote-banner-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: clamp(16px, 2.2vw, 20px);
+    line-height: 1.5;
+    color: var(--text-primary);
+    margin: 0;
+  }
+  .quote-banner-text .quote-accent { color: var(--gold-deep); }
+  @media (max-width: 640px) {
+    .quote-banner-line { display: none; }
+    .quote-banner { gap: 0; }
+  }
+
+  /* AS SEEN ON */
+  .as-seen-on-section { background: var(--card-white); padding: 56px 24px; text-align: center; }
+  .as-seen-on-label {
+    font-size: 11px; font-weight: 700; letter-spacing: 4px; text-transform: uppercase;
+    color: var(--gold-deep); margin-bottom: 28px;
+  }
+  .as-seen-on-grid {
+    display: flex; flex-wrap: wrap; justify-content: center; gap: 20px;
+    max-width: 900px; margin: 0 auto;
+  }
+  .as-seen-on-box {
+    width: 140px; height: 60px;
+    background: var(--bg-main);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 600; color: var(--text-secondary);
+    text-decoration: none; transition: border-color 0.2s, color 0.2s;
+  }
+  a.as-seen-on-box:hover { border-color: var(--lavender); color: var(--text-primary); }
+
+  /* BEGINNER STARTING POINT */
+  .beginner-section { background: var(--bg-alt); padding: 72px 24px; text-align: center; }
+  .beginner-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    max-width: 960px;
+    margin: 32px auto 0;
+  }
+  .beginner-card {
+    background: var(--card-white);
+    border: 1px solid var(--border);
+    border-top: 3px solid var(--border);
+    border-radius: 12px;
+    padding: 34px 24px;
+    box-shadow: 0 4px 14px rgba(26,26,26,0.05);
+    display: flex; flex-direction: column; align-items: center; text-align: center;
+  }
+  .beginner-grid .beginner-card:nth-child(1) { border-top-color: var(--lavender); }
+  .beginner-grid .beginner-card:nth-child(2) { border-top-color: var(--gold-deep); }
+  .beginner-grid .beginner-card:nth-child(3) { border-top-color: var(--sage); }
+  .beginner-card-title { font-size: 16px; font-weight: 800; margin-bottom: 12px; color: var(--text-primary); }
+  .beginner-card-desc { font-size: 14px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 22px; }
+  .beginner-card-btn {
+    display: inline-block;
+    background: var(--lavender);
+    border: 1.5px solid var(--lavender);
+    color: var(--card-white);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+    text-decoration: none;
+    padding: 14px 28px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.25s ease;
+  }
+  .beginner-card-btn:hover { background: var(--lavender-hover); }
+  .beginner-card-btn:focus-visible { outline: 2px solid var(--lavender); outline-offset: 2px; }
+  @media (max-width: 760px) { .beginner-grid { grid-template-columns: 1fr; } }
+
+  /* ROBERT'S STORY — text-only for now; a real photo can be added later by
+     giving .story-grid the .has-photo modifier (defined below) and inserting
+     an <img class="story-photo"> as the grid's first child. */
+  .story-section { background: var(--bg-main); padding: 74px 24px; }
+  .story-grid {
+    display: block;
+    max-width: 640px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .story-grid.has-photo {
+    display: grid;
+    grid-template-columns: 400px 1fr;
+    gap: 48px;
+    max-width: 1000px;
+    align-items: center;
+    text-align: left;
+  }
+  .story-photo {
+    width: 100%;
+    max-width: 400px;
+    border-radius: 16px;
+    display: block;
+    object-fit: cover;
+  }
+  .story-text { text-align: left; }
+  .story-grid:not(.has-photo) .story-text { text-align: center; }
+  .story-grid:not(.has-photo) .story-paragraph { margin-left: auto; margin-right: auto; }
+  .story-label {
+    font-size: 11px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase;
+    color: var(--gold-deep); margin-bottom: 14px;
+  }
+  .story-headline { font-size: clamp(26px, 4vw, 38px); font-weight: 900; color: var(--text-primary); margin-bottom: 18px; }
+  .story-paragraph { font-size: 15px; line-height: 1.75; color: var(--text-secondary); margin-bottom: 28px; max-width: 480px; }
+  .story-btn {
+    display: inline-block;
+    background: var(--card-white);
+    border: 1.5px solid var(--gold-deep);
+    color: var(--text-primary);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+    text-decoration: none;
+    padding: 14px 28px;
+    border-radius: 8px;
+    transition: background 0.25s ease;
+  }
+  .story-btn:hover { background: var(--gold-surface); }
+  .story-btn:focus-visible { outline: 2px solid var(--lavender); outline-offset: 2px; }
+  @media (max-width: 800px) {
+    .story-grid.has-photo { grid-template-columns: 1fr; text-align: center; }
+    .story-grid.has-photo .story-photo { margin: 0 auto; }
+    .story-grid.has-photo .story-text { text-align: center; }
+    .story-grid.has-photo .story-paragraph { margin-left: auto; margin-right: auto; }
+  }
+
+  /* SCROLLING TICKER */
+  .ticker-section {
+    background: var(--text-primary);
+    overflow: hidden;
+    padding: 16px 0;
+    white-space: nowrap;
+  }
+  .ticker-track {
+    display: inline-flex;
+    animation: ticker-scroll 22s linear infinite;
+  }
+  .ticker-track span {
+    color: var(--gold-soft);
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding-right: 40px;
+  }
+  @keyframes ticker-scroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* TESTIMONIALS */
+  .testimonials-section { background: var(--bg-main); padding: 72px 24px; text-align: center; }
+  .testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    max-width: 900px;
+    margin: 32px auto 0;
+  }
+  .testimonial-card {
+    background: var(--card-white);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--gold-soft);
+    border-radius: 12px;
+    padding: 32px 22px;
+    box-shadow: 0 4px 14px rgba(26,26,26,0.06);
+    text-align: center;
+  }
+  .testimonial-stars { font-size: 18px; margin-bottom: 10px; color: #D9D5C9; }
+  .testimonial-text { font-size: 13px; color: var(--text-secondary); }
+  .testimonials-note { font-size: 13.5px; font-style: italic; color: var(--text-secondary); margin-top: 28px; }
+  @media (max-width: 700px) { .testimonials-grid { grid-template-columns: 1fr; } }
+
+  /* TAKE ACTION */
+  .take-action-section { background: var(--bg-main); padding: 72px 24px; text-align: center; }
+  .take-action-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    max-width: 1180px;
+    margin: 32px auto 0;
+  }
+  @media (max-width: 1000px) { .take-action-grid { grid-template-columns: repeat(2, 1fr); } }
+  .take-action-card {
+    background: var(--card-white);
+    border: 1px solid var(--border);
+    border-top: 3px solid var(--gold-soft);
+    border-radius: 12px;
+    padding: 64px 22px 32px;
+    box-shadow: 0 4px 14px rgba(26,26,26,0.06);
+    display: flex; flex-direction: column; align-items: center;
+    position: relative;
+  }
+  /* Paper & Prosperity card preview accent */
+  .take-action-grid .take-action-card:nth-child(1) { background: var(--pp-card-surface); }
+  /* Empire Arcade card accent */
+  .take-action-grid .take-action-card:nth-child(2) { background: #F3EBDD; }
+  .take-action-grid .take-action-card:nth-child(3) { background: var(--gold-surface); }
+  .take-action-emoji { font-size: 34px; margin-bottom: 14px; }
+  .take-action-featured-label {
+    font-size: 9px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--gold-deep); margin-bottom: 10px;
+  }
+  .take-action-btn-row { display: flex; flex-direction: column; gap: 10px; width: 100%; }
+  .take-action-title { font-size: 15px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; color: var(--text-primary); }
+  .take-action-desc { font-size: 13.5px; color: var(--text-secondary); line-height: 1.55; margin-bottom: 20px; }
+  .take-action-btn {
+    display: inline-block;
+    background: var(--lavender);
+    border: 1.5px solid var(--lavender);
+    color: var(--card-white);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+    text-decoration: none;
+    padding: 14px 28px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.25s ease;
+  }
+  .take-action-btn:hover { background: var(--lavender-hover); border-color: var(--lavender-hover); }
+  .take-action-btn:focus-visible { outline: 2px solid var(--lavender); outline-offset: 2px; }
+  .take-action-btn[disabled], .take-action-btn.is-disabled {
+    background: var(--card-white);
+    color: var(--text-secondary);
+    border-color: var(--border);
+    cursor: not-allowed;
+  }
+  .take-action-btn[disabled]:hover, .take-action-btn.is-disabled:hover { background: var(--card-white); }
+  .take-action-status {
+    font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+    padding: 4px 10px; border-radius: 20px; display: inline-block;
+    position: absolute; top: 10px; left: 10px; right: 10px; text-align: center; line-height: 1.5;
+  }
+  .take-action-card .take-action-btn, .take-action-card .take-action-btn-row { margin-top: auto; }
+  .take-action-card .take-action-btn { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; width: 100%; max-width: 200px; padding: 12px 16px; letter-spacing: 1.2px; white-space: nowrap; }
+  .take-action-card .take-action-desc { margin-bottom: 20px; }
+  .take-action-status.live { background: var(--sage-tint); color: var(--sage); }
+  .take-action-status.soon { background: var(--lavender-soft); color: var(--text-primary); }
+  @media (max-width: 700px) { .take-action-grid { grid-template-columns: 1fr; } }
+
+  .coming-next-wrap { margin-top: 44px; max-width: 900px; margin-left: auto; margin-right: auto; }
+  .coming-next-label {
+    font-size: 10px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase;
+    color: var(--text-secondary); margin-bottom: 16px; text-align: center;
+  }
+  .coming-next-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 14px;
+  }
+  .coming-next-card {
+    background: var(--gold-surface);
+    border: 1px dashed var(--gold-soft);
+    border-radius: 10px;
+    padding: 16px 18px;
+    text-align: left;
+  }
+  .coming-next-title { font-size: 12.5px; font-weight: 700; color: var(--text-primary); margin-bottom: 4px; }
+  .coming-next-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
+
+  .brands-section { background: var(--bg-main); padding: 72px 24px; }
+  .brands-title {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    margin-bottom: 24px;
+    text-align: center;
+  }
+
+  .brands-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    max-width: 700px;
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  .brand-card {
+    background: var(--card-white);
+    border: 1px solid var(--border);
+    border-top: 3px solid var(--gold-soft);
+    border-radius: 12px;
+    padding: 24px 20px;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-align: left;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 14px rgba(26,26,26,0.06);
+  }
+
+  .brand-card:hover { transform: translateY(-4px); box-shadow: 0 12px 28px rgba(26,26,26,0.12); }
+
+  .brand-emoji { font-size: 32px; margin-bottom: 12px; display: block; }
+
+  .brand-name {
+    font-size: 16px;
+    font-weight: 800;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .brand-card.pp .brand-name { color: #6E7076; }
+  .brand-card.gs .brand-name { color: #7A736C; }
+  .brand-card.ll .brand-name { color: #86868C; }
+  .brand-card.eg .brand-name { color: #6B7785; }
+
+  .brand-desc {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin-bottom: 12px;
+  }
+
+  .brand-status {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 2px;
+    display: inline-block;
+  }
+
+  .status-live { background: var(--sage-tint); color: var(--sage); }
+  .status-soon { background: var(--lavender-soft); color: var(--text-primary); }
+
+  .brand-learn {
+    position: absolute;
+    bottom: 16px;
+    right: 16px;
+    font-size: 18px;
+    color: var(--text-secondary);
+    transition: color 0.3s;
+  }
+  .brand-card:hover .brand-learn { color: var(--text-primary); }
+
+  /* HOW IT WORKS */
+  .how-it-works-section { background: var(--bg-alt); padding: 72px 24px; text-align: center; }
+  .how-it-works-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    max-width: 900px;
+    margin: 32px auto 0;
+  }
+  .how-card {
+    position: relative;
+    background: var(--card-white);
+    border: 1px solid var(--border);
+    border-top: 3px solid var(--gold-soft);
+    border-radius: 12px;
+    padding: 34px 22px 26px;
+    box-shadow: 0 4px 14px rgba(26,26,26,0.06);
+  }
+  .how-badge {
+    position: absolute;
+    top: -14px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--lavender);
+    color: var(--card-white);
+    font-weight: 800;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  }
+  .how-emoji { font-size: 34px; display: block; margin: 6px 0 14px; }
+  .how-title {
+    font-size: 15px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;
+    margin-bottom: 10px; color: var(--text-primary);
+  }
+  .how-desc { font-size: 13.5px; color: var(--text-secondary); line-height: 1.55; }
+  @media (max-width: 700px) { .how-it-works-grid { grid-template-columns: 1fr; } }
+
+  /* SOCIAL PROOF */
+  .social-proof-section {
+    background: var(--bg-main);
+    border-top: 1px solid var(--gold-soft);
+    border-bottom: 1px solid var(--gold-soft);
+    padding: 56px 24px;
+  }
+  .social-proof-grid {
+    display: flex; flex-wrap: wrap; justify-content: center; gap: 56px;
+    max-width: 900px; margin: 0 auto;
+  }
+  .stat-block { text-align: center; min-width: 140px; }
+  .stat-number { font-size: 40px; font-weight: 900; color: var(--gold-deep); line-height: 1; margin-bottom: 8px; }
+  .stat-label { font-size: 12px; color: var(--text-secondary); font-weight: 500; }
+
+  .newsletter-section { background: var(--lavender-soft); border-top: 1px solid var(--border); }
+
+  .email-section {
+    max-width: 480px;
+    width: 100%;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .email-title { font-size: clamp(18px, 3vw, 28px); font-weight: 700; margin-bottom: 8px; color: var(--text-primary); }
+  .email-sub { font-size: 13px; color: var(--text-secondary); margin-bottom: 20px; font-weight: 300; }
+
+  .email-form {
+    display: flex;
+    background: var(--card-white);
+    border: 1.5px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 12px;
+    transition: border-color 0.2s ease;
+  }
+  .email-form:focus-within { border-color: var(--lavender); }
+
+  .email-input {
+    flex: 1 1 auto;
+    min-width: 0;
+    padding: 14px 16px;
+    background: transparent;
+    border: none;
+    color: var(--text-primary);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+    outline: none;
+  }
+
+  .email-input::placeholder { color: var(--text-secondary); }
+
+  .email-btn {
+    flex: 0 0 auto;
+    padding: 14px 18px;
+    background: var(--lavender);
+    color: var(--card-white);
+    border: none;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  @media (max-width: 400px) {
+    .email-form { flex-direction: column; border-radius: 10px; }
+    .email-input { width: 100%; }
+    .email-btn { width: 100%; }
+  }
+
+  .email-btn:hover { background: var(--lavender-hover); }
+  .email-btn:focus-visible { outline: 2px solid var(--lavender-hover); outline-offset: -3px; }
+  .email-note { font-size: 10px; color: var(--text-secondary); letter-spacing: 1px; }
+  .email-success { display: none; color: var(--sage); font-size: 14px; font-style: italic; font-family: 'Cormorant Garamond', serif; margin-top: 12px; }
+
+  .footer {
+    font-size: 11px;
+    color: var(--footer-text-secondary);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-align: center;
+    padding: 40px 24px;
+    background: var(--footer-bg);
+    border-top: 1px solid var(--footer-bg);
+  }
+  .footer a { color: var(--gold-soft); text-decoration: none; margin: 0 4px; }
+  .footer a:hover { text-decoration: underline; }
+  .footer-link-btn {
+    background: none; border: none; padding: 0; margin: 0 4px;
+    color: var(--gold-soft); text-decoration: none;
+    font: inherit; letter-spacing: inherit; text-transform: inherit;
+    cursor: pointer;
+  }
+  .footer-link-btn:hover { text-decoration: underline; }
+  .footer a:focus-visible, .footer-link-btn:focus-visible { outline: 2px solid var(--gold-soft); outline-offset: 2px; }
+  .footer-close-line {
+    display: block;
+    margin-top: 16px;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    letter-spacing: normal;
+    text-transform: none;
+    font-size: 13px;
+    color: var(--footer-text);
+  }
+
+  /* DESKTOP HEADER (replaces the permanent sidebar on wide screens) */
+  .site-header {
+    display: none;
+    position: sticky;
+    top: var(--quizbar-h);
+    z-index: 65;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 16px 32px;
+    background: var(--bg-main);
+    border-bottom: 1px solid var(--border);
+  }
+  .site-header-brand {
+    font-size: 15px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text-primary);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .site-header-nav { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
+  .site-header-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: none;
+    border: none;
+    text-decoration: none;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-primary);
+    padding: 9px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+  }
+  @media (min-width: 900px) and (max-width: 1180px) { .site-header { padding: 14px 18px; gap: 12px; } .site-header-brand { font-size: 13px; letter-spacing: 1px; } .site-header-link { padding: 8px 8px; gap: 5px; font-size: 12px; } }
+
+  /* APPS DROPDOWN */
+  .nav-dd { position: relative; }
+  .nav-dd-btn { font-family: inherit; background: none; border: none; cursor: pointer; }
+  .nav-dd-caret { font-size: 10px; margin-left: 2px; }
+  .nav-dd-menu { display: none; position: absolute; top: 100%; right: 0; min-width: 250px; flex-direction: column; background: var(--card-white); border: 1px solid var(--border); border-radius: 10px; box-shadow: 0 10px 26px rgba(26,26,26,0.12); padding: 6px; z-index: 80; }
+  .nav-dd:hover .nav-dd-menu, .nav-dd:focus-within .nav-dd-menu, .nav-dd.open .nav-dd-menu { display: flex; }
+  .nav-dd-item { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 8px; font-size: 13px; font-weight: 600; color: var(--text-primary); text-decoration: none; }
+  a.nav-dd-item:hover { background: var(--lavender-tint); color: var(--lavender-hover); }
+  a.nav-dd-item:focus-visible { outline: 2px solid var(--lavender); outline-offset: -2px; }
+  .nav-dd-item.soon { color: var(--text-secondary); cursor: default; }
+  .nav-dd-item em { font-style: normal; font-size: 9px; font-weight: 800; letter-spacing: 1.2px; text-transform: uppercase; background: var(--lavender-soft); color: var(--text-primary); padding: 3px 8px; border-radius: 20px; }
+  .nav-dd-all { border-top: 1px solid var(--border); margin-top: 4px; border-radius: 0 0 8px 8px; color: var(--lavender-hover); }
+  .drawer a.drawer-sub, .drawer .drawer-sub { padding-left: 32px; font-size: 14px; }
+  .drawer .drawer-sub.soon { display: block; color: var(--text-secondary); padding-top: 10px; padding-bottom: 10px; }
+  .drawer .drawer-sub em { font-style: normal; font-size: 9px; font-weight: 800; letter-spacing: 1.2px; text-transform: uppercase; background: var(--lavender-soft); padding: 3px 8px; border-radius: 20px; margin-left: 6px; }
+  
+  .site-header-link:hover { background: var(--lavender-tint); color: var(--lavender-hover); }
+  .site-header-link:focus-visible { outline: 2px solid var(--lavender); outline-offset: 2px; }
+  .site-header-dropdown-wrap { position: relative; }
+  .site-header-caret { transition: transform 0.2s ease; font-size: 10px; }
+  .site-header-caret.open { transform: rotate(180deg); }
+  .site-header-dropdown {
+    display: none;
+    flex-direction: column;
+    gap: 2px;
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    min-width: 210px;
+    background: var(--card-white);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 8px;
+    box-shadow: 0 14px 30px rgba(26,26,26,0.12);
+    z-index: 66;
+  }
+  .site-header-dropdown.open { display: flex; }
+  .site-header-dropdown-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 9px 10px;
+    font-size: 12.5px;
+    font-weight: 500;
+    color: var(--text-primary);
+    text-decoration: none;
+    border-radius: 6px;
+    transition: background 0.2s;
+  }
+  .site-header-dropdown-item:hover { background: var(--lavender-tint); }
+  @media (min-width: 900px) {
+    .site-header { display: flex; }
+  }
+
+  /* MOBILE NAV DRAWER (hamburger menu — mobile/tablet only) */
+  .app-shell { display: flex; align-items: stretch; min-height: 100vh; }
+
+  .sidebar {
+    width: 280px;
+    max-width: 82vw;
+    flex-shrink: 0;
+    background: var(--card-white);
+    border-right: 1px solid var(--border);
+    padding: 28px 18px;
+    position: fixed;
+    top: var(--quizbar-h); left: 0; bottom: 0;
+    overflow-y: auto;
+    z-index: 60;
+    transform: translateX(-100%);
+    box-shadow: 20px 0 40px rgba(26,26,26,0.1);
+    transition: transform 0.3s ease;
+  }
+  .sidebar.open { transform: translateX(0); }
+
+  .sidebar-brand {
+    display: block;
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text-primary);
+    text-decoration: none;
+    margin: 4px 8px 28px;
+  }
+
+  .sidebar-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    margin: 4px 10px 10px;
+  }
+
+  .sidebar-item, .sidebar-toggle-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 13px 10px;
+    border-radius: 8px;
+    background: none;
+    border: none;
+    text-align: left;
+    text-decoration: none;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .sidebar-item:hover, .sidebar-toggle-row:hover { background: var(--lavender-tint); }
+  .sidebar-item:active, .sidebar-toggle-row:active { background: var(--lavender-soft); }
+  .sidebar-item:focus-visible, .sidebar-toggle-row:focus-visible { outline: 2px solid var(--lavender); outline-offset: -2px; }
+  .sidebar-toggle-row { justify-content: space-between; }
+
+  .sidebar-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .sidebar-dot.pp { background: #6E7076; }
+  .sidebar-dot.gs { background: #7A736C; }
+  .sidebar-dot.ll { background: #86868C; }
+  .sidebar-dot.eg { background: #6B7785; }
+
+  .sidebar-item-text { flex: 1; min-width: 0; }
+
+  .sidebar-pill {
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 3px 7px;
+    border-radius: 20px;
+    flex-shrink: 0;
+  }
+  .sidebar-pill.live { background: var(--sage-tint); color: var(--sage); }
+  .sidebar-pill.soon { background: var(--lavender-soft); color: var(--text-primary); }
+
+  .sidebar-caret { transition: transform 0.25s ease; color: var(--text-secondary); font-size: 11px; }
+  .sidebar-caret.open { transform: rotate(180deg); }
+
+  .sidebar-dropdown { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; padding-left: 8px; }
+  .sidebar-dropdown.open { max-height: 300px; }
+
+  .sidebar-subitem {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 9px 10px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-primary);
+    text-decoration: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+  }
+  .sidebar-subitem:hover { background: var(--lavender-tint); color: var(--text-primary); }
+
+  .sidebar-divider { height: 1px; background: var(--border); margin: 16px 8px; }
+
+  .main-content { flex: 1; min-width: 0; }
+
+  .mobile-topbar {
+    display: none;
+    position: sticky;
+    top: var(--quizbar-h);
+    z-index: 55;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    background: rgba(255,249,243,0.9);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+  }
+  .mobile-topbar .nav-brand {
+    font-size: 13px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase;
+    color: var(--text-primary); text-decoration: none;
+  }
+  .sidebar-menu-btn {
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    width: 44px; height: 44px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; cursor: pointer; color: var(--text-primary);
+  }
+  .sidebar-menu-btn:focus-visible { outline: 2px solid var(--lavender); outline-offset: 2px; }
+
+  .sidebar-scrim { display: none; position: fixed; top: var(--quizbar-h); left: 0; right: 0; bottom: 0; background: rgba(26,26,26,0.35); z-index: 59; }
+  .sidebar-scrim.open { display: block; }
+
+  @media (max-width: 900px) {
+    .mobile-topbar { display: flex; }
+  }
+
+  /* SHARED PAGE SECTION FRAME (Store / About) */
+  .page-section { padding: 88px 24px 80px; scroll-margin-top: 64px; }
+  .section-inner { max-width: 900px; margin: 0 auto; text-align: center; }
+  .section-eyebrow {
+    font-size: 11px; font-weight: 700; letter-spacing: 4px; text-transform: uppercase;
+    color: var(--gold-deep); margin-bottom: 16px;
+  }
+  .section-title {
+    font-size: clamp(24px, 4vw, 38px); font-weight: 800; margin-bottom: 16px; color: var(--text-primary);
+  }
+  .section-sub {
+    font-size: 14px; color: var(--text-secondary); max-width: 560px; margin: 0 auto 48px;
+    line-height: 1.6; font-weight: 300;
+  }
+
+  /* STORE */
+  .store-section { background: var(--bg-main); border-top: 1px solid var(--border); }
+  .store-heading { font-size: clamp(24px, 4vw, 38px); font-weight: 800; color: var(--text-primary); margin-bottom: 12px; }
+  .store-heading-underline { width: 64px; height: 3px; background: var(--gold-soft); border-radius: 2px; margin: 0 auto 24px; }
+  .store-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+  .store-card {
+    background: var(--card-white);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px 20px;
+    text-align: left;
+    transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+    box-shadow: 0 4px 14px rgba(26,26,26,0.04);
+  }
+  .store-card:hover { transform: translateY(-4px); border-color: var(--lavender); box-shadow: 0 12px 28px rgba(26,26,26,0.08); }
+  .store-card-emoji { font-size: 30px; margin-bottom: 14px; display: block; }
+  .store-card-title {
+    font-size: 15px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;
+    margin-bottom: 10px; color: var(--text-primary);
+  }
+  .store-card-desc {
+    font-size: 13px; color: var(--text-secondary); line-height: 1.55; margin-bottom: 20px; min-height: 60px;
+  }
+  .coming-soon-btn {
+    width: 100%;
+    background: var(--card-white);
+    border: 1.5px solid var(--border);
+    color: var(--text-secondary);
+    padding: 14px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    border-radius: 8px;
+    cursor: not-allowed;
+  }
+
+  /* APP DOWNLOAD */
+  .app-download-section { background: var(--bg-main); border-top: 1px solid var(--border); }
+  .app-download-buttons {
+    display: flex; flex-wrap: wrap; justify-content: center; gap: 16px; margin-top: 8px;
+  }
+  .app-download-btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    padding: 14px 28px;
+    border-radius: 8px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    text-decoration: none;
+    background: var(--text-primary);
+    color: var(--gold-soft);
+    border: 1.5px solid var(--gold-soft);
+    cursor: pointer;
+    transition: background 0.25s ease;
+  }
+  .app-download-btn:hover { background: #2C2C2E; }
+  .app-download-btn:focus-visible { outline: 2px solid var(--lavender); outline-offset: 2px; }
+  .app-download-btn-disabled {
+    background: var(--card-white);
+    color: var(--text-secondary);
+    border: 1.5px solid var(--border);
+    cursor: not-allowed;
+  }
+  .app-download-btn-disabled:hover { background: var(--card-white); }
+
+  .app-store-badge { display: inline-flex; align-items: center; justify-content: center; line-height: 0; border-radius: 8px; }
+  .app-store-badge img { display: block; height: 48px; width: auto; }
+  .app-download-buttons .app-store-badge img { height: 56px; }
+  .app-store-badge:focus-visible { outline: 2px solid var(--lavender); outline-offset: 2px; }
+  .popup-app-store { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; margin: 12px 0; }
+
+  /* ABOUT */
+  .about-section { background: var(--bg-main); border-top: 2px solid var(--gold-soft); }
+  .about-headline { font-size: clamp(30px, 5vw, 46px); font-weight: 900; color: var(--text-primary); margin-bottom: 24px; }
+  .about-body {
+    font-size: 15px; line-height: 1.8; color: var(--text-secondary); font-weight: 300;
+    max-width: 640px; margin: 0 auto;
+  }
+
+  /* BRAND POPUPS */
+  .popup-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: var(--overlay-tint);
+    z-index: 100;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    backdrop-filter: blur(8px);
+  }
+
+  .popup-overlay.active { display: flex; }
+
+  .popup-box {
+    max-width: 560px;
+    width: 100%;
+    border-radius: 16px;
+    padding: 40px 36px;
+    position: relative;
+    max-height: 90vh;
+    overflow-y: auto;
+    animation: popIn 0.3s ease;
+    background: var(--card-white);
+    color: var(--text-primary);
+    border: 1px solid var(--border);
+    box-shadow: 0 20px 50px rgba(26,26,26,0.12);
+  }
+
+  @keyframes popIn {
+    from { opacity: 0; transform: scale(0.92) translateY(20px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+  }
+
+  .popup-close {
+    position: absolute;
+    top: 16px;
+    right: 20px;
+    font-size: 24px;
+    cursor: pointer;
+    opacity: 0.5;
+    transition: opacity 0.2s;
+    background: none;
+    border: none;
+    color: inherit;
+    line-height: 1;
+  }
+  .popup-close:hover { opacity: 1; }
+
+  .popup-emoji { font-size: 48px; margin-bottom: 16px; display: block; }
+  .popup-brand { font-size: 28px; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 8px; }
+  .pp-popup .popup-brand { color: #6E7076; }
+  .gs-popup .popup-brand { color: #7A736C; }
+  .ll-popup .popup-brand { color: #86868C; }
+  .eg-popup .popup-brand { color: #6B7785; }
+
+  .popup-tagline { font-size: 14px; font-style: italic; margin-bottom: 24px; opacity: 0.7; font-family: 'Cormorant Garamond', serif; }
+
+  .popup-divider { height: 1px; background: var(--border); margin: 20px 0; }
+
+  .popup-features-title { font-size: 10px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; opacity: 0.55; margin-bottom: 16px; }
+
+  .popup-features { list-style: none; margin-bottom: 28px; }
+  .popup-privacy-note { font-size: 11.5px; line-height: 1.6; color: var(--text-secondary); margin: 12px 4px 4px; text-align: center; }
+  .popup-features li { font-size: 14px; padding: 8px 0; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; line-height: 1.4; }
+  .popup-feature-icon { width: 15px; height: 15px; color: var(--lavender); stroke-width: 2.2; }
+
+  .popup-cta {
+    width: 100%;
+    padding: 16px;
+    border: none;
+    border-radius: 8px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-bottom: 12px;
+  }
+  .popup-cta:focus-visible { outline: 2px solid var(--lavender); outline-offset: 2px; }
+
+  .pp-popup .popup-cta { background: #6E7076; color: white; }
+  .pp-popup .popup-cta:hover { background: #82848A; }
+  .gs-popup .popup-cta { background: #7A736C; color: white; }
+  .gs-popup .popup-cta:hover { background: #8E8780; }
+  .ll-popup .popup-cta { background: #86868C; color: white; }
+  .ll-popup .popup-cta:hover { background: #9A9AA0; }
+  .eg-popup .popup-cta { background: #6B7785; color: white; }
+  .eg-popup .popup-cta:hover { background: #7F8996; }
+
+  .popup-soon { text-align: center; font-size: 10px; opacity: 0.5; letter-spacing: 2px; text-transform: uppercase; }
+
+  .popup-subapp-label {
+    font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--gold-deep); margin-bottom: 8px;
+  }
+  .popup-subapp {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--bg-main);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px;
+    margin-bottom: 20px;
+    cursor: pointer;
+    text-align: left;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .popup-subapp:hover { border-color: var(--lavender); background: var(--card-white); }
+  .popup-subapp-emoji { font-size: 24px; flex-shrink: 0; }
+  .popup-subapp-text { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+  .popup-subapp-title { font-size: 13px; font-weight: 800; color: var(--text-primary); }
+  .popup-subapp-desc { font-size: 11px; color: var(--text-secondary); }
+  .popup-subapp-arrow { font-size: 16px; color: var(--text-secondary); flex-shrink: 0; }
+
+  /* EMAIL POPUP */
+  .email-popup-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: var(--overlay-tint);
+    z-index: 200;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    backdrop-filter: blur(6px);
+  }
+
+  .email-popup-overlay.active { display: flex; }
+
+  .email-popup-box {
+    background: var(--card-white);
+    border: 1px solid var(--gold-soft);
+    border-radius: 16px;
+    padding: 40px 32px;
+    max-width: 440px;
+    width: 100%;
+    text-align: center;
+    position: relative;
+    animation: popIn 0.3s ease;
+    box-shadow: 0 20px 50px rgba(26,26,26,0.12);
+  }
+
+  .email-popup-crown { font-size: 36px; margin-bottom: 12px; }
+  .email-popup-title { font-size: 22px; font-weight: 900; color: var(--text-primary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; }
+  .email-popup-sub { font-size: 14px; color: var(--text-secondary); margin-bottom: 24px; font-weight: 300; line-height: 1.5; }
+
+  .email-popup-form { display: flex; flex-direction: column; gap: 12px; }
+
+  .email-popup-input {
+    padding: 14px 16px;
+    background: var(--card-white);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text-primary);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+    outline: none;
+    transition: border-color 0.3s;
+  }
+
+  .email-popup-input:focus { border-color: var(--lavender); }
+  .email-popup-input::placeholder { color: var(--text-secondary); }
+
+  .email-popup-btn {
+    padding: 16px;
+    background: var(--lavender);
+    color: var(--card-white);
+    border: none;
+    border-radius: 8px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+
+  .email-popup-btn:hover { background: var(--lavender-hover); }
+  .email-popup-btn:focus-visible { outline: 2px solid var(--lavender-hover); outline-offset: 2px; }
+  .email-popup-secondary-btn {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 11px;
+    text-decoration: underline;
+    cursor: pointer;
+    padding: 4px;
+  }
+  .email-popup-note { font-size: 9px; color: var(--text-secondary); letter-spacing: 1px; margin-top: 4px; }
+  .email-popup-success { display: none; color: var(--sage); font-size: 16px; font-style: italic; font-family: 'Cormorant Garamond', serif; }
+
+  @media (max-width: 500px) {
+    .brands-grid { grid-template-columns: 1fr; }
+    .popup-box { padding: 32px 24px; }
+    .site-nav { padding: 14px 18px; }
+  }
+
+  @media (max-width: 760px) {
+    .store-grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 460px) {
+    .store-grid { grid-template-columns: 1fr; }
+  }
+
+  /* Tighter mobile vertical rhythm */
+  @media (max-width: 700px) {
+    .welcome-section { padding: 44px 20px 34px; }
+    .beginner-section, .story-section, .take-action-section, .how-it-works-section, .testimonials-section { padding: 52px 20px; }
+    .page-section { padding: 60px 20px 52px; }
+    .beginner-grid, .take-action-grid, .how-it-works-grid, .testimonials-grid { margin-top: 26px; }
+    .coming-next-wrap { margin-top: 34px; }
+    .hero-divider { margin-top: 30px; }
+  }
+
+  /* EMPIRE AI CHAT WIDGET */
+  .eai-fab {
+    position: fixed; right: 20px; bottom: 20px; z-index: 90;
+    width: 60px; height: 60px; border-radius: 50%;
+    background: #E4C590; color: var(--text-primary);
+    border: 1px solid rgba(26,26,26,0.12);
+    box-shadow: 0 8px 22px rgba(26,26,26,0.22);
+    font-size: 26px; line-height: 1; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .eai-fab:hover { transform: translateY(-2px); box-shadow: 0 12px 26px rgba(26,26,26,0.28); }
+  .eai-fab:focus-visible, .eai-panel button:focus-visible, .eai-panel input:focus-visible { outline: 2px solid var(--text-primary); outline-offset: 2px; }
+  .eai-fab[hidden], .eai-panel[hidden] { display: none; }
+
+  .eai-panel {
+    position: fixed; right: 20px; bottom: 92px; z-index: 95;
+    width: 360px; max-width: calc(100vw - 24px);
+    height: min(580px, calc(100vh - 120px));
+    background: var(--card-white); color: var(--text-primary);
+    border: 1px solid var(--border); border-radius: 16px;
+    box-shadow: 0 20px 50px rgba(26,26,26,0.22);
+    display: flex; flex-direction: column; overflow: hidden;
+    opacity: 0; visibility: hidden; transform: translateY(24px);
+    transition: opacity 0.25s ease, transform 0.25s ease, visibility 0s linear 0.25s;
+  }
+  .eai-panel.open { opacity: 1; visibility: visible; transform: translateY(0); transition: opacity 0.25s ease, transform 0.25s ease; }
+  @media (max-width: 480px) {
+    .eai-fab { right: 14px; bottom: 14px; }
+    .eai-panel { right: 12px; left: 12px; width: auto; max-width: none; bottom: 84px; height: min(560px, calc(100vh - 110px)); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .eai-panel, .eai-panel.open, .eai-fab { transition: none; }
+    .eai-thinking-dots span { animation: none !important; }
+  }
+
+  .eai-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 16px; background: var(--card-white); border-bottom: 1px solid var(--border);
+  }
+  .eai-title { font-size: 16px; font-weight: 800; color: var(--text-primary); }
+  .eai-close { background: none; border: none; font-size: 24px; line-height: 1; cursor: pointer; color: var(--text-primary); padding: 4px 8px; border-radius: 6px; }
+
+  .eai-messages { flex: 1; min-height: 0; overflow-y: auto; padding: 14px; display: flex; flex-direction: column; gap: 10px; }
+  .eai-msg { max-width: 86%; padding: 10px 13px; border-radius: 14px; font-size: 13.5px; line-height: 1.5; white-space: pre-wrap; overflow-wrap: anywhere; }
+  .eai-msg.ai { align-self: flex-start; background: #E4C590; color: var(--text-primary); border-bottom-left-radius: 4px; }
+  .eai-msg.user { align-self: flex-end; background: #1A1A1A; color: #FFFFFF; border-bottom-right-radius: 4px; }
+
+  .eai-thinking-dots span { display: inline-block; width: 6px; height: 6px; margin-right: 4px; border-radius: 50%; background: var(--text-primary); animation: eaiPulse 1s infinite ease-in-out; }
+  .eai-thinking-dots span:nth-child(2) { animation-delay: 0.15s; }
+  .eai-thinking-dots span:nth-child(3) { animation-delay: 0.3s; margin-right: 0; }
+  @keyframes eaiPulse { 0%, 80%, 100% { opacity: 0.25; } 40% { opacity: 1; } }
+
+  .eai-chips { display: flex; flex-wrap: wrap; gap: 6px; padding: 0 14px 10px; }
+  .eai-chip { background: var(--card-white); border: 1px solid #E4C590; color: var(--text-primary); border-radius: 999px; padding: 7px 12px; font-family: 'Montserrat', sans-serif; font-size: 12px; font-weight: 600; cursor: pointer; text-align: left; }
+  .eai-chip:hover:not([disabled]) { background: #FAF3E3; }
+  .eai-chip[disabled] { opacity: 0.5; cursor: not-allowed; }
+
+  .eai-form { display: flex; gap: 8px; padding: 0 14px 8px; }
+  .eai-input { flex: 1; min-width: 0; border: 1.5px solid var(--border); border-radius: 10px; padding: 10px 12px; font-family: 'Montserrat', sans-serif; font-size: 16px; color: var(--text-primary); background: var(--card-white); }
+  .eai-send { flex: 0 0 auto; background: #1A1A1A; color: #FFFFFF; border: none; border-radius: 10px; padding: 0 16px; font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 700; cursor: pointer; }
+  .eai-send[disabled], .eai-input[disabled] { opacity: 0.5; cursor: not-allowed; }
+
+  .eai-footer { padding: 2px 14px 10px; text-align: center; font-size: 10.5px; line-height: 1.5; color: var(--text-secondary); }
+  .eai-remaining { display: block; margin-bottom: 2px; }
+  .eai-off-btn { background: none; border: none; padding: 0; font: inherit; color: var(--text-secondary); text-decoration: underline; cursor: pointer; }
+  .eai-powered { display: block; margin-top: 2px; }
+
+  .eai-disclaimer-overlay { position: absolute; inset: 0; background: rgba(255,255,255,0.97); display: none; align-items: center; justify-content: center; padding: 24px; text-align: center; z-index: 2; }
+  .eai-disclaimer-overlay.show { display: flex; }
+  .eai-disclaimer-box p { font-size: 14px; line-height: 1.6; color: var(--text-primary); margin-bottom: 18px; }
+  .eai-disclaimer-btn { background: #E4C590; color: var(--text-primary); border: 1.5px solid #1A1A1A; border-radius: 8px; padding: 12px 24px; font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 700; cursor: pointer; }
+
+  .eai-bubble {
+    position: fixed; right: 20px; bottom: 92px; z-index: 91;
+    max-width: min(250px, calc(100vw - 40px));
+    background: #FFFFFF; color: #1A1A1A;
+    border: 1.5px solid #E4C590; border-radius: 14px;
+    box-shadow: 0 8px 22px rgba(26,26,26,0.16);
+    padding: 10px 30px 10px 14px;
+    opacity: 0; transform: translateY(6px);
+    transition: opacity 0.35s ease, transform 0.35s ease;
+  }
+  .eai-bubble.show { opacity: 1; transform: translateY(0); }
+  .eai-bubble[hidden] { display: none; }
+  /* small gold pointer aimed at the button below */
+  .eai-bubble::after {
+    content: ""; position: absolute; bottom: -10px; right: 21px;
+    border-left: 9px solid transparent; border-right: 9px solid transparent; border-top: 10px solid #E4C590;
+  }
+  .eai-bubble-text {
+    background: none; border: none; padding: 0; margin: 0; text-align: left; cursor: pointer;
+    font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 600; line-height: 1.45; color: #1A1A1A;
+  }
+  .eai-bubble-close {
+    position: absolute; top: 4px; right: 6px; width: 22px; height: 22px;
+    background: none; border: none; border-radius: 6px; cursor: pointer;
+    font-size: 16px; line-height: 1; color: #1A1A1A; padding: 0;
+  }
+  .eai-bubble-text:focus-visible, .eai-bubble-close:focus-visible { outline: 2px solid #1A1A1A; outline-offset: 2px; }
+  @media (max-width: 480px) { .eai-bubble { right: 14px; bottom: 84px; } }
+  @media (prefers-reduced-motion: reduce) { .eai-bubble { transition: none; transform: none; } }
+
+  .eai-disabled-note { text-align: center; font-size: 11px; color: var(--text-secondary); padding: 10px 16px 18px; background: var(--bg-main); }
+</style>
+</head>
+<body>
+
+<!-- Shared line-icon set: one consistent family, referenced via <use>. All instances are decorative (aria-hidden) since adjacent text already conveys their meaning. -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="icon-home" viewBox="0 0 24 24"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v10h13V10"/><path d="M10 20v-6h4v6"/></symbol>
+    <symbol id="icon-phone" viewBox="0 0 24 24"><rect x="6" y="2.5" width="12" height="19" rx="2.5"/><line x1="10.5" y1="18.5" x2="13.5" y2="18.5"/></symbol>
+    <symbol id="icon-heart" viewBox="0 0 24 24"><path d="M20.8 5.6a5.5 5.5 0 0 0-7.8 0L12 6.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 22l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8Z"/></symbol>
+    <symbol id="icon-gamepad" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="11" rx="5.5"/><line x1="7" y1="10.8" x2="7" y2="14.2"/><line x1="5.3" y1="12.5" x2="8.7" y2="12.5"/><circle cx="15" cy="10.7" r="1"/><circle cx="17.7" cy="13.3" r="1"/></symbol>
+    <symbol id="icon-cart" viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="18" cy="21" r="1"/><path d="M1 1h3l2.3 12.4a2 2 0 0 0 2 1.6h8.4a2 2 0 0 0 2-1.6L21 6H5.2"/></symbol>
+    <symbol id="icon-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5.3"/><circle cx="12" cy="12" r="1.6" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="icon-chart" viewBox="0 0 24 24"><line x1="5" y1="20" x2="5" y2="13"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="19" y1="20" x2="19" y2="10"/></symbol>
+    <symbol id="icon-trophy" viewBox="0 0 24 24"><path d="M7 4h10v5.2a5 5 0 0 1-10 0V4Z"/><path d="M7 5.2H4.3a2 2 0 0 0 0 4H6"/><path d="M17 5.2h2.7a2 2 0 0 1 0 4H18"/><path d="M12 14.2V18"/><path d="M8.3 21h7.4"/></symbol>
+    <symbol id="icon-flame" viewBox="0 0 24 24"><path d="M12 21.5c3.9 0 7-2.6 7-6.8 0-2.9-1.9-4.9-2.9-6.7-.3 1.9-1.3 2.9-1.9 2.9.5-2.9-1-5.8-3.4-7.2C11 6 9.1 7.9 9.1 10.7c-1-.5-1.7-1.6-1.9-2.9-1.4 1.9-1.9 3.8-1.9 6.7 0 4.2 2.9 6.8 6.7 6.8Z"/></symbol>
+    <symbol id="icon-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><line x1="12" y1="11" x2="12" y2="16.3"/><circle cx="12" cy="7.7" r="0.9" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="icon-menu" viewBox="0 0 24 24"><line x1="3" y1="6.5" x2="21" y2="6.5"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="17.5" x2="21" y2="17.5"/></symbol>
+    <symbol id="icon-check" viewBox="0 0 24 24"><polyline points="4,13 9,18 20,6"/></symbol>
+  </defs>
+</svg>
+
+<div class="quiz-bar">
+  <span class="quiz-bar-lead">Not sure where to begin? Choose a starting point that feels right for you.</span> <a href="#starting-point" id="quizBarLink">See My Options →</a>
+</div>
+
+<header class="site-header">
+  <a href="#top" class="site-header-brand">Debt Free Empire</a>
+  <nav class="site-header-nav" aria-label="Primary">
+    <a class="site-header-link" href="/"><svg class="icon-svg icon-nav" aria-hidden="true" focusable="false" style="color: var(--text-primary);"><use href="#icon-home"/></svg>Home</a>
+    <div class="nav-dd"><button type="button" class="site-header-link nav-dd-btn" aria-expanded="false" aria-haspopup="true" style=""><svg class="icon-svg icon-nav" aria-hidden="true" focusable="false" style="color: var(--lavender);"><use href="#icon-phone"/></svg>Apps <span class="nav-dd-caret">⌄</span></button><div class="nav-dd-menu"><a class="nav-dd-item" href="/apps/empire-life-dashboard">Empire Life Dashboard</a><a class="nav-dd-item" href="/paper-and-prosperity">Paper &amp; Prosperity</a><span class="nav-dd-item soon" aria-disabled="true">Grind &amp; Save<em>Coming soon</em></span><a class="nav-dd-item nav-dd-all" href="/apps">All apps →</a></div></div>
+    <a class="site-header-link" href="/products"><svg class="icon-svg icon-nav" aria-hidden="true" focusable="false" style="color: var(--text-primary);"><use href="#icon-cart"/></svg>Products</a>
+    <a class="site-header-link" href="/empire-games"><svg class="icon-svg icon-nav" aria-hidden="true" focusable="false" style="color: var(--gold-deep);"><use href="#icon-gamepad"/></svg>Empire Games</a>
+    <a class="site-header-link" href="/#about"><svg class="icon-svg icon-nav" aria-hidden="true" focusable="false" style="color: var(--text-primary);"><use href="#icon-info"/></svg>About</a>
+  </nav>
+</header>
+
+<div class="mobile-topbar">
+  <a href="#top" class="nav-brand">Debt Free Empire</a>
+  <button class="sidebar-menu-btn" id="sidebarMenuBtn" onclick="toggleSidebar()" aria-label="Open menu"><svg class="icon-svg" style="width:20px;height:20px;" aria-hidden="true" focusable="false"><use href="#icon-menu"/></svg></button>
+</div>
+
+<div class="sidebar-scrim" id="sidebarScrim" onclick="toggleSidebar()"></div>
+
+<div class="app-shell">
+  <aside class="sidebar" id="sidebar">
+    <a href="#top" class="sidebar-brand">Debt Free Empire</a>
+
+    <a class="sidebar-item" href="/" onclick="closeSidebarOnMobile()"><svg class="icon-svg icon-nav" aria-hidden="true" focusable="false" style="color: var(--text-primary);"><use href="#icon-home"/></svg><span class="sidebar-item-text">Home</span></a>
+    <a class="sidebar-item" href="/apps"><svg class="icon-svg icon-nav" aria-hidden="true" focusable="false" style="color: var(--lavender);"><use href="#icon-phone"/></svg><span class="sidebar-item-text">Apps</span></a>
+    <a class="sidebar-item" href="/apps/empire-life-dashboard" style="padding-left:40px"><span class="sidebar-item-text">Empire Life Dashboard</span></a>
+    <a class="sidebar-item" href="/paper-and-prosperity" style="padding-left:40px"><span class="sidebar-item-text">Paper & Prosperity</span></a>
+    <span class="sidebar-item" style="padding-left:40px;opacity:.7;cursor:default"><span class="sidebar-item-text">Grind & Save <em style="font-style:normal;font-size:9px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;background:var(--lavender-soft);padding:3px 8px;border-radius:20px;margin-left:6px">Coming soon</em></span></span>
+    <a class="sidebar-item" href="/products"><svg class="icon-svg icon-nav" aria-hidden="true" focusable="false" style="color: var(--text-primary);"><use href="#icon-cart"/></svg><span class="sidebar-item-text">Products</span></a>
+    <a class="sidebar-item" href="/empire-games"><svg class="icon-svg icon-nav" aria-hidden="true" focusable="false" style="color: var(--gold-deep);"><use href="#icon-gamepad"/></svg><span class="sidebar-item-text">Empire Games</span></a>
+    <div class="sidebar-divider"></div>
+    <a href="#about" class="sidebar-item" onclick="closeSidebarOnMobile()">
+      <svg class="icon-svg icon-nav" aria-hidden="true" focusable="false" style="color: var(--text-primary);"><use href="#icon-info"/></svg>
+      <span class="sidebar-item-text">About</span>
+    </a>
+  </aside>
+
+  <div class="main-content">
+    <div class="hero-image-section" id="top">
+      <img class="hero-image" src="./hero-office.jpeg" alt="A bright, minimalist home workspace with a laptop on a wooden desk, a sunlit window, and a green plant" />
+    </div>
+
+    <div class="welcome-section">
+      <div class="hero-brand">Debt Free Empire</div>
+
+      <blockquote class="quote-banner" id="quoteBanner">
+        <span class="quote-banner-line" aria-hidden="true"></span>
+        <p class="quote-banner-text" id="quoteBannerText">&nbsp;</p>
+        <span class="quote-banner-line" aria-hidden="true"></span>
+      </blockquote>
+
+      <div class="hero-eyebrow">Welcome To Debt Free Empire</div>
+      <h1 class="hero-headline">Money can feel overwhelming. Your next step doesn't have to.</h1>
+      <p class="hero-subtitle">Debt Free Empire gives you approachable tools to understand your money, create a plan, and make progress at your own pace. No judgment. No financial experience required.</p>
+      <div class="hero-cta-row">
+        <a href="#starting-point" id="heroPrimaryCta" class="hero-cta-btn">Help Me Get Started</a>
+        <a href="#take-action" class="hero-cta-btn-secondary">Explore Available Tools</a>
+      </div>
+      <p class="hero-reassurance">Start where you are. Use what helps. Build from there.</p>
+      <div class="hero-divider"></div>
+    </div>
+
+<!-- AS SEEN ON -->
+<!-- Hidden — no real profile URL exists in the codebase for TikTok, Instagram, Pinterest, Google Play, or Etsy.
+     To show this section: for each real platform, uncomment/add an <a> like:
+     <a class="as-seen-on-box" href="[REAL PROFILE URL]" target="_blank" rel="noopener" aria-label="Debt Free Empire on [Platform]">[Platform]</a>
+     and remove the `hidden` attribute below. See completion report. -->
+<section id="as-seen-on" class="as-seen-on-section" hidden>
+  <div class="as-seen-on-label">Find Debt Free Empire On</div>
+  <div class="as-seen-on-grid"></div>
+</section>
+
+<!-- BEGINNER STARTING POINT -->
+<section id="starting-point" class="beginner-section">
+  <h2 class="store-heading">What would you like help with first?</h2>
+  <div class="store-heading-underline"></div>
+  <p class="section-sub" style="margin-bottom:0;">Choose the option that feels closest to where you are today. You can always explore the other tools later.</p>
+  <div class="beginner-grid">
+    <div class="beginner-card">
+      <div class="beginner-card-title">Build My First Budget</div>
+      <p class="beginner-card-desc">Start with a simple view of your income, expenses, and the money you have available.</p>
+      <a class="beginner-card-btn" href="/paper-and-prosperity#feature-budget">Start Budgeting</a>
+    </div>
+    <div class="beginner-card">
+      <div class="beginner-card-title">Make a Debt Payoff Plan</div>
+      <p class="beginner-card-desc">Organize what you owe and see how your payments can change your debt-free timeline.</p>
+      <a class="beginner-card-btn" href="/paper-and-prosperity#feature-debt-payoff">Plan My Payoff</a>
+    </div>
+    <div class="beginner-card">
+      <div class="beginner-card-title">Start Saving</div>
+      <p class="beginner-card-desc">Turn a goal into smaller, manageable steps and track your progress as it grows.</p>
+      <a class="beginner-card-btn" href="/paper-and-prosperity#feature-savings">Set a Savings Goal</a>
+    </div>
+  </div>
+</section>
+
+<!-- ROBERT'S STORY -->
+<section id="story" class="story-section">
+  <!-- Text-only for now. To add the founder photo later: add class="has-photo" to
+       .story-grid below and insert <img class="story-photo" src="..." alt="..."> as
+       the first child, ahead of .story-text. -->
+  <div class="story-grid">
+    <div class="story-text">
+      <div class="story-label">Why I Built Debt Free Empire</div>
+      <h2 class="story-headline">Built from real financial struggle.</h2>
+      <p class="story-paragraph">
+        Debt Free Empire was created from the experience of trying to make sense of money while life was
+        already demanding enough. I wanted tools that felt clear, practical, and encouraging — not
+        complicated or judgmental.
+      </p>
+      <p class="story-paragraph">
+        You do not need to have everything figured out before you begin. You only need an honest starting
+        point and a next step you can manage.
+      </p>
+      <p class="story-paragraph" style="font-style:italic; font-family:'Cormorant Garamond', serif; font-size:16px; color: var(--gold-deep);">
+        Your progress does not have to look perfect to be meaningful.
+      </p>
+      <a href="#about" class="story-btn">Read My Story</a>
+    </div>
+  </div>
+</section>
+
+<!-- SCROLLING TICKER -->
+<div class="ticker-section">
+  <div class="ticker-track">
+    <span>UNDERSTAND YOUR MONEY • BUILD YOUR PLAN • CELEBRATE YOUR PROGRESS • CREATE YOUR FUTURE • UNDERSTAND YOUR MONEY • BUILD YOUR PLAN • CELEBRATE YOUR PROGRESS • CREATE YOUR FUTURE •&nbsp;</span>
+    <span>UNDERSTAND YOUR MONEY • BUILD YOUR PLAN • CELEBRATE YOUR PROGRESS • CREATE YOUR FUTURE • UNDERSTAND YOUR MONEY • BUILD YOUR PLAN • CELEBRATE YOUR PROGRESS • CREATE YOUR FUTURE •&nbsp;</span>
+  </div>
+</div>
+
+<!-- TESTIMONIALS (hidden until genuine reviews exist) -->
+<section id="testimonials" class="testimonials-section" hidden>
+  <h2 class="store-heading">What People Are Saying</h2>
+  <div class="store-heading-underline"></div>
+  <div class="testimonials-grid">
+    <div class="testimonial-card">
+      <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
+      <div class="testimonial-text">Review coming soon</div>
+    </div>
+    <div class="testimonial-card">
+      <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
+      <div class="testimonial-text">Review coming soon</div>
+    </div>
+    <div class="testimonial-card">
+      <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
+      <div class="testimonial-text">Review coming soon</div>
+    </div>
+  </div>
+  <p class="testimonials-note">Be one of the first to share your experience.</p>
+</section>
+
+<!-- CHOOSE YOUR NEXT STEP (available tools) -->
+<section id="take-action" class="take-action-section">
+  <h2 class="store-heading">Choose Your Next Step</h2>
+  <div class="store-heading-underline"></div>
+  <p class="section-sub" style="margin-bottom:0;">Explore tools designed to make budgeting, debt payoff, and saving easier to understand — one step at a time.</p>
+  <div class="take-action-grid">
+    <div class="take-action-card" data-product="pp">
+      <span class="take-action-emoji" style="color: var(--lavender);"><svg class="icon-svg icon-lg" aria-hidden="true" focusable="false"><use href="#icon-heart"/></svg></span>
+      <span class="take-action-status live" data-p-status data-status-badge="pp">Available on Web, App Store &amp; Google Play</span>
+      <div class="take-action-title">Paper & Prosperity</div>
+      <p class="take-action-desc">A calm, approachable financial-planning app designed to help you budget, track debt, build savings, and understand your complete financial picture.</p>
+      <button class="take-action-btn" data-p-btn onclick="window.open('https://web-paper-and-prosperity.vercel.app', '_blank')">Open the Web App</button>
+    </div>
+    <div class="take-action-card" data-product="eld">
+      <span class="take-action-emoji" style="color: var(--gold-deep);"><svg class="icon-svg icon-lg" aria-hidden="true" focusable="false"><use href="#icon-chart"/></svg></span>
+      <span class="take-action-status live" data-p-status id="eldStatus">Available on Windows · Mac coming soon</span>
+      <div class="take-action-title">Empire Life Dashboard</div>
+      <p class="take-action-desc">A calm all-in-one life dashboard for managing your money, health, routines, home, relationships and dreams. One purchase. No subscription.</p>
+      <a href="/apps/empire-life-dashboard" class="take-action-btn" data-p-btn>Learn More</a>
+    </div>
+    <div class="take-action-card" data-product="arcade">
+      <span class="take-action-emoji" style="color: var(--gold-deep);"><svg class="icon-svg icon-lg" aria-hidden="true" focusable="false"><use href="#icon-gamepad"/></svg></span>
+      <span class="take-action-status soon" data-p-status data-status-badge="arcade">Coming Soon</span>
+      <div class="take-action-title">Empire Arcade</div>
+      <p class="take-action-desc">Empire Arcade will be the home of Debt Free Empire's interactive games. Coming soon.</p>
+      <div class="take-action-btn-row">
+        <button class="take-action-btn" data-p-btn onclick="openBrand('eg')">Learn More</button>
+      </div>
+    </div>
+    <div class="take-action-card" data-product="workbooks">
+      <span class="take-action-emoji" style="color: var(--text-primary);"><svg class="icon-svg icon-lg" aria-hidden="true" focusable="false"><use href="#icon-cart"/></svg></span>
+      <div class="take-action-title">Browse the Store</div>
+      <p class="take-action-desc">Spreadsheets, workbooks, and premium cash envelopes.</p>
+      <a href="#store" class="take-action-btn" data-p-btn>Shop Now</a>
+    </div>
+  </div>
+
+  <div class="coming-next-wrap">
+    <div class="coming-next-label">More tools are on the way</div>
+    <div class="coming-next-grid">
+      <div class="coming-next-card" data-product="gs">
+        <div class="coming-next-title">Grind & Save</div>
+        <div class="coming-next-desc">A focused personal-finance experience built around consistent action, clear goals, and long-term progress.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how-it-works" class="how-it-works-section">
+  <h2 class="store-heading">Getting started can be simple.</h2>
+  <div class="store-heading-underline"></div>
+  <div class="how-it-works-grid">
+    <div class="how-card">
+      <span class="how-badge">1</span>
+      <span class="how-emoji" style="color: var(--text-primary);"><svg class="icon-svg icon-lg" aria-hidden="true" focusable="false"><use href="#icon-target"/></svg></span>
+      <div class="how-title">Choose Your Focus</div>
+      <p class="how-desc">Begin with budgeting, debt payoff, or saving — whichever feels most important today.</p>
+    </div>
+    <div class="how-card">
+      <span class="how-badge">2</span>
+      <span class="how-emoji" style="color: var(--text-primary);"><svg class="icon-svg icon-lg" aria-hidden="true" focusable="false"><use href="#icon-chart"/></svg></span>
+      <div class="how-title">See Your Numbers Clearly</div>
+      <p class="how-desc">Enter your information and use the tools to understand where your money is going.</p>
+    </div>
+    <div class="how-card">
+      <span class="how-badge">3</span>
+      <span class="how-emoji" style="color: var(--text-primary);"><svg class="icon-svg icon-lg" aria-hidden="true" focusable="false"><use href="#icon-trophy"/></svg></span>
+      <div class="how-title">Build at Your Own Pace</div>
+      <p class="how-desc">Return regularly, track your progress, and adjust your plan as your life changes.</p>
+    </div>
+  </div>
+</section>
+
+<!-- BRAND CARDS (consolidated into "Choose Your Next Step" above to avoid a duplicate, potentially conflicting product grid — see completion report) -->
+<section id="brands" class="brands-section" hidden>
+  <div class="brands-title">What's inside the empire</div>
+  <div class="brands-grid">
+    <div class="brand-card pp" onclick="openBrand('pp')">
+      <span class="brand-emoji">💜</span>
+      <div class="brand-name">Paper & Prosperity</div>
+      <div class="brand-desc">The personal finance app for people ready to take control of their money.</div>
+      <span class="brand-status status-live">Live Now</span>
+      <span class="brand-learn">→</span>
+    </div>
+
+    <div class="brand-card gs" onclick="openBrand('gs')">
+      <span class="brand-emoji">💪</span>
+      <div class="brand-name">Grind & Save</div>
+      <div class="brand-desc">No-nonsense finance app built for men serious about crushing debt.</div>
+      <span class="brand-status status-soon">Coming Soon</span>
+      <span class="brand-learn">→</span>
+    </div>
+
+    <div class="brand-card eg" onclick="openBrand('eg')">
+      <span class="brand-emoji">🏆</span>
+      <div class="brand-name">Empire Arcade</div>
+      <div class="brand-desc">Approachable, money-themed games that teach financial literacy without the lecture.</div>
+      <span class="brand-status status-soon">Coming Soon</span>
+      <span class="brand-learn">→</span>
+    </div>
+  </div>
+</section>
+
+<!-- SOCIAL PROOF (hidden — stats are not verifiable from the codebase; see completion report) -->
+<section id="social-proof" class="social-proof-section" hidden>
+  <div class="social-proof-grid">
+    <div class="stat-block">
+      <div class="stat-number">500+</div>
+      <div class="stat-label">People on the journey</div>
+    </div>
+    <div class="stat-block">
+      <div class="stat-number">9</div>
+      <div class="stat-label">Envelope collections</div>
+    </div>
+    <div class="stat-block">
+      <div class="stat-number">50+</div>
+      <div class="stat-label">Games coming to the arcade</div>
+    </div>
+  </div>
+</section>
+
+<!-- STORE -->
+<section id="store" class="page-section store-section">
+  <div class="section-inner">
+    <h2 class="store-heading">The Empire Store</h2>
+    <div class="store-heading-underline"></div>
+    <p class="section-sub">Practical spreadsheets and printable tools for budgeting, planning, tracking, and organizing your financial life.</p>
+
+    <div class="store-grid" style="grid-template-columns: 1fr; max-width: 480px; margin: 0 auto;">
+      <div class="store-card">
+        <span class="store-card-emoji" style="color: var(--text-primary);"><svg class="icon-svg icon-md" aria-hidden="true" focusable="false"><use href="#icon-chart"/></svg></span>
+        <span class="brand-status status-live" style="margin-bottom:10px;">Available on Etsy</span>
+        <div class="store-card-title">Spreadsheets</div>
+        <p class="store-card-desc">Practical spreadsheets for budgeting, planning, tracking, and organizing your financial life.</p>
+        <a class="take-action-btn" style="display:block; text-align:center; text-decoration:none;" href="https://www.etsy.com/shop/PaperandProsperity" target="_blank" rel="noopener noreferrer">Shop Spreadsheets on Etsy</a>
+      </div>
+    </div>
+
+    <div class="coming-next-wrap">
+      <div class="coming-next-label">More tools are on the way</div>
+      <p class="section-sub" style="margin-bottom:16px; max-width: 640px;">Debt Free Empire is continuing to expand with new ways to budget, save, learn, and track your progress. Join the newsletter if you would like to know when something new becomes available.</p>
+      <div class="coming-next-grid">
+        <div class="coming-next-card">
+          <div class="coming-next-title">PDFs & Printables</div>
+          <div class="coming-next-desc">Printable financial tools designed to make budgeting, saving, and tracking progress easier to see and manage.</div>
+        </div>
+        <div class="coming-next-card">
+          <div class="coming-next-title">Physical Workbooks</div>
+          <div class="coming-next-desc">Guided physical workbooks for hands-on budgeting, debt payoff, saving, and financial reflection.</div>
+        </div>
+        <div class="coming-next-card">
+          <div class="coming-next-title">Cash Envelopes</div>
+          <div class="coming-next-desc">Premium printable cash envelope collections.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- APP DOWNLOAD -->
+<section id="app-download" class="page-section app-download-section">
+  <div class="section-inner">
+    <h2 class="section-title">Take the Empire With You</h2>
+    <p class="section-sub">Paper & Prosperity is available on the web, the App Store, and Google Play.</p>
+    <div class="app-download-buttons">
+      <a class="app-store-badge" href="https://apps.apple.com/us/app/paper-prosperity/id6809006042" target="_blank" rel="noopener" aria-label="Download on the App Store"><img src="/app-store-badge.svg" alt="Download on the App Store" height="56"></a>
+      <a class="app-store-badge" href="https://play.google.com/store/apps/details?id=com.paperandprosperity.paper_and_prosperity" target="_blank" rel="noopener" aria-label="Download on Google Play"><img src="/google-play-badge.svg" alt="Download on Google Play" height="56"></a>
+      <a href="https://web-paper-and-prosperity.vercel.app" target="_blank" rel="noopener" class="app-download-btn">Open the Web App</a>
+      
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" class="page-section about-section">
+  <div class="section-inner">
+    <h2 class="about-headline">One company. Different ways to move forward.</h2>
+    <p class="about-body">
+      Debt Free Empire brings approachable financial tools together in one place—from apps and spreadsheets
+      to workbooks, printables, and interactive games. Choose the format that works for you and build your
+      financial system one manageable step at a time.
+    </p>
+  </div>
+</section>
+
+<!-- NEWSLETTER -->
+<section id="newsletter" class="page-section newsletter-section">
+  <div class="section-inner email-section">
+    <div class="email-title">Gentle financial support, delivered occasionally.</div>
+    <div class="email-sub">Get practical budgeting tips, free resources, product updates, and news from Debt Free Empire. No pressure and no clutter.</div>
+    <div class="email-form">
+      <label for="heroEmail" class="visually-hidden-label" style="position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0);">Email address</label>
+      <input type="email" class="email-input" placeholder="you@example.com" id="heroEmail" aria-label="Email address"/>
+      <button class="email-btn" onclick="handleHeroEmail()">Keep Me Updated</button>
+    </div>
+    <div class="email-note">Unsubscribe anytime. Your email will never be sold.</div>
+    <div class="email-success" id="heroSuccess">You're in! Check your inbox for a welcome message.</div>
+  </div>
+</section>
+
+<div class="footer">
+  © 2026 Debt Free Empire ·
+  <a href="/paper-and-prosperity">Paper & Prosperity</a> ·
+  <a href="/apps">Apps</a> ·
+  <a href="/products">Products</a> ·
+  <a href="/empire-games">Empire Games</a> ·
+  <a href="#about">About</a> ·
+  <a href="/support#message">Contact</a> · <a href="/admin/" rel="nofollow">Admin</a>
+  <span class="footer-close-line">Start where you are. Build what comes next.</span>
+</div>
+  <p class="eai-disabled-note" id="eaiDisabledNote" hidden>Empire AI is disabled. Enable it in your browser settings.</p>
+  </div><!-- /main-content -->
+</div><!-- /app-shell -->
+
+
+<!-- EMPIRE AI CHAT WIDGET -->
+<button type="button" class="eai-fab" id="eaiFab" aria-label="Open Empire AI chat" aria-expanded="false" aria-controls="eaiPanel" hidden>⚡</button>
+<div class="eai-bubble" id="eaiBubble" role="status" hidden>
+  <button type="button" class="eai-bubble-text" id="eaiBubbleText">Hey! Need help finding the right tools? 👋</button>
+  <button type="button" class="eai-bubble-close" id="eaiBubbleClose" aria-label="Dismiss Empire AI greeting">×</button>
+</div>
+<section class="eai-panel" id="eaiPanel" role="dialog" aria-label="Empire AI chat" aria-modal="false">
+  <div class="eai-header">
+    <div class="eai-title">Empire AI ⚡</div>
+    <button type="button" class="eai-close" id="eaiClose" aria-label="Close Empire AI chat">×</button>
+  </div>
+  <div class="eai-messages" id="eaiMessages" role="log" aria-live="polite"></div>
+  <div class="eai-chips" id="eaiChips"></div>
+  <form class="eai-form" id="eaiForm" autocomplete="off">
+    <label for="eaiInput" style="position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0);">Ask Empire AI a question</label>
+    <input class="eai-input" id="eaiInput" type="text" maxlength="500" placeholder="Ask about building your empire…" />
+    <button class="eai-send" id="eaiSend" type="submit">Send</button>
+  </form>
+  <div class="eai-footer">
+    <span class="eai-remaining" id="eaiRemaining"></span>
+    <button type="button" class="eai-off-btn" id="eaiOff">Turn off Empire AI</button>
+    <span class="eai-disclaimer" style="display:block; margin-top:2px;">Not legal or tax advice. For informational purposes only.</span>
+    <span class="eai-powered">Powered by Claude</span>
+  </div>
+  <div class="eai-disclaimer-overlay" id="eaiDisclaimer" role="alertdialog" aria-labelledby="eaiDisclaimerText">
+    <div class="eai-disclaimer-box">
+      <p id="eaiDisclaimerText">Empire AI provides general information about Debt Free Empire products only. It is not legal, tax, or financial advice.</p>
+      <button type="button" class="eai-disclaimer-btn" id="eaiDisclaimerBtn">Got it! 💪</button>
+    </div>
+  </div>
+</section>
+
+<!-- PAPER & PROSPERITY POPUP -->
+<div class="popup-overlay" id="pp-popup-overlay" onclick="closeBrand(event, 'pp')">
+  <div class="popup-box pp-popup">
+    <button class="popup-close" onclick="closePopup('pp')" aria-label="Close">×</button>
+    <span class="popup-emoji" style="color: var(--lavender);"><svg class="icon-svg icon-lg" aria-hidden="true" focusable="false"><use href="#icon-heart"/></svg></span>
+    <div class="popup-brand">Paper & Prosperity</div>
+    <div class="popup-tagline">"Budget. Save. Thrive."</div>
+    <div class="popup-divider"></div>
+    <div class="popup-features-title">What's inside</div>
+    <ul class="popup-features">
+      <li><svg class="icon-svg popup-feature-icon" aria-hidden="true" focusable="false"><use href="#icon-check"/></svg> Zero-based budgeting — every dollar has a job</li>
+      <li><svg class="icon-svg popup-feature-icon" aria-hidden="true" focusable="false"><use href="#icon-check"/></svg> Debt Payoff Tracker — Snowball & Avalanche strategies</li>
+      <li><svg class="icon-svg popup-feature-icon" aria-hidden="true" focusable="false"><use href="#icon-check"/></svg> Savings Vaults — save toward any goal</li>
+      <li><svg class="icon-svg popup-feature-icon" aria-hidden="true" focusable="false"><use href="#icon-check"/></svg> Financial Health Score — track your progress</li>
+      <li><svg class="icon-svg popup-feature-icon" aria-hidden="true" focusable="false"><use href="#icon-check"/></svg> Bill Calendar — never miss a payment</li>
+      <li><svg class="icon-svg popup-feature-icon" aria-hidden="true" focusable="false"><use href="#icon-check"/></svg> Net Worth Tracker — watch it grow</li>
+      <li><svg class="icon-svg popup-feature-icon" aria-hidden="true" focusable="false"><use href="#icon-check"/></svg> Completely Free — no ads, no subscription needed</li>
+    </ul>
+    <p class="popup-privacy-note">Your personal financial data is stored on your own devices and, if you use sync, in your own iCloud account. Only anonymized budget totals are shared when using Your Money Coach.</p>
+    <button class="popup-cta" onclick="window.open('https://web-paper-and-prosperity.vercel.app', '_blank')">Open the Web App</button>
+    <div class="popup-app-store"><a class="app-store-badge" href="https://apps.apple.com/us/app/paper-prosperity/id6809006042" target="_blank" rel="noopener" aria-label="Download on the App Store"><img src="/app-store-badge.svg" alt="Download on the App Store" height="48"></a><a class="app-store-badge" href="https://play.google.com/store/apps/details?id=com.paperandprosperity.paper_and_prosperity" target="_blank" rel="noopener" aria-label="Download on Google Play"><img src="/google-play-badge.svg" alt="Download on Google Play" height="48"></a></div>
+  </div>
+</div>
+
+<!-- GRIND & SAVE POPUP -->
+<div class="popup-overlay" id="gs-popup-overlay" onclick="closeBrand(event, 'gs')">
+  <div class="popup-box gs-popup">
+    <button class="popup-close" onclick="closePopup('gs')" aria-label="Close">×</button>
+    <span class="popup-emoji" style="color: var(--gold-deep);"><svg class="icon-svg icon-lg" aria-hidden="true" focusable="false"><use href="#icon-flame"/></svg></span>
+    <div class="popup-brand">Grind & Save</div>
+    <div class="popup-tagline">"Work Hard. Save Smart. Build Wealth."</div>
+    <div class="popup-divider"></div>
+    <div class="popup-features-title">What's inside</div>
+    <ul class="popup-features">
+      <li><svg class="icon-svg popup-feature-icon" aria-hidden="true" focusable="false"><use href="#icon-check"/></svg> Money Map — zero-based budgeting, no nonsense</li>
+      <li><svg class="icon-svg popup-feature-icon" aria-hidden="true" focusable="false"><use href="#icon-check"/></svg> Debt Crusher — track and destroy every debt</li>
+      <li><svg class="icon-svg popup-feature-icon" aria-hidden="true" focusable="false"><use href="#icon-check"/></svg> Stacks — build your savings targets</li>
+      <li><svg class="icon-svg popup-feature-icon" aria-hidden="true" focusable="false"><use href="#icon-check"/></svg> Wealth Score — your financial health at a glance</li>
+      <li><svg class="icon-svg popup-feature-icon" aria-hidden="true" focusable="false"><use href="#icon-check"/></svg> Cash Stack — cash envelope system with bill tracking</li>
+      <li><svg class="icon-svg popup-feature-icon" aria-hidden="true" focusable="false"><use href="#icon-check"/></svg> Property Tax Tracker — never get caught off guard</li>
+      <li><svg class="icon-svg popup-feature-icon" aria-hidden="true" focusable="false"><use href="#icon-check"/></svg> Cash Runway — know your financial safety net</li>
+      <li><svg class="icon-svg popup-feature-icon" aria-hidden="true" focusable="false"><use href="#icon-check"/></svg> Your personal financial data stays on your device. Only anonymized budget totals are shared when using Your Money Coach.</li>
+    </ul>
+    <button class="popup-cta" onclick="closePopup('gs'); openEmailPopup();">Keep Me Updated</button>
+    <div class="popup-soon" data-status-pill="gs">Coming Soon</div>
+  </div>
+</div>
+
+<!-- EMPIRE ARCADE POPUP (internal id 'eg' preserved for routing) -->
+<div class="popup-overlay" id="eg-popup-overlay" onclick="closeBrand(event, 'eg')">
+  <div class="popup-box eg-popup">
+    <button class="popup-close" onclick="closePopup('eg')" aria-label="Close">×</button>
+    <span class="popup-emoji" style="color: var(--gold-deep);"><svg class="icon-svg icon-lg" aria-hidden="true" focusable="false"><use href="#icon-trophy"/></svg></span>
+    <div class="popup-brand">Empire Arcade</div>
+    <div class="popup-tagline">"Play. Learn. Level up your money mindset."</div>
+    <div class="popup-divider"></div>
+    <p style="font-size:13px; line-height:1.6; color: var(--text-secondary); margin-bottom: 20px;">
+      Empire Arcade will be the home of Debt Free Empire's interactive games. Coming soon.
+    </p>
+
+    <button class="popup-cta" onclick="closePopup('eg'); openEmailPopup();">Keep Me Updated</button>
+    <div class="popup-soon">Coming Soon</div>
+  </div>
+</div>
+
+<!-- EMAIL SIGNUP POPUP -->
+<div class="email-popup-overlay" id="emailPopupOverlay" onclick="closeEmailPopup(event)">
+  <div class="email-popup-box" role="dialog" aria-modal="true" aria-labelledby="emailPopupTitle" aria-describedby="emailPopupDesc" id="emailPopupBox">
+    <button class="popup-close" onclick="dismissEmailPopup()" aria-label="Close" id="emailPopupCloseBtn">×</button>
+    <div class="email-popup-title" id="emailPopupTitle">Want gentle financial support in your inbox?</div>
+    <div class="email-popup-sub" id="emailPopupDesc">Get practical budgeting tips, free resources, and Debt Free Empire updates. No pressure and no clutter.</div>
+    <div class="email-popup-form" id="emailPopupForm">
+      <label for="popupEmail" style="position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0);">Email address</label>
+      <input type="email" class="email-popup-input" placeholder="you@example.com" id="popupEmail" aria-label="Email address"/>
+      <button class="email-popup-btn" onclick="handlePopupEmail()">Keep Me Updated</button>
+      <button type="button" class="email-popup-secondary-btn" onclick="dismissEmailPopup()">Not Right Now</button>
+      <div class="email-popup-note">Unsubscribe anytime.</div>
+    </div>
+    <div class="email-popup-success" id="popupSuccess">You're in! Check your inbox for a welcome message.</div>
+  </div>
+</div>
+
+<script>
+  /* ---------------------------------------------------------------------
+     PRODUCT STATUS — single source of truth for availability wording.
+     Every pill/badge/status line on the page reads from here so the same
+     product can never say "Live" in one place and "Coming Soon" in another.
+  --------------------------------------------------------------------- */
+  const PRODUCT_STATUS = {
+    pp:     { pill: 'Available',       pillClass: 'live', badge: 'Available on Web, App Store & Google Play' },
+    gs:     { pill: 'Coming Soon',     pillClass: 'soon', badge: 'Coming Soon' },
+    arcade: { pill: 'Coming Soon',     pillClass: 'soon', badge: 'Coming Soon' }
+  };
+
+  function applyProductStatus() {
+    document.querySelectorAll('[data-status-pill]').forEach(el => {
+      const cfg = PRODUCT_STATUS[el.getAttribute('data-status-pill')];
+      if (!cfg) return;
+      el.textContent = cfg.pill;
+      el.classList.remove('live', 'soon');
+      el.classList.add(cfg.pillClass);
+    });
+    document.querySelectorAll('[data-status-badge]').forEach(el => {
+      const cfg = PRODUCT_STATUS[el.getAttribute('data-status-badge')];
+      if (!cfg) return;
+      el.textContent = cfg.badge;
+      el.classList.remove('live', 'soon');
+      el.classList.add(cfg.pillClass);
+    });
+    document.querySelectorAll('[data-status-detail]').forEach(el => {
+      const cfg = PRODUCT_STATUS[el.getAttribute('data-status-detail')];
+      if (!cfg || !cfg.mobile) return;
+      el.textContent = cfg.mobile;
+    });
+  }
+  document.addEventListener('DOMContentLoaded', applyProductStatus);
+
+  /* ---------------------------------------------------------------------
+     ROTATING INSPIRATIONAL QUOTE (top-of-page banner)
+     Selected once per page load, never rotates while reading.
+  --------------------------------------------------------------------- */
+  const APPROVED_QUOTES = [
+    "You don't have to fix everything today. You only have to take the next step.",
+    "A fresh financial start begins with one honest number.",
+    "Small choices, repeated with purpose, can build a completely different future.",
+    "Your starting point is not your final destination.",
+    "You are not behind. You are building from where you are.",
+    "Every dollar you understand gives you more power over what comes next.",
+    "Progress with your money does not have to be perfect to be meaningful.",
+    "The plan may begin on paper, but the possibilities belong to you.",
+    "Your financial future can change one manageable decision at a time.",
+    "You can learn this. You can build a plan. You can move forward."
+  ];
+  document.addEventListener('DOMContentLoaded', () => {
+    const el = document.getElementById('quoteBannerText');
+    if (!el) return;
+    const quote = APPROVED_QUOTES[Math.floor(Math.random() * APPROVED_QUOTES.length)];
+    el.textContent = quote;
+  });
+
+  function toggleSidebar() {
+    document.getElementById('sidebar').classList.toggle('open');
+    document.getElementById('sidebarScrim').classList.toggle('open');
+  }
+
+  function toggleDropdown(key) {
+    const dropdown = document.getElementById(key + 'Dropdown');
+    const caret = document.getElementById(key + 'Caret');
+    const toggleBtn = document.getElementById(key + 'ToggleBtn');
+    const isOpen = dropdown.classList.toggle('open');
+    if (caret) caret.classList.toggle('open', isOpen);
+    if (toggleBtn) toggleBtn.setAttribute('aria-expanded', String(isOpen));
+  }
+
+  function closeHeaderDropdown() {
+    const dropdown = document.getElementById('storeHeaderDropdown');
+    const caret = document.getElementById('storeHeaderCaret');
+    const toggleBtn = document.getElementById('storeHeaderToggleBtn');
+    if (dropdown) dropdown.classList.remove('open');
+    if (caret) caret.classList.remove('open');
+    if (toggleBtn) toggleBtn.setAttribute('aria-expanded', 'false');
+  }
+
+  document.addEventListener('click', (e) => {
+    const wrap = document.querySelector('.site-header-dropdown-wrap');
+    if (wrap && !wrap.contains(e.target)) closeHeaderDropdown();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeHeaderDropdown();
+  });
+
+  function closeSidebarOnMobile() {
+    if (window.innerWidth <= 900) {
+      document.getElementById('sidebar').classList.remove('open');
+      document.getElementById('sidebarScrim').classList.remove('open');
+    }
+  }
+
+  function openBrand(brand) {
+    document.getElementById(brand + '-popup-overlay').classList.add('active');
+    document.body.style.overflow = 'hidden';
+    closeSidebarOnMobile();
+  }
+
+  function closePopup(brand) {
+    document.getElementById(brand + '-popup-overlay').classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  function closeBrand(event, brand) {
+    if (event.target === document.getElementById(brand + '-popup-overlay')) closePopup(brand);
+  }
+
+  function saveNewsletterEmail(email) {
+    return fetch('/api/waitlist', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: email, list: 'newsletter' })
+    }).then(r => r.ok);
+  }
+
+  function handleHeroEmail() {
+    const email = document.getElementById('heroEmail').value.trim();
+    if (email && email.includes('@')) {
+      saveNewsletterEmail(email).then(ok => {
+        if (!ok) throw new Error('save failed');
+        document.getElementById('heroSuccess').style.display = 'block';
+        document.getElementById('heroEmail').value = '';
+        document.querySelector('.email-btn').textContent = '✓';
+        document.querySelector('.email-btn').style.background = '#3FB950';
+      }).catch(() => {
+        document.getElementById('heroEmail').style.borderColor = 'rgba(239,68,68,0.5)';
+        setTimeout(() => document.getElementById('heroEmail').style.borderColor = '', 2000);
+      });
+    } else {
+      document.getElementById('heroEmail').style.borderColor = 'rgba(239,68,68,0.5)';
+      setTimeout(() => document.getElementById('heroEmail').style.borderColor = '', 2000);
+    }
+  }
+
+  function handlePopupEmail() {
+    const email = document.getElementById('popupEmail').value.trim();
+    if (email && email.includes('@')) {
+      saveNewsletterEmail(email).then(ok => {
+        if (!ok) throw new Error('save failed');
+        document.getElementById('emailPopupForm').style.display = 'none';
+        document.getElementById('popupSuccess').style.display = 'block';
+        markNewsletterPopupDismissed();
+        setTimeout(closeEmailPopupNow, 3000);
+      }).catch(() => {
+        document.getElementById('popupEmail').style.borderColor = 'rgba(239,68,68,0.5)';
+        setTimeout(() => document.getElementById('popupEmail').style.borderColor = '', 2000);
+      });
+    } else {
+      document.getElementById('popupEmail').style.borderColor = 'rgba(239,68,68,0.5)';
+      setTimeout(() => document.getElementById('popupEmail').style.borderColor = '', 2000);
+    }
+  }
+
+  function closeEmailPopup(event) {
+    if (event.target === document.getElementById('emailPopupOverlay')) {
+      dismissEmailPopup();
+    }
+  }
+
+  document.getElementById('heroEmail').addEventListener('keypress', e => { if (e.key === 'Enter') handleHeroEmail(); });
+  document.getElementById('popupEmail') && document.getElementById('popupEmail').addEventListener('keypress', e => { if (e.key === 'Enter') handlePopupEmail(); });
+
+  /* ---------------------------------------------------------------------
+     NEWSLETTER POPUP — trigger, dismissal, and accessible modal behavior.
+     Opens after ~30s OR 50% scroll (whichever first), stays hidden for at
+     least 14 days after any dismissal, traps focus, and closes on Escape.
+  --------------------------------------------------------------------- */
+  const NEWSLETTER_POPUP_DISMISS_KEY = 'dfe_newsletter_popup_dismissed_at';
+  const NEWSLETTER_POPUP_DISMISS_DAYS = 14;
+  let newsletterPopupTriggerEl = null;
+
+  function isNewsletterPopupSuppressed() {
+    const raw = localStorage.getItem(NEWSLETTER_POPUP_DISMISS_KEY);
+    if (!raw) return false;
+    const elapsedMs = Date.now() - Number(raw);
+    return elapsedMs < NEWSLETTER_POPUP_DISMISS_DAYS * 24 * 60 * 60 * 1000;
+  }
+
+  function markNewsletterPopupDismissed() {
+    try { localStorage.setItem(NEWSLETTER_POPUP_DISMISS_KEY, String(Date.now())); } catch (e) {}
+  }
+
+  function getFocusableEls(container) {
+    return Array.from(container.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'))
+      .filter(el => !el.disabled && el.offsetParent !== null);
+  }
+
+  function openEmailPopup() {
+    if (document.getElementById('emailPopupOverlay').classList.contains('active')) return;
+    newsletterPopupTriggerEl = document.activeElement;
+    document.getElementById('emailPopupOverlay').classList.add('active');
+    document.body.style.overflow = 'hidden';
+    const emailInput = document.getElementById('popupEmail');
+    if (emailInput) {
+      emailInput.focus();
+    } else {
+      const focusables = getFocusableEls(document.getElementById('emailPopupBox'));
+      if (focusables.length) focusables[0].focus();
+    }
+    document.addEventListener('keydown', handleEmailPopupKeydown);
+  }
+
+  function closeEmailPopupNow() {
+    document.getElementById('emailPopupOverlay').classList.remove('active');
+    document.body.style.overflow = '';
+    document.removeEventListener('keydown', handleEmailPopupKeydown);
+    if (newsletterPopupTriggerEl && typeof newsletterPopupTriggerEl.focus === 'function') {
+      newsletterPopupTriggerEl.focus();
+    }
+  }
+
+  function dismissEmailPopup() {
+    markNewsletterPopupDismissed();
+    closeEmailPopupNow();
+  }
+
+  function handleEmailPopupKeydown(e) {
+    const box = document.getElementById('emailPopupBox');
+    if (e.key === 'Escape') {
+      dismissEmailPopup();
+      return;
+    }
+    if (e.key === 'Tab') {
+      const focusables = getFocusableEls(box);
+      if (!focusables.length) return;
+      const first = focusables[0];
+      const last = focusables[focusables.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
+  }
+
+  function initNewsletterPopupTrigger() {
+    if (isNewsletterPopupSuppressed()) return;
+    let shown = false;
+    const tryShow = () => {
+      if (shown) return;
+      shown = true;
+      openEmailPopup();
+    };
+    setTimeout(tryShow, 30000);
+    window.addEventListener('scroll', () => {
+      if (shown) return;
+      const scrolled = window.scrollY + window.innerHeight;
+      const full = document.documentElement.scrollHeight;
+      if (full > 0 && scrolled >= full * 0.5) tryShow();
+    }, { passive: true });
+  }
+  document.addEventListener('DOMContentLoaded', initNewsletterPopupTrigger);
+
+  /* ---------------------------------------------------------------------
+     EMPIRE AI — website chat widget. Talks to /api/empire-ai; 10 questions
+     per visitor per day (counted here and enforced per-IP on the server).
+  --------------------------------------------------------------------- */
+  (function () {
+    var DAILY_LIMIT = 10;
+    var GREETING = "Hey! I'm Empire AI. Ask me anything about building your debt free empire. 💪";
+    var LIMIT_MSG = "You've reached today's limit of 10 Empire AI questions. Come back tomorrow! 💪";
+    var ERROR_MSG = "Something went wrong reaching Empire AI. Please try again in a moment.";
+    var SUGGESTED = [
+      'What app should I start with?',
+      'How do the workbooks work?',
+      "What's in the store?",
+      'How do I get started?',
+      'Tell me about Paper & Prosperity'
+    ];
+    var K_DISABLED = 'empire_ai_disabled';
+    var K_ACCEPTED = 'empire_ai_disclaimer_accepted';
+
+    var fab = document.getElementById('eaiFab');
+    var panel = document.getElementById('eaiPanel');
+    var messagesEl = document.getElementById('eaiMessages');
+    var chipsEl = document.getElementById('eaiChips');
+    var form = document.getElementById('eaiForm');
+    var input = document.getElementById('eaiInput');
+    var sendBtn = document.getElementById('eaiSend');
+    var remainingEl = document.getElementById('eaiRemaining');
+    var disclaimer = document.getElementById('eaiDisclaimer');
+    var note = document.getElementById('eaiDisabledNote');
+    if (!fab || !panel) return;
+
+    var history = [];
+    var busy = false;
+
+    function ls(get, key, val) {
+      try { return get ? localStorage.getItem(key) : localStorage.setItem(key, val); } catch (e) { return null; }
+    }
+    function todayKey() {
+      var d = new Date();
+      return 'empire_ai_count_' + d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
+    }
+    function usedToday() { return parseInt(ls(true, todayKey()), 10) || 0; }
+    function remaining() { return Math.max(0, DAILY_LIMIT - usedToday()); }
+
+    function updateRemaining() {
+      var left = remaining();
+      remainingEl.textContent = left > 0
+        ? left + ' of ' + DAILY_LIMIT + ' questions left today'
+        : "You've used all " + DAILY_LIMIT + ' questions for today';
+      var off = busy || left === 0;
+      input.disabled = off;
+      sendBtn.disabled = off;
+      chipsEl.querySelectorAll('button').forEach(function (b) { b.disabled = off; });
+    }
+
+    function addMessage(text, who) {
+      var el = document.createElement('div');
+      el.className = 'eai-msg ' + who;
+      el.textContent = text;
+      messagesEl.appendChild(el);
+      messagesEl.scrollTop = messagesEl.scrollHeight;
+      return el;
+    }
+
+    function addThinking() {
+      var el = document.createElement('div');
+      el.className = 'eai-msg ai';
+      el.innerHTML = 'Empire AI is thinking <span class="eai-thinking-dots" aria-hidden="true"><span></span><span></span><span></span></span>';
+      messagesEl.appendChild(el);
+      messagesEl.scrollTop = messagesEl.scrollHeight;
+      return el;
+    }
+
+    function ask(question) {
+      question = (question || '').trim();
+      if (!question || busy) return;
+      if (remaining() === 0) { addMessage(LIMIT_MSG, 'ai'); updateRemaining(); return; }
+
+      addMessage(question, 'user');
+      input.value = '';
+      busy = true;
+      updateRemaining();
+      var thinking = addThinking();
+
+      fetch('/api/empire-ai', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ question: question, history: history.slice(-6) })
+      }).then(function (res) {
+        if (res.status === 429) { var e = new Error('limit'); e.limit = true; throw e; }
+        if (!res.ok) throw new Error('bad status');
+        return res.json();
+      }).then(function (data) {
+        var answer = String((data && data.answer) || '').replace(/^#{1,6}\s*/gm, '').replace(/\*\*/g, '').replace(/^\s*[-*]\s+/gm, '• ').trim();
+        if (!answer) throw new Error('empty');
+        thinking.remove();
+        addMessage(answer, 'ai');
+        history.push({ role: 'user', content: question }, { role: 'assistant', content: answer });
+        ls(false, todayKey(), String(usedToday() + 1));
+      }).catch(function (err) {
+        thinking.remove();
+        addMessage(err && err.limit ? LIMIT_MSG : ERROR_MSG, 'ai');
+      }).then(function () {
+        busy = false;
+        updateRemaining();
+        if (!input.disabled) input.focus();
+      });
+    }
+
+    var bubble = document.getElementById('eaiBubble');
+    var bubbleTimer = null;
+    var bubbleHideTimer = null;
+    var K_BUBBLE_DISMISSED = 'empire_ai_bubble_dismissed';
+
+    function hideBubble() {
+      clearTimeout(bubbleTimer);
+      clearTimeout(bubbleHideTimer);
+      bubble.classList.remove('show');
+      bubble.hidden = true;
+    }
+    function showBubble() {
+      if (panel.classList.contains('open') || ls(true, K_DISABLED) === '1' || ls(true, K_BUBBLE_DISMISSED) === '1') return;
+      bubble.hidden = false;
+      void bubble.offsetWidth; // apply display first so the fade-in transition runs
+      bubble.classList.add('show');
+      bubbleHideTimer = setTimeout(hideBubble, 10000);
+    }
+
+    function openPanel() {
+      hideBubble();
+      panel.classList.add('open');
+      fab.setAttribute('aria-expanded', 'true');
+      if (!ls(true, K_ACCEPTED)) {
+        disclaimer.classList.add('show');
+        document.getElementById('eaiDisclaimerBtn').focus();
+      } else {
+        input.focus();
+      }
+    }
+    function closePanel() {
+      panel.classList.remove('open');
+      fab.setAttribute('aria-expanded', 'false');
+      fab.focus();
+    }
+    function turnOff() {
+      hideBubble();
+      ls(false, K_DISABLED, '1');
+      panel.classList.remove('open');
+      fab.hidden = true;
+      note.hidden = false;
+    }
+
+    // build UI
+    addMessage(GREETING, 'ai');
+    SUGGESTED.forEach(function (q) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'eai-chip';
+      b.textContent = q;
+      b.addEventListener('click', function () { ask(q); });
+      chipsEl.appendChild(b);
+    });
+    updateRemaining();
+
+    fab.addEventListener('click', function () { panel.classList.contains('open') ? closePanel() : openPanel(); });
+    document.getElementById('eaiClose').addEventListener('click', closePanel);
+    document.getElementById('eaiOff').addEventListener('click', turnOff);
+    document.getElementById('eaiDisclaimerBtn').addEventListener('click', function () {
+      ls(false, K_ACCEPTED, '1');
+      disclaimer.classList.remove('show');
+      input.focus();
+    });
+    form.addEventListener('submit', function (e) { e.preventDefault(); ask(input.value); });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && panel.classList.contains('open')) closePanel();
+    });
+
+    document.getElementById('eaiBubbleText').addEventListener('click', function () { hideBubble(); openPanel(); });
+    document.getElementById('eaiBubbleClose').addEventListener('click', function (e) {
+      e.stopPropagation();
+      ls(false, K_BUBBLE_DISMISSED, '1');
+      hideBubble();
+    });
+
+    if (ls(true, K_DISABLED) === '1') {
+      note.hidden = false;
+    } else {
+      fab.hidden = false;
+      if (ls(true, K_BUBBLE_DISMISSED) !== '1') bubbleTimer = setTimeout(showBubble, 3000);
+    }
+  })();
+</script>
+<script>document.addEventListener('click',function(e){document.querySelectorAll('.nav-dd').forEach(function(d){var btn=e.target.closest('.nav-dd-btn');if(btn&&d.contains(btn)){d.classList.toggle('open');btn.setAttribute('aria-expanded',String(d.classList.contains('open')));}else{d.classList.remove('open');var bb=d.querySelector('.nav-dd-btn');if(bb)bb.setAttribute('aria-expanded','false');}});});</script>
+<script>fetch('/api/site-config').then(function(r){return r.json();}).then(function(c){var u=c&&c.macAppStoreUrl;if(u&&u.indexOf('https://apps.apple.com/')===0){var e=document.getElementById('eldStatus');if(e)e.textContent='Available on Mac & Windows';}}).catch(function(){});</script>
+<script src="/site-dynamic.js" defer></script>
+</body>
+</html>

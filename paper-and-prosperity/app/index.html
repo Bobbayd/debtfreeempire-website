@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="48x48" href="/favicon.png">
+<title>Paper & Prosperity — Your money deserves clarity, not judgment</title>
+<meta name="description" content="Paper & Prosperity is an approachable personal-finance app that helps you understand your income, organize your expenses, track your debt, build savings, and see your complete financial picture in one calm space.">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;900&family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300&display=swap');
+
+  :root {
+    /* PAGE-SCOPED PASTEL PALETTE — Paper & Prosperity only. Does not affect
+       the Debt Free Empire homepage or Grind & Save. */
+    --pp-cream: #FAF7F2;
+    --pp-offwhite: #FFF9F3;
+    --pp-lavender: #7B5EA7;
+    --pp-lavender-hover: #6A4F92;
+    --pp-lavender-soft: #C9B8E8;
+    --pp-lavender-pale: #EEE8F6;
+    --pp-gold: #E4C590;
+    --pp-sage: #D2E0D4;
+    --pp-blush: #E3C4B8;
+    --pp-powder-blue: #C5D3E8;
+    --pp-white: #FFFFFF;
+    --pp-charcoal: #1A1A1A;
+    --pp-text-secondary: #55515B;
+    --pp-border: #DDD5E5;
+    --pp-positive-sage: #6F8A72;
+    --pp-positive-sage-tint: rgba(111,138,114,0.14);
+
+    /* Fallback before the header-height script runs; corrected immediately
+       on load and on resize to the sticky header's real measured height. */
+    --pp-header-h: 96px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  .icon-svg { fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+  .icon-nav { width: 16px; height: 16px; }
+  .icon-sm { width: 20px; height: 20px; }
+  .icon-md { width: 28px; height: 28px; }
+  .icon-lg { width: 36px; height: 36px; }
+
+  body {
+    font-family: 'Montserrat', sans-serif;
+    background: var(--pp-cream);
+    color: var(--pp-charcoal);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  a { color: inherit; }
+
+  .visually-hidden {
+    position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0);
+  }
+
+  /* ============ HEADER ============ */
+  .pp-header {
+    position: sticky;
+    top: 0;
+    z-index: 60;
+    background: var(--pp-cream);
+    border-bottom: 1px solid var(--pp-border);
+  }
+  .pp-header-inner {
+    display: none;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 14px 24px;
+  }
+  .pp-back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--pp-text-secondary);
+    text-decoration: none;
+    margin-bottom: 10px;
+  }
+  .pp-back-link:hover { color: var(--pp-lavender); }
+  .pp-back-link:focus-visible { outline: 2px solid var(--pp-lavender); outline-offset: 2px; }
+
+  .pp-header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+  }
+
+  .pp-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .pp-brand-logo { width: 40px; height: 40px; border-radius: 50%; display: block; flex-shrink: 0; }
+  .pp-brand-text { display: flex; flex-direction: column; gap: 2px; }
+  .pp-brand-name {
+    font-size: 16px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    color: var(--pp-charcoal);
+  }
+  .pp-brand-endorsement {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--pp-text-secondary);
+  }
+
+  .pp-nav-desktop { display: none; align-items: center; gap: 4px; }
+  .pp-nav-link {
+    display: inline-block;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--pp-charcoal);
+    text-decoration: none;
+    padding: 10px 14px;
+    border-radius: 8px;
+    transition: background 0.2s, color 0.2s;
+  }
+  .pp-nav-link:hover { background: var(--pp-lavender-pale); color: var(--pp-lavender-hover); }
+  .pp-nav-link:focus-visible { outline: 2px solid var(--pp-lavender); outline-offset: 2px; }
+
+  .pp-header-cta-wrap { display: none; }
+
+  @media (min-width: 900px) {
+    .pp-header-inner { display: flex; align-items: center; justify-content: space-between; padding: 16px 32px; }
+    .pp-back-link { margin-bottom: 0; margin-right: 22px; }
+    .pp-header-row { flex: 1; }
+    .pp-nav-desktop { display: flex; }
+    .pp-header-cta-wrap { display: block; }
+  }
+
+  .pp-mobile-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 16px;
+  }
+  @media (min-width: 900px) { .pp-mobile-topbar { display: none; } }
+  .pp-mobile-topbar .pp-brand-logo { width: 32px; height: 32px; }
+  .pp-mobile-topbar .pp-brand-name { font-size: 14px; }
+  .pp-mobile-topbar .pp-brand-endorsement { font-size: 8.5px; }
+
+  .pp-menu-btn {
+    background: none;
+    border: 1px solid var(--pp-border);
+    border-radius: 8px;
+    width: 42px; height: 42px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--pp-charcoal);
+    cursor: pointer;
+  }
+  .pp-menu-btn:focus-visible { outline: 2px solid var(--pp-lavender); outline-offset: 2px; }
+
+  .pp-mobile-drawer {
+    display: none;
+    flex-direction: column;
+    gap: 4px;
+    padding: 4px 20px 20px;
+    border-top: 1px solid var(--pp-border);
+  }
+  .pp-mobile-drawer.open { display: flex; }
+  .pp-mobile-drawer a {
+    display: block;
+    padding: 12px 8px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    color: var(--pp-charcoal);
+    border-radius: 8px;
+  }
+  .pp-mobile-drawer a:hover { background: var(--pp-lavender-pale); }
+  .pp-mobile-drawer a:focus-visible { outline: 2px solid var(--pp-lavender); outline-offset: -2px; }
+  .pp-mobile-drawer .pp-btn-primary { text-align: center; margin-top: 6px; }
+  @media (min-width: 900px) { .pp-mobile-drawer { display: none !important; } }
+
+  /* ============ BUTTONS ============ */
+  .pp-btn-primary {
+    display: inline-block;
+    background: var(--pp-lavender);
+    border: 1.5px solid var(--pp-lavender);
+    color: var(--pp-white);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 14px 28px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.25s ease, border-color 0.25s ease;
+  }
+  .pp-btn-primary:hover { background: var(--pp-lavender-hover); border-color: var(--pp-lavender-hover); }
+  .pp-btn-primary:focus-visible { outline: 2px solid var(--pp-lavender); outline-offset: 2px; }
+
+  .pp-btn-secondary {
+    display: inline-block;
+    background: var(--pp-white);
+    border: 1.5px solid var(--pp-gold);
+    color: var(--pp-charcoal);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 14px 28px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.25s ease;
+  }
+  .pp-btn-secondary:hover { background: var(--pp-cream); }
+  .pp-btn-secondary:focus-visible { outline: 2px solid var(--pp-lavender); outline-offset: 2px; }
+
+  .pp-btn-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px; }
+
+  /* ============ SHARED SECTION FRAME ============ */
+  /* scroll-margin-top clears the sticky header using its actual measured
+     height (--pp-header-h, set by script below) plus ~20px breathing room. */
+  .pp-section { padding: 76px 24px; scroll-margin-top: calc(var(--pp-header-h) + 20px); }
+  .pp-section-inner { max-width: 1000px; margin: 0 auto; }
+  .pp-eyebrow {
+    font-size: 11px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase;
+    color: var(--pp-lavender); margin-bottom: 14px; text-align: center;
+  }
+  .pp-h2 {
+    font-size: clamp(24px, 4vw, 36px); font-weight: 800; color: var(--pp-charcoal);
+    text-align: center; margin-bottom: 16px;
+  }
+  .pp-lead {
+    font-size: 15px; line-height: 1.7; color: var(--pp-text-secondary);
+    max-width: 620px; margin: 0 auto 8px; text-align: center; font-weight: 300;
+  }
+  .pp-divider-thin {
+    width: 64px; height: 1px; background: var(--pp-gold); margin: 24px auto;
+  }
+
+  /* Restrained line-art botanical accent, used sparingly */
+  .pp-sprig { color: var(--pp-gold); width: 46px; height: 46px; display: block; margin: 0 auto 18px; }
+
+  /* ============ HERO ============ */
+  .pp-hero { background: var(--pp-cream); text-align: center; padding: 56px 24px 68px; }
+  .pp-hero-headline {
+    font-size: clamp(28px, 5vw, 48px); font-weight: 900; line-height: 1.18;
+    max-width: 760px; margin: 0 auto 18px; color: var(--pp-charcoal);
+  }
+  .pp-hero-sub {
+    font-size: clamp(14px, 2vw, 17px); color: var(--pp-text-secondary);
+    max-width: 600px; margin: 0 auto 16px; line-height: 1.65; font-weight: 300;
+  }
+  .pp-hero-reassurance {
+    font-size: 13px; color: var(--pp-text-secondary); font-style: italic;
+    font-family: 'Cormorant Garamond', serif; margin-bottom: 28px;
+  }
+  .pp-status-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--pp-positive-sage-tint); color: var(--pp-positive-sage);
+    font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+    padding: 6px 14px; border-radius: 20px; margin-top: 26px;
+  }
+  .pp-status-sub { display: block; font-size: 12px; color: var(--pp-text-secondary); margin-top: 8px; }
+
+  /* ============ APP PREVIEW ============ */
+  .pp-preview { background: var(--pp-lavender-pale); }
+  .pp-preview-panel {
+    max-width: 700px; margin: 32px auto 0;
+    background: var(--pp-white);
+    border: 1px solid var(--pp-border);
+    border-radius: 16px;
+    padding: 40px 32px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(123,94,167,0.08);
+  }
+  .pp-preview-icon-row { display: flex; justify-content: center; gap: 18px; margin-bottom: 22px; color: var(--pp-lavender); }
+  .pp-preview-icon-row .icon-svg { width: 30px; height: 30px; }
+  .pp-preview-note { font-size: 13px; color: var(--pp-text-secondary); font-style: italic; font-family: 'Cormorant Garamond', serif; }
+
+  /* ============ FEATURES ============ */
+  .pp-features { background: var(--pp-offwhite); }
+  .pp-feature-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+    max-width: 1000px; margin: 36px auto 0;
+  }
+  .pp-feature-card {
+    background: var(--pp-white);
+    border: 1px solid var(--pp-border);
+    border-radius: 12px;
+    padding: 28px 22px;
+    box-shadow: 0 4px 14px rgba(26,26,26,0.05);
+    scroll-margin-top: calc(var(--pp-header-h) + 20px);
+  }
+  .pp-feature-icon { color: var(--pp-lavender); margin-bottom: 14px; }
+  .pp-feature-title { font-size: 14.5px; font-weight: 800; color: var(--pp-charcoal); margin-bottom: 8px; letter-spacing: 0.2px; }
+  .pp-feature-desc { font-size: 13px; line-height: 1.55; color: var(--pp-text-secondary); }
+  @media (max-width: 900px) { .pp-feature-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 600px) { .pp-feature-grid { grid-template-columns: 1fr; } }
+
+  /* ============ HOW IT WORKS ============ */
+  .pp-how { background: var(--pp-sage); }
+  .pp-how-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px;
+    max-width: 960px; margin: 36px auto 0;
+  }
+  .pp-how-card {
+    background: var(--pp-white);
+    border: 1px solid var(--pp-border);
+    border-radius: 12px;
+    padding: 30px 22px 24px;
+    text-align: center;
+    position: relative;
+  }
+  .pp-how-badge {
+    width: 26px; height: 26px; border-radius: 50%;
+    background: var(--pp-lavender); color: var(--pp-white);
+    font-size: 12px; font-weight: 800;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 16px;
+  }
+  .pp-how-title { font-size: 14.5px; font-weight: 800; color: var(--pp-charcoal); margin-bottom: 8px; }
+  .pp-how-desc { font-size: 13px; line-height: 1.55; color: var(--pp-text-secondary); }
+  .pp-how-reassurance {
+    text-align: center; font-size: 13px; font-style: italic; font-family: 'Cormorant Garamond', serif;
+    color: var(--pp-text-secondary); margin-top: 30px;
+  }
+  @media (max-width: 760px) { .pp-how-grid { grid-template-columns: 1fr; } }
+
+  /* ============ BEGINNER REASSURANCE ============ */
+  .pp-beginner { background: var(--pp-lavender-pale); }
+  .pp-beginner-callout {
+    max-width: 560px; margin: 30px auto 0;
+    background: var(--pp-blush);
+    border-radius: 14px;
+    padding: 30px 30px;
+  }
+  .pp-beginner-list { list-style: none; display: flex; flex-direction: column; gap: 14px; }
+  .pp-beginner-list li {
+    display: flex; align-items: flex-start; gap: 10px;
+    font-size: 14px; color: var(--pp-charcoal); line-height: 1.5;
+  }
+  .pp-beginner-list .icon-svg { color: var(--pp-lavender); margin-top: 2px; }
+
+  /* ============ FOUNDER NOTE ============ */
+  .pp-founder { background: var(--pp-cream); }
+  .pp-founder-inner { max-width: 640px; margin: 0 auto; text-align: center; }
+  .pp-founder-quote {
+    font-family: 'Cormorant Garamond', serif; font-style: italic;
+    font-size: clamp(17px, 2.4vw, 21px); color: var(--pp-lavender-hover);
+    margin-top: 24px; line-height: 1.5;
+  }
+
+  /* ============ FINAL CTA ============ */
+  .pp-final-cta { background: var(--pp-powder-blue); text-align: center; }
+  .pp-final-cta .pp-lead { margin-bottom: 28px; }
+  .pp-final-status { display: block; font-size: 12px; color: var(--pp-text-secondary); margin-top: 18px; }
+  .pp-final-secondary-link {
+    display: block; margin-top: 16px; font-size: 12px; font-weight: 600;
+    text-decoration: underline; color: var(--pp-charcoal);
+  }
+  .pp-final-secondary-link:focus-visible { outline: 2px solid var(--pp-lavender); outline-offset: 2px; }
+
+  /* ============ FOOTER ============ */
+  .pp-footer { background: var(--pp-offwhite); border-top: 1px solid var(--pp-border); padding: 40px 24px; text-align: center; }
+  .pp-footer-links { font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--pp-text-secondary); margin-bottom: 14px; }
+  .pp-footer-links a { color: var(--pp-lavender-hover); text-decoration: none; margin: 0 6px; }
+  .pp-footer-links a:hover { text-decoration: underline; }
+  .pp-footer-links a:focus-visible { outline: 2px solid var(--pp-lavender); outline-offset: 2px; }
+  .pp-footer-endorsement { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--pp-text-secondary); margin-bottom: 18px; }
+  .pp-disclaimer { font-size: 11px; line-height: 1.6; color: var(--pp-text-secondary); max-width: 640px; margin: 0 auto; }
+
+  @media (max-width: 700px) {
+    .pp-section { padding: 52px 20px; }
+    .pp-hero { padding: 40px 20px 48px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- One consistent line-icon family for this page, referenced via <use>. All decorative (aria-hidden). -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="pp-icon-menu" viewBox="0 0 24 24"><line x1="3" y1="6.5" x2="21" y2="6.5"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="17.5" x2="21" y2="17.5"/></symbol>
+    <symbol id="pp-icon-check" viewBox="0 0 24 24"><polyline points="4,13 9,18 20,6"/></symbol>
+    <symbol id="pp-icon-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></symbol>
+    <symbol id="pp-icon-wallet" viewBox="0 0 24 24"><rect x="2.5" y="6" width="19" height="13" rx="2.5"/><path d="M2.5 9.5h19"/><circle cx="17" cy="14" r="1.3" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="pp-icon-trend-up" viewBox="0 0 24 24"><polyline points="3,17 10,10 14,14 21,6"/><polyline points="15,6 21,6 21,12"/></symbol>
+    <symbol id="pp-icon-trend-down" viewBox="0 0 24 24"><polyline points="3,7 10,14 14,10 21,18"/><polyline points="21,11 21,18 14,18"/></symbol>
+    <symbol id="pp-icon-sliders" viewBox="0 0 24 24"><line x1="5" y1="4" x2="5" y2="20"/><circle cx="5" cy="9" r="2.3"/><line x1="12" y1="4" x2="12" y2="20"/><circle cx="12" cy="15" r="2.3"/><line x1="19" y1="4" x2="19" y2="20"/><circle cx="19" cy="7" r="2.3"/></symbol>
+    <symbol id="pp-icon-vault" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2.5"/><circle cx="12" cy="12" r="4"/><line x1="12" y1="9.6" x2="12" y2="10.6"/><line x1="6.5" y1="4" x2="6.5" y2="2"/><line x1="17.5" y1="4" x2="17.5" y2="2"/></symbol>
+    <symbol id="pp-icon-scale" viewBox="0 0 24 24"><line x1="12" y1="3" x2="12" y2="19"/><line x1="4" y1="7" x2="20" y2="7"/><path d="M4 7l-3 7a3.5 3.5 0 0 0 7 0Z"/><path d="M20 7l-3 7a3.5 3.5 0 0 0 7 0Z"/><line x1="8.5" y1="21" x2="15.5" y2="21"/></symbol>
+    <symbol id="pp-icon-calendar" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2.5"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="3" x2="8" y2="7"/><line x1="16" y1="3" x2="16" y2="7"/></symbol>
+    <symbol id="pp-icon-list" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><circle cx="3.5" cy="6" r="1" fill="currentColor" stroke="none"/><circle cx="3.5" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="3.5" cy="18" r="1" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="pp-icon-sprig" viewBox="0 0 48 48"><path d="M24 44V10"/><path d="M24 16c0-6 5-10 11-10-1 6-5 10-11 10Z"/><path d="M24 24c0-6-5-10-11-10 1 6 5 10 11 10Z"/><path d="M24 32c0-6 5-10 11-10-1 6-5 10-11 10Z"/></symbol>
+  </defs>
+</svg>
+
+<header class="pp-header">
+  <div class="pp-header-inner">
+    <div>
+      <a href="/" class="pp-back-link">
+        <svg class="icon-svg icon-nav" aria-hidden="true" focusable="false" style="width:12px;height:12px;"><polyline points="15,4 7,12 15,20"/></svg>
+        Debt Free Empire
+      </a>
+      <div class="pp-header-row">
+        <div class="pp-brand">
+          <img class="pp-brand-logo" src="/paper-and-prosperity/pp-logo.png" alt="Paper &amp; Prosperity logo" width="40" height="40">
+          <div class="pp-brand-text">
+            <span class="pp-brand-name">Paper &amp; Prosperity</span>
+            <span class="pp-brand-endorsement">Part of Debt Free Empire</span>
+          </div>
+        </div>
+        <nav class="pp-nav-desktop" aria-label="Primary">
+          <a class="pp-nav-link" href="/paper-and-prosperity/debt-payoff">Debt Payoff</a>
+          <a class="pp-nav-link" href="#features">Features</a>
+          <a class="pp-nav-link" href="#how-it-works">How It Works</a>
+          <a class="pp-nav-link" href="#founder-note">About</a>
+        </nav>
+        <div class="pp-header-cta-wrap">
+          <a class="pp-btn-primary" href="https://web-paper-and-prosperity.vercel.app" target="_blank" rel="noopener">Open the Web App</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="pp-mobile-topbar">
+    <div class="pp-brand">
+      <img class="pp-brand-logo" src="/paper-and-prosperity/pp-logo.png" alt="Paper &amp; Prosperity logo" width="32" height="32">
+      <div class="pp-brand-text">
+        <span class="pp-brand-name">Paper &amp; Prosperity</span>
+        <span class="pp-brand-endorsement">Part of Debt Free Empire</span>
+      </div>
+    </div>
+    <button class="pp-menu-btn" id="ppMenuBtn" onclick="ppToggleMenu()" aria-expanded="false" aria-controls="ppMobileDrawer" aria-label="Open menu">
+      <svg class="icon-svg" style="width:18px;height:18px;" aria-hidden="true" focusable="false"><use href="#pp-icon-menu"/></svg>
+    </button>
+  </div>
+  <nav class="pp-mobile-drawer" id="ppMobileDrawer" aria-label="Primary">
+    <a href="/">Debt Free Empire</a>
+    <a href="/paper-and-prosperity">Overview</a>
+    <a href="/paper-and-prosperity/debt-payoff">Debt-Payoff System</a>
+    <a href="#features" onclick="ppCloseMenu()">Features</a>
+    <a href="#how-it-works" onclick="ppCloseMenu()">How It Works</a>
+    <a href="#founder-note" onclick="ppCloseMenu()">About</a>
+    <a class="pp-btn-primary" href="https://web-paper-and-prosperity.vercel.app" target="_blank" rel="noopener">Open the Web App</a>
+  </nav>
+</header>
+
+<script>
+  (function () {
+    function setHeaderHeightVar() {
+      var header = document.querySelector('.pp-header');
+      if (!header) return;
+      document.documentElement.style.setProperty('--pp-header-h', header.offsetHeight + 'px');
+    }
+    setHeaderHeightVar();
+    window.addEventListener('resize', setHeaderHeightVar);
+    window.addEventListener('load', setHeaderHeightVar);
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(setHeaderHeightVar);
+    }
+  })();
+</script>
+
+<main>
+
+  <!-- HERO -->
+  <section class="pp-hero" id="top">
+    <div class="pp-eyebrow">Paper &amp; Prosperity</div>
+    <h1 class="pp-hero-headline">Your money deserves clarity—not judgment.</h1>
+    <p class="pp-hero-sub">Paper &amp; Prosperity is an approachable personal-finance app that helps you understand your income, organize your expenses, track your debt, build savings, and see your complete financial picture in one calm space.</p>
+    <p class="pp-hero-reassurance">No financial experience required. Start with the numbers you have today.</p>
+    <div class="pp-btn-row">
+      <a class="pp-btn-primary" href="https://web-paper-and-prosperity.vercel.app" target="_blank" rel="noopener">Open the Web App</a>
+      <a class="pp-btn-secondary" href="#features">See What's Included</a>
+    </div>
+    <span class="pp-status-badge">Available on the Web</span>
+    <a class="pp-appstore" href="https://apps.apple.com/us/app/paper-prosperity/id6809006042" target="_blank" rel="noopener" aria-label="Download on the App Store" style="display:inline-block;margin-top:16px;line-height:0;"><img src="/app-store-badge.svg" alt="Download on the App Store" height="52" style="height:52px;width:auto;"></a> <a class="pp-gplay" href="https://play.google.com/store/apps/details?id=com.paperandprosperity.paper_and_prosperity" target="_blank" rel="noopener" aria-label="Download on Google Play" style="display:inline-block;margin-top:16px;line-height:0;"><img src="/google-play-badge.svg" alt="Download on Google Play" height="52" style="height:52px;width:auto;"></a>
+    <span class="pp-status-sub">Now on the App Store and Google Play.</span>
+  </section>
+
+  <!-- APP PREVIEW -->
+  <section class="pp-section pp-preview" id="app-preview">
+    <div class="pp-section-inner">
+      <h2 class="pp-h2">See your financial picture more clearly.</h2>
+      <p class="pp-lead">Bring your everyday financial information together so you can understand where you are, decide what comes next, and track your progress over time.</p>
+      <div class="pp-preview-panel">
+        <div class="pp-preview-icon-row">
+          <svg class="icon-svg" aria-hidden="true" focusable="false"><use href="#pp-icon-grid"/></svg>
+          <svg class="icon-svg" aria-hidden="true" focusable="false"><use href="#pp-icon-wallet"/></svg>
+          <svg class="icon-svg" aria-hidden="true" focusable="false"><use href="#pp-icon-trend-down"/></svg>
+          <svg class="icon-svg" aria-hidden="true" focusable="false"><use href="#pp-icon-vault"/></svg>
+        </div>
+        <p class="pp-preview-note">Your dashboard, budget, debt payoff, and savings vaults — organized in one calm view.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCREENSHOTS -->
+  <section class="pp-section" id="screenshots">
+    <div class="pp-section-inner">
+      <h2 class="pp-h2">A look inside the app.</h2>
+      <div style="display:flex;gap:18px;overflow-x:auto;padding:8px 4px 16px;scroll-snap-type:x mandatory;"><figure style="flex:0 0 auto;width:200px;margin:0;scroll-snap-align:center;"><img src="/assets/app/01_Dashboard.jpg" alt="Dashboard screen" loading="lazy" width="200" height="356" style="width:100%;height:auto;border-radius:20px;border:1px solid #DDD5E5;box-shadow:0 8px 24px rgba(26,26,26,.12);display:block;"><figcaption style="margin-top:8px;font-size:12px;font-weight:700;opacity:.75;">Dashboard</figcaption></figure><figure style="flex:0 0 auto;width:200px;margin:0;scroll-snap-align:center;"><img src="/assets/app/02_Monthly_Budget.jpg" alt="Monthly Budget screen" loading="lazy" width="200" height="356" style="width:100%;height:auto;border-radius:20px;border:1px solid #DDD5E5;box-shadow:0 8px 24px rgba(26,26,26,.12);display:block;"><figcaption style="margin-top:8px;font-size:12px;font-weight:700;opacity:.75;">Monthly Budget</figcaption></figure><figure style="flex:0 0 auto;width:200px;margin:0;scroll-snap-align:center;"><img src="/assets/app/03_Cash_Flow_Forecast.jpg" alt="Cash Flow Forecast screen" loading="lazy" width="200" height="356" style="width:100%;height:auto;border-radius:20px;border:1px solid #DDD5E5;box-shadow:0 8px 24px rgba(26,26,26,.12);display:block;"><figcaption style="margin-top:8px;font-size:12px;font-weight:700;opacity:.75;">Cash Flow Forecast</figcaption></figure><figure style="flex:0 0 auto;width:200px;margin:0;scroll-snap-align:center;"><img src="/assets/app/04_Debt_Payoff.jpg" alt="Debt Payoff screen" loading="lazy" width="200" height="356" style="width:100%;height:auto;border-radius:20px;border:1px solid #DDD5E5;box-shadow:0 8px 24px rgba(26,26,26,.12);display:block;"><figcaption style="margin-top:8px;font-size:12px;font-weight:700;opacity:.75;">Debt Payoff</figcaption></figure><figure style="flex:0 0 auto;width:200px;margin:0;scroll-snap-align:center;"><img src="/assets/app/05_Debt_Simulator.jpg" alt="Debt Simulator screen" loading="lazy" width="200" height="356" style="width:100%;height:auto;border-radius:20px;border:1px solid #DDD5E5;box-shadow:0 8px 24px rgba(26,26,26,.12);display:block;"><figcaption style="margin-top:8px;font-size:12px;font-weight:700;opacity:.75;">Debt Simulator</figcaption></figure><figure style="flex:0 0 auto;width:200px;margin:0;scroll-snap-align:center;"><img src="/assets/app/06_Savings_Vaults.jpg" alt="Savings Vaults screen" loading="lazy" width="200" height="356" style="width:100%;height:auto;border-radius:20px;border:1px solid #DDD5E5;box-shadow:0 8px 24px rgba(26,26,26,.12);display:block;"><figcaption style="margin-top:8px;font-size:12px;font-weight:700;opacity:.75;">Savings Vaults</figcaption></figure></div>
+      <p class="pp-lead">Paying off debt? See how the app pairs with the spreadsheet and printables in the <a href="/paper-and-prosperity/debt-payoff">Debt-Payoff System</a>.</p>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="pp-section pp-features" id="features">
+    <div class="pp-section-inner">
+      <h2 class="pp-h2">Everything you need to build your plan.</h2>
+      <div class="pp-feature-grid">
+        <div class="pp-feature-card" id="feature-dashboard">
+          <div class="pp-feature-icon"><svg class="icon-svg icon-md" aria-hidden="true" focusable="false"><use href="#pp-icon-grid"/></svg></div>
+          <div class="pp-feature-title">Dashboard</div>
+          <p class="pp-feature-desc">See your income, expenses, debt, savings, and overall financial progress in one organized view.</p>
+        </div>
+        <div class="pp-feature-card" id="feature-budget">
+          <div class="pp-feature-icon"><svg class="icon-svg icon-md" aria-hidden="true" focusable="false"><use href="#pp-icon-wallet"/></svg></div>
+          <div class="pp-feature-title">Monthly Budget</div>
+          <p class="pp-feature-desc">Plan where your money needs to go and compare your budget with what actually happened.</p>
+        </div>
+        <div class="pp-feature-card" id="feature-cash-flow">
+          <div class="pp-feature-icon"><svg class="icon-svg icon-md" aria-hidden="true" focusable="false"><use href="#pp-icon-trend-up"/></svg></div>
+          <div class="pp-feature-title">Cash Flow Forecast</div>
+          <p class="pp-feature-desc">Look ahead at upcoming income and expenses before they arrive.</p>
+        </div>
+        <div class="pp-feature-card" id="feature-debt-payoff">
+          <div class="pp-feature-icon"><svg class="icon-svg icon-md" aria-hidden="true" focusable="false"><use href="#pp-icon-trend-down"/></svg></div>
+          <div class="pp-feature-title">Debt Payoff</div>
+          <p class="pp-feature-desc">Organize your balances, minimum payments, interest rates, and payoff strategy.</p>
+        </div>
+        <div class="pp-feature-card" id="feature-debt-simulator">
+          <div class="pp-feature-icon"><svg class="icon-svg icon-md" aria-hidden="true" focusable="false"><use href="#pp-icon-sliders"/></svg></div>
+          <div class="pp-feature-title">Debt Simulator</div>
+          <p class="pp-feature-desc">Explore how different payment amounts may affect your estimated payoff timeline.</p>
+        </div>
+        <div class="pp-feature-card" id="feature-savings">
+          <div class="pp-feature-icon"><svg class="icon-svg icon-md" aria-hidden="true" focusable="false"><use href="#pp-icon-vault"/></svg></div>
+          <div class="pp-feature-title">Savings Vaults</div>
+          <p class="pp-feature-desc">Create individual savings goals and monitor your progress toward each one.</p>
+        </div>
+        <div class="pp-feature-card" id="feature-net-worth">
+          <div class="pp-feature-icon"><svg class="icon-svg icon-md" aria-hidden="true" focusable="false"><use href="#pp-icon-scale"/></svg></div>
+          <div class="pp-feature-title">Net Worth</div>
+          <p class="pp-feature-desc">View your assets and liabilities together to understand your broader financial position.</p>
+        </div>
+        <div class="pp-feature-card" id="feature-bills">
+          <div class="pp-feature-icon"><svg class="icon-svg icon-md" aria-hidden="true" focusable="false"><use href="#pp-icon-calendar"/></svg></div>
+          <div class="pp-feature-title">Bill Calendar</div>
+          <p class="pp-feature-desc">Keep upcoming bills and payment dates visible.</p>
+        </div>
+        <div class="pp-feature-card" id="feature-logs">
+          <div class="pp-feature-icon"><svg class="icon-svg icon-md" aria-hidden="true" focusable="false"><use href="#pp-icon-list"/></svg></div>
+          <div class="pp-feature-title">Income and Expense Logs</div>
+          <p class="pp-feature-desc">Record transactions so your financial picture reflects your real activity.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="pp-section pp-how" id="how-it-works">
+    <div class="pp-section-inner">
+      <h2 class="pp-h2">Getting started is simple.</h2>
+      <div class="pp-how-grid">
+        <div class="pp-how-card">
+          <div class="pp-how-badge">1</div>
+          <div class="pp-how-title">Add Your Numbers</div>
+          <p class="pp-how-desc">Enter the income, expenses, debts, and savings information you currently know.</p>
+        </div>
+        <div class="pp-how-card">
+          <div class="pp-how-badge">2</div>
+          <div class="pp-how-title">See the Full Picture</div>
+          <p class="pp-how-desc">Paper &amp; Prosperity organizes your information into clear budgets, balances, and progress views.</p>
+        </div>
+        <div class="pp-how-card">
+          <div class="pp-how-badge">3</div>
+          <div class="pp-how-title">Update as Life Changes</div>
+          <p class="pp-how-desc">Return regularly to record activity, review your progress, and adjust your plan.</p>
+        </div>
+      </div>
+      <p class="pp-how-reassurance">Your first setup does not have to be perfect. You can update your information whenever you learn more.</p>
+    </div>
+  </section>
+
+  <!-- BEGINNER REASSURANCE -->
+  <section class="pp-section pp-beginner" id="beginner-reassurance">
+    <div class="pp-section-inner">
+      <h2 class="pp-h2">New to budgeting? You belong here.</h2>
+      <p class="pp-lead">You do not need to understand every financial term before you begin. Paper &amp; Prosperity is designed to help you enter your information one step at a time and see how the pieces connect.</p>
+      <div class="pp-beginner-callout">
+        <ul class="pp-beginner-list">
+          <li><svg class="icon-svg icon-sm" aria-hidden="true" focusable="false"><use href="#pp-icon-check"/></svg> Begin with what you know</li>
+          <li><svg class="icon-svg icon-sm" aria-hidden="true" focusable="false"><use href="#pp-icon-check"/></svg> Make changes whenever you need to</li>
+          <li><svg class="icon-svg icon-sm" aria-hidden="true" focusable="false"><use href="#pp-icon-check"/></svg> Build your plan at your own pace</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOUNDER NOTE -->
+  <section class="pp-section pp-founder" id="founder-note">
+    <div class="pp-founder-inner">
+      <svg class="icon-svg pp-sprig" aria-hidden="true" focusable="false"><use href="#pp-icon-sprig"/></svg>
+      <h2 class="pp-h2">Built from a real need for clarity.</h2>
+      <p class="pp-lead">Paper &amp; Prosperity was created for people who want to understand their money without feeling overwhelmed or judged. The goal is not to demand perfection. It is to give you a clearer starting point and practical tools for moving forward.</p>
+      <div class="pp-divider-thin"></div>
+      <p class="pp-founder-quote">&ldquo;Progress with your money does not have to be perfect to be meaningful.&rdquo;</p>
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section class="pp-section pp-final-cta" id="final-cta">
+    <div class="pp-section-inner">
+      <h2 class="pp-h2">Ready to see your numbers more clearly?</h2>
+      <p class="pp-lead">Start with the information you have today. You can build and adjust your financial plan as you go.</p>
+      <a class="pp-btn-primary" href="https://web-paper-and-prosperity.vercel.app" target="_blank" rel="noopener">Open the Web App</a>
+      <a class="pp-final-secondary-link" href="/">Return to Debt Free Empire</a>
+      <span class="pp-final-status">Available on the web, the App Store, and Google Play.</span>
+    </div>
+  </section>
+
+</main>
+
+<footer class="pp-footer">
+  <div class="pp-footer-links">
+    <a href="https://web-paper-and-prosperity.vercel.app" target="_blank" rel="noopener">Open the Web App</a> ·
+    <a href="/">Return to Debt Free Empire</a> ·
+    <a href="/support#message">Contact</a> · <a href="/admin/" rel="nofollow">Admin</a>
+  </div>
+  <div class="pp-footer-endorsement">Part of Debt Free Empire</div>
+  <p class="pp-disclaimer">Paper &amp; Prosperity provides organizational and educational tools and does not provide financial, legal, tax, or investment advice. Results and projections depend on the information entered and may change over time.</p>
+</footer>
+
+<script>
+  function ppToggleMenu() {
+    const drawer = document.getElementById('ppMobileDrawer');
+    const btn = document.getElementById('ppMenuBtn');
+    const isOpen = drawer.classList.toggle('open');
+    btn.setAttribute('aria-expanded', String(isOpen));
+  }
+  function ppCloseMenu() {
+    document.getElementById('ppMobileDrawer').classList.remove('open');
+    document.getElementById('ppMenuBtn').setAttribute('aria-expanded', 'false');
+  }
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') ppCloseMenu();
+  });
+</script>
+
+<script src="/site-dynamic.js" defer></script>
+</body>
+</html>

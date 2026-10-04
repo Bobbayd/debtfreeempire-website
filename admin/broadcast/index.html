@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+<title>Broadcast (private)</title>
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="stylesheet" href="/admin/admin.css">
+</head>
+<body>
+<header class="bar">
+  <a class="bar-brand" href="/admin/">Debt Free Empire · Admin</a>
+  <nav class="bar-nav" aria-label="Admin"><a href="/admin/">Dashboard</a><a href="/admin/support/">Support</a><a href="/admin/announcement/">Announcement</a><a href="/admin/products/">Products</a><a href="/admin/updates/">Updates</a><a href="/admin/promos/">Promo codes</a><a href="/admin/broadcast/" aria-current="page">Broadcast</a><a href="/admin/emails/">Email signups</a><a href="/admin/health/">Site health</a><a href="/admin/store-links/">Store links</a><a href="/admin/links/">Quick links</a><a href="/" target="_blank" rel="noopener">View site</a><button type="button" id="logoutBtn" hidden>Log out</button></nav>
+</header>
+<div class="wrap">
+  <div class="card" id="loginCard" hidden>
+    <h1>Admin login</h1>
+    <p class="sub">Private. Not linked anywhere and hidden from search engines.</p>
+    <form id="loginForm" autocomplete="off">
+      <label for="pw">Password</label>
+      <input type="password" id="pw" autocomplete="current-password" required>
+      <div class="row"><button type="submit" class="btn" id="loginBtn">Log in</button></div>
+      <p class="msg" id="loginMsg" role="status" aria-live="polite"></p>
+    </form>
+  </div>
+  <div id="app" hidden>
+    <h1>Waitlist broadcaster</h1>
+    <p class="sub">Email everyone on a signup list. Every email includes an unsubscribe link, and anyone who clicks it is removed from both lists automatically.</p>
+    <div class="card banner warn" id="setup" hidden>
+      <h2>One-time setup needed: connect Resend</h2>
+      <ol style="margin:10px 0 0 20px;font-weight:600;font-size:13.5px;line-height:1.8">
+        <li>Sign up free at <a href="https://resend.com" target="_blank" rel="noopener">resend.com</a> with hello@debtfreeempire.com (3,000 emails/month free).</li>
+        <li>In Resend, open <b>Domains</b> → <b>Add Domain</b> → debtfreeempire.com, add the DNS records it shows at your domain host, and wait for <b>Verified</b>.</li>
+        <li>Open <b>API Keys</b> → <b>Create API Key</b> (permission: Sending access). Copy the key.</li>
+        <li>In Terminal, from the website folder, run <code>vercel env add RESEND_API_KEY production</code> and paste the key.</li>
+        <li>Redeploy so the key takes effect.</li>
+      </ol>
+    </div>
+    <div class="card">
+      <h2>1. Who gets it</h2>
+      <label class="check"><input type="checkbox" id="lEld"> Empire Life Dashboard iPhone waitlist <span class="count" id="cEld"></span></label>
+      <label class="check"><input type="checkbox" id="lNews"> Main newsletter list <span class="count" id="cNews"></span></label>
+      <p class="note" id="recipientNote"></p>
+      <h2 style="margin-top:22px">2. Write it</h2>
+      <label for="subject">Subject line</label><input type="text" id="subject" class="field wide" maxlength="200">
+      <label for="body">Message</label>
+      <div class="row" style="margin:0 0 8px"><button type="button" class="mini" data-fmt="bold"><b>B</b> Bold</button><button type="button" class="mini" data-fmt="italic"><i>I</i> Italic</button><button type="button" class="mini" data-fmt="bullet">• Bullets</button></div>
+      <textarea id="body" class="field wide" rows="9" maxlength="20000"></textarea>
+      <p class="note">Start a line with "- " for a bullet. Leave a blank line between paragraphs.</p>
+      <h2 style="margin-top:22px">3. Preview</h2>
+      <iframe id="preview" title="Email preview" style="width:100%;height:380px;border:1px solid var(--line);border-radius:8px;background:#fff"></iframe>
+      <h2 style="margin-top:22px">4. Test, then send</h2>
+      <div class="row"><button type="button" class="btn secondary" id="testBtn">Send test to hello@debtfreeempire.com</button><button type="button" class="btn" id="sendBtn" disabled>Send to the list</button></div>
+      <p class="note" id="gate">Send a test first. The send button unlocks after a test of this exact subject and message.</p>
+      <div class="prog" id="progWrap" hidden><div id="prog"></div></div>
+      <p class="msg" id="toast" role="status" aria-live="polite"></p>
+    </div>
+    <div class="section-h">Past broadcasts</div><div class="card" id="logCard"></div>
+  </div>
+</div>
+<div id="modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="mTitle" hidden>
+  <div class="modal-box">
+    <div class="modal-warn">⚠ This sends a REAL email to REAL people</div>
+    <h2 id="mTitle">You are about to send to <span id="mCount"></span></h2>
+    <table class="m-table">
+      <tr><th>From</th><td>Debt Free Empire &lt;hello@debtfreeempire.com&gt;</td></tr>
+      <tr><th>To</th><td id="mLists"></td></tr>
+      <tr><th>Subject</th><td id="mSubject"></td></tr>
+    </table>
+    <div class="note" style="margin:10px 0 6px">What they will receive:</div>
+    <iframe id="mPreview" title="Final email" style="width:100%;height:200px;border:1px solid var(--line);border-radius:8px;background:#fff"></iframe>
+    <ul class="m-facts"><li><b>It cannot be undone or recalled</b> once sending starts.</li><li>Each person gets their own copy with an Unsubscribe link.</li><li>Anyone on both lists is only emailed once.</li></ul>
+    <label for="mType">Type <b>SEND</b> to confirm</label>
+    <input type="text" id="mType" class="field wide" autocomplete="off" autocapitalize="characters" spellcheck="false">
+    <div class="row"><button type="button" class="btn secondary" id="mCancel">Cancel, do not send</button><button type="button" class="btn danger" id="mGo" disabled>Send now</button></div>
+  </div>
+</div>
+<script src="/site-dynamic.js"></script>
+<script src="/admin/admin.js"></script>
+<script>
+
+(function () {
+  var A = window.Admin, $ = function (i) { return document.getElementById(i); }, say = A.say($('toast')), counts = {}, tested = null, busy = false;
+  var body = $('body');
+  function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+  function lists() { var l = []; if ($('lEld').checked) l.push('eld-ios'); if ($('lNews').checked) l.push('newsletter'); return l; }
+  function key() { return $('subject').value + '\u0001' + body.value; }
+  function refresh() {
+    var d = document.createElement('div'); d.appendChild(window.DFE.renderRich(body.value));
+    $('preview').srcdoc = '<body style="margin:0;background:#FFF9F3;font-family:Arial,sans-serif;color:#1A1A1A"><div style="max-width:600px;margin:0 auto;padding:24px 20px"><div style="font-size:13px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;padding-bottom:14px;border-bottom:2px solid #E4C590">Debt Free Empire</div><h1 style="font-size:22px;margin:22px 0 14px">' + esc($('subject').value || 'Your subject line') + '</h1><div style="font-size:15px;line-height:1.7">' + (body.value.trim() ? d.innerHTML : '<p style="color:#888">Your message appears here.</p>') + '</div><div style="margin-top:28px;padding-top:14px;border-top:1px solid #DDD5E5;font-size:12px;color:#55515B">You are receiving this because you signed up at debtfreeempire.com.<br><u>Unsubscribe</u></div></div></body>';
+    $('sendBtn').disabled = busy || tested !== key() || !lists().length;
+    $('gate').textContent = tested === key() ? 'Test sent. You can send to the list.' : 'Send a test first. The send button unlocks after a test of this exact subject and message.';
+    var u = lists().length; $('recipientNote').textContent = u ? '' : 'Choose at least one list.';
+  }
+  ['subject', 'body', 'lEld', 'lNews'].forEach(function (i) { $(i).addEventListener('input', refresh); });
+  function wrapSel(a, b) { var s = body.selectionStart, e = body.selectionEnd, v = body.value, sel = v.slice(s, e) || 'text'; body.value = v.slice(0, s) + a + sel + b + v.slice(e); body.focus(); body.setSelectionRange(s + a.length, s + a.length + sel.length); refresh(); }
+  function bullets() { var s = body.selectionStart, e = body.selectionEnd, v = body.value, ls = v.lastIndexOf('\n', s - 1) + 1, le = v.indexOf('\n', e); if (le < 0) le = v.length; body.value = v.slice(0, ls) + v.slice(ls, le).split('\n').map(function (l) { return /^\s*[-•]\s/.test(l) ? l : '- ' + l; }).join('\n') + v.slice(le); body.focus(); refresh(); }
+  document.querySelectorAll('[data-fmt]').forEach(function (b) { b.addEventListener('click', function () { var k = b.getAttribute('data-fmt'); k === 'bold' ? wrapSel('**', '**') : k === 'italic' ? wrapSel('*', '*') : bullets(); }); });
+
+  $('testBtn').addEventListener('click', function () {
+    if (!$('subject').value.trim() || !body.value.trim()) { say('Write a subject and a message first.'); return; }
+    $('testBtn').disabled = true; say('Sending test…'); var k = key();
+    A.act('broadcast', { action: 'test', subject: $('subject').value, body: body.value }).then(function (x) {
+      if (!x.ok) { say(x.j.error); return; } tested = k; say('Test sent to hello@debtfreeempire.com. Check your inbox, then you can send to the list.'); refresh();
+    }).catch(function () { say('Could not reach the server.'); }).then(function () { $('testBtn').disabled = false; });
+  });
+
+  var modal = $('modal'), pending = null;
+  function closeModal() { modal.hidden = true; $('mType').value = ''; $('mGo').disabled = true; $('sendBtn').disabled = busy || tested !== key() || !lists().length; }
+  $('mCancel').addEventListener('click', closeModal);
+  modal.addEventListener('click', function (e) { if (e.target === modal) closeModal(); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !modal.hidden) closeModal(); });
+  $('mType').addEventListener('input', function () { $('mGo').disabled = $('mType').value.trim().toUpperCase() !== 'SEND'; });
+
+  $('sendBtn').addEventListener('click', function () {
+    var ls = lists(); $('sendBtn').disabled = true; say('Counting recipients…');
+    A.act('broadcast', { action: 'count', lists: ls }).then(function (x) {
+      if (!x.ok) { say(x.j.error); return; } say('');
+      if (!x.j.total) { say('Those lists are empty. Nobody to send to.'); return; }
+      pending = { lists: ls, subject: $('subject').value, body: body.value, total: x.j.total };
+      $('mCount').textContent = x.j.total + (x.j.total === 1 ? ' person' : ' people');
+      $('mLists').textContent = ls.map(function (l) { return l === 'eld-ios' ? 'Empire Life Dashboard iPhone waitlist' : 'Main newsletter list'; }).join(' + ');
+      $('mSubject').textContent = pending.subject;
+      $('mPreview').srcdoc = $('preview').srcdoc;
+      $('mType').value = ''; $('mGo').disabled = true; modal.hidden = false; $('mType').focus();
+    }).catch(function () { say('Could not reach the server.'); $('sendBtn').disabled = false; });
+  });
+
+  $('mGo').addEventListener('click', function () {
+    var ls = pending.lists, subject = pending.subject, text = pending.body;
+    modal.hidden = true; $('mType').value = ''; $('mGo').disabled = true;
+    busy = true; refresh(); $('progWrap').hidden = false; $('prog').style.width = '0';
+    var sent = 0, failed = 0, firstErr = '';
+    function step(offset) {
+      return A.act('broadcast', { action: 'send', confirm: true, lists: ls, subject: subject, body: text, offset: offset }).then(function (x) {
+        if (!x.ok) { failed += 1; firstErr = x.j.error; return finish(); }
+        sent += x.j.sent; failed += x.j.failed; if (x.j.error && !firstErr) firstErr = x.j.error;
+        $('prog').style.width = (x.j.total ? Math.round(100 * x.j.processed / x.j.total) : 100) + '%';
+        say('Sending… ' + x.j.processed + ' of ' + x.j.total + '. Keep this page open.');
+        if (x.j.done || !x.j.total) return finish(); return step(x.j.processed);
+      }).catch(function () { firstErr = 'Lost connection'; return finish(); });
+    }
+    function finish() {
+      busy = false;
+      return A.act('broadcast', { action: 'finish', subject: subject, lists: ls, sent: sent, failed: failed }).then(function () {
+        say(failed ? 'Done with problems: ' + sent + ' sent, ' + failed + ' failed. ' + firstErr : 'Success! Sent to ' + sent + ' ' + (sent === 1 ? 'person' : 'people') + '.');
+        tested = null; refresh(); return load();
+      });
+    }
+    step(0);
+  });
+
+  function renderLog(log) {
+    var c = $('logCard'); c.textContent = '';
+    if (!log.length) { c.appendChild(A.cell('p', 'No broadcasts sent yet.', 'empty')); return; }
+    var t = document.createElement('table'), th = document.createElement('thead'), tr = document.createElement('tr');
+    ['Date', 'Subject', 'Lists', 'Recipients'].forEach(function (h) { tr.appendChild(A.cell('th', h)); }); th.appendChild(tr); t.appendChild(th);
+    var tb = document.createElement('tbody');
+    log.forEach(function (e) { var r = document.createElement('tr'); r.appendChild(A.cell('td', A.fmt(e.date), 'date')); r.appendChild(A.cell('td', e.subject)); r.appendChild(A.cell('td', e.lists.map(function (l) { return l === 'eld-ios' ? 'iPhone waitlist' : 'Newsletter'; }).join(' + '))); r.appendChild(A.cell('td', e.recipients + (e.failed ? ' (' + e.failed + ' failed)' : ''))); tb.appendChild(r); });
+    t.appendChild(tb); c.appendChild(t);
+  }
+  function load() {
+    return A.get('broadcast').then(function (x) {
+      if (x.status === 401) return 'unauthorized'; if (!x.ok) throw new Error('failed');
+      counts = x.j.counts; $('cEld').textContent = '(' + counts['eld-ios'] + ')'; $('cNews').textContent = '(' + counts.newsletter + ')';
+      $('setup').hidden = x.j.configured; $('testBtn').disabled = !x.j.configured; renderLog(x.j.log); refresh();
+    });
+  }
+  A.init(load);
+})();
+</script>
+</body>
+</html>

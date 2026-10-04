@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+<title>Support messages (private)</title>
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="stylesheet" href="/admin/admin.css">
+</head>
+<body>
+<header class="bar">
+  <a class="bar-brand" href="/admin/">Debt Free Empire · Admin</a>
+  <nav class="bar-nav" aria-label="Admin"><a href="/admin/">Dashboard</a><a href="/admin/support/">Support</a><a href="/admin/announcement/">Announcement</a><a href="/admin/products/">Products</a><a href="/admin/updates/">Updates</a><a href="/admin/promos/">Promo codes</a><a href="/admin/broadcast/">Broadcast</a><a href="/admin/emails/">Email signups</a><a href="/admin/health/">Site health</a><a href="/admin/store-links/">Store links</a><a href="/admin/links/">Quick links</a><a href="/" target="_blank" rel="noopener">View site</a><button type="button" id="logoutBtn" hidden>Log out</button></nav>
+</header>
+<div class="wrap">
+  <div class="card" id="loginCard" hidden>
+    <h1>Admin login</h1>
+    <p class="sub">Private. Not linked anywhere and hidden from search engines.</p>
+    <form id="loginForm" autocomplete="off">
+      <label for="pw">Password</label>
+      <input type="password" id="pw" autocomplete="current-password" required>
+      <div class="row"><button type="submit" class="btn" id="loginBtn">Log in</button></div>
+      <p class="msg" id="loginMsg" role="status" aria-live="polite"></p>
+    </form>
+  </div>
+  <div id="app" hidden>
+    <h1>Support messages</h1>
+    <p class="sub">Everything sent through the contact form on the Support page.</p>
+    <div class="filters">
+      <input type="search" id="search" class="field" placeholder="Search name, email or product" aria-label="Search messages">
+      <select id="fProduct" class="field" aria-label="Filter by product"><option value="">All products</option><option>Paper &amp; Prosperity</option><option>Empire Life Dashboard</option><option>Workbooks</option><option>Grind &amp; Save</option><option>Empire Arcade</option><option>Other</option></select>
+      <select id="fStatus" class="field" aria-label="Filter by status"><option value="">All statuses</option><option value="unread">Unread</option><option value="in-progress">In progress</option><option value="resolved">Resolved</option></select>
+    </div>
+    <p class="count" id="count"></p>
+    <p class="msg" id="toast" role="status" aria-live="polite"></p>
+    <div id="list"></div>
+  </div>
+</div>
+<script src="/admin/admin.js"></script>
+<script>
+(function () {
+  var A = window.Admin, all = [], getJsonRef = null;
+  var listEl = document.getElementById('list'), toast = document.getElementById('toast'), count = document.getElementById('count');
+  var LABEL = { 'unread': 'Unread', 'in-progress': 'In progress', 'resolved': 'Resolved' };
+  var PILL = { 'unread': 'info', 'in-progress': 'warn', 'resolved': 'ok' };
+  function say(t) { toast.textContent = t; clearTimeout(say.t); say.t = setTimeout(function () { toast.textContent = ''; }, 4000); }
+  function act(body) {
+    return fetch('/api/admin-content', { method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(Object.assign({ r: 'support' }, body)) })
+      .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); });
+  }
+  function btn(text, cls, fn) { var b = document.createElement('button'); b.type = 'button'; b.textContent = text; b.className = cls; b.addEventListener('click', fn); return b; }
+  function mailto(m) {
+    var subj = /^re:/i.test(m.subject) ? m.subject : 'Re: ' + m.subject;
+    return 'mailto:' + encodeURIComponent(m.email).replace('%40', '@') + '?subject=' + encodeURIComponent(subj);
+  }
+
+  function render() {
+    var q = document.getElementById('search').value.trim().toLowerCase();
+    var p = document.getElementById('fProduct').value, s = document.getElementById('fStatus').value;
+    var shown = all.filter(function (m) {
+      return (!p || m.product === p) && (!s || m.status === s) &&
+        (!q || (m.name + ' ' + m.email + ' ' + m.product).toLowerCase().indexOf(q) !== -1);
+    });
+    var unread = all.filter(function (m) { return m.status === 'unread'; }).length;
+    count.textContent = shown.length + ' of ' + all.length + ' message' + (all.length === 1 ? '' : 's') + ' · ' + unread + ' unread';
+    listEl.textContent = '';
+    if (!shown.length) { listEl.appendChild(A.cell('p', all.length ? 'No messages match.' : 'No messages yet.', 'empty')); return; }
+    shown.forEach(function (m) {
+      var card = document.createElement('section'); card.className = 'card msg-card ' + m.status;
+      var head = document.createElement('div'); head.className = 'msg-head';
+      head.appendChild(A.cell('div', m.subject, 'msg-subject'));
+      head.appendChild(A.cell('span', LABEL[m.status] || m.status, 'pill ' + (PILL[m.status] || 'warn')));
+      card.appendChild(head);
+      card.appendChild(A.cell('div', m.name + ' · ' + m.email + ' · ' + m.product + ' · ' + A.fmt(m.date), 'msg-meta'));
+      card.appendChild(A.cell('div', m.message, 'msg-body'));
+      var row = document.createElement('div'); row.className = 'row';
+      var sel = document.createElement('select'); sel.className = 'field'; sel.setAttribute('aria-label', 'Status');
+      Object.keys(LABEL).forEach(function (k) { var o = document.createElement('option'); o.value = k; o.textContent = LABEL[k]; if (k === m.status) o.selected = true; sel.appendChild(o); });
+      sel.addEventListener('change', function () {
+        act({ action: 'status', id: m.id, status: sel.value }).then(function (x) {
+          if (!x.ok) { say(x.j.error || 'Could not update.'); sel.value = m.status; return; }
+          m.status = sel.value; render(); window.dispatchEvent(new Event('admin:badge'));
+        });
+      });
+      row.appendChild(sel);
+      var reply = document.createElement('a'); reply.className = 'btn'; reply.textContent = 'Reply'; reply.href = mailto(m);
+      reply.addEventListener('click', function () {
+        if (m.status === 'unread') act({ action: 'status', id: m.id, status: 'in-progress' }).then(function (x) { if (x.ok) { m.status = 'in-progress'; render(); window.dispatchEvent(new Event('admin:badge')); } });
+      });
+      row.appendChild(reply);
+      row.appendChild(btn('Delete', 'mini danger', function () {
+        if (!confirm('Delete this message from ' + m.name + '? This cannot be undone.')) return;
+        act({ action: 'delete', id: m.id }).then(function (x) {
+          if (!x.ok) { say(x.j.error || 'Could not delete.'); return; }
+          all = all.filter(function (z) { return z.id !== m.id; }); render(); say('Deleted.'); window.dispatchEvent(new Event('admin:badge'));
+        });
+      }));
+      card.appendChild(row); listEl.appendChild(card);
+    });
+  }
+
+  ['search', 'fProduct', 'fStatus'].forEach(function (id) { document.getElementById(id).addEventListener('input', render); });
+  A.init(function (getJson) {
+    getJsonRef = getJson;
+    return getJson('/api/admin-content?r=support').then(function (x) {
+      if (x.status === 401) return 'unauthorized';
+      if (!x.ok) throw new Error('failed');
+      all = x.j.messages; render();
+    });
+  });
+})();
+</script>
+</body>
+</html>

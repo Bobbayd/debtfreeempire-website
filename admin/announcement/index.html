@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+<title>Announcement bar (private)</title>
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="stylesheet" href="/admin/admin.css">
+</head>
+<body>
+<header class="bar">
+  <a class="bar-brand" href="/admin/">Debt Free Empire · Admin</a>
+  <nav class="bar-nav" aria-label="Admin"><a href="/admin/">Dashboard</a><a href="/admin/support/">Support</a><a href="/admin/announcement/" aria-current="page">Announcement</a><a href="/admin/products/">Products</a><a href="/admin/updates/">Updates</a><a href="/admin/promos/">Promo codes</a><a href="/admin/broadcast/">Broadcast</a><a href="/admin/emails/">Email signups</a><a href="/admin/health/">Site health</a><a href="/admin/store-links/">Store links</a><a href="/admin/links/">Quick links</a><a href="/" target="_blank" rel="noopener">View site</a><button type="button" id="logoutBtn" hidden>Log out</button></nav>
+</header>
+<div class="wrap">
+  <div class="card" id="loginCard" hidden>
+    <h1>Admin login</h1>
+    <p class="sub">Private. Not linked anywhere and hidden from search engines.</p>
+    <form id="loginForm" autocomplete="off">
+      <label for="pw">Password</label>
+      <input type="password" id="pw" autocomplete="current-password" required>
+      <div class="row"><button type="submit" class="btn" id="loginBtn">Log in</button></div>
+      <p class="msg" id="loginMsg" role="status" aria-live="polite"></p>
+    </form>
+  </div>
+  <div id="app" hidden>
+    <h1>Announcement bar</h1>
+    <p class="sub">A slim banner at the very top of every page on the site. Visitors can dismiss it. Changes go live within about a minute, no redeploy.</p>
+    <div class="card">
+      <form id="f" novalidate>
+        <label class="check"><input type="checkbox" id="enabled"> Show the announcement bar on the site</label>
+        <label for="message">Message <span class="note" id="msgCount"></span></label>
+        <input type="text" id="message" class="field wide" maxlength="200" placeholder="🎉 Empire Life Dashboard now on iPhone!">
+        <div class="two">
+          <div><label for="link">Link (optional)</label><input type="url" id="link" class="field wide" placeholder="https://… or /products"></div>
+          <div><label for="linkText">Link text (optional)</label><input type="text" id="linkText" class="field wide" maxlength="40" placeholder="Download here"></div>
+        </div>
+        <label for="color">Bar color</label>
+        <div class="row" style="margin-top:0"><input type="color" id="color" value="#FAF3E3" class="swatch"><button type="button" class="mini" id="creamBtn">Cream (default)</button><button type="button" class="mini" id="goldBtn">Gold</button><button type="button" class="mini" id="lavBtn">Lavender</button></div>
+        <div class="section-h">Preview</div>
+        <div id="preview" class="ann-preview"></div>
+        <div class="row"><button type="submit" class="btn" id="save">Save &amp; publish</button></div>
+        <p class="msg" id="toast" role="status" aria-live="polite"></p>
+      </form>
+    </div>
+    <div class="card"><h2>Ideas</h2><p class="sub" style="margin:8px 0 0">"🎉 Empire Life Dashboard now on iPhone! Download here" · "📚 Workbooks now available. Shop now" · "🎁 Launch week: 20% off Empire Life Dashboard"</p></div>
+  </div>
+</div>
+<script src="/site-dynamic.js"></script>
+<script src="/admin/admin.js"></script>
+<script>
+
+(function () {
+  var A = window.Admin, $ = function (i) { return document.getElementById(i); }, say = A.say($('toast'));
+  function contrast(hex) { var n = parseInt(hex.slice(1), 16); return (0.299 * (n >> 16) + 0.587 * ((n >> 8) & 255) + 0.114 * (n & 255)) > 150 ? '#1A1A1A' : '#FFFFFF'; }
+  function preview() {
+    var p = $('preview'), c = $('color').value; p.textContent = '';
+    p.style.background = c; p.style.color = contrast(c);
+    var t = $('message').value.trim();
+    $('msgCount').textContent = '(' + t.length + '/200)';
+    if (!t) { p.textContent = 'Your message will appear here.'; p.style.opacity = .6; return; }
+    p.style.opacity = $('enabled').checked ? 1 : .6;
+    p.appendChild(document.createTextNode(t + ' '));
+    if ($('link').value.trim()) { var a = document.createElement('span'); a.className = 'ann-link'; a.textContent = $('linkText').value.trim() || 'Learn more'; p.appendChild(a); }
+    if (!$('enabled').checked) p.appendChild(A.cell('div', 'The bar is currently OFF, so visitors will not see it.', 'note'));
+  }
+  ['enabled', 'message', 'link', 'linkText', 'color'].forEach(function (i) { $(i).addEventListener('input', preview); });
+  [['creamBtn', '#FAF3E3'], ['goldBtn', '#E4C590'], ['lavBtn', '#E6E1F3']].forEach(function (x) { $(x[0]).addEventListener('click', function () { $('color').value = x[1]; preview(); }); });
+  $('f').addEventListener('submit', function (e) {
+    e.preventDefault(); $('save').disabled = true;
+    A.act('announcement', { enabled: $('enabled').checked, message: $('message').value, link: $('link').value, linkText: $('linkText').value, color: $('color').value }).then(function (x) {
+      say(x.ok ? ($('enabled').checked ? 'Saved. The bar goes live within about a minute.' : 'Saved. The bar is off.') : x.j.error);
+    }).catch(function () { say('Could not reach the server.'); }).then(function () { $('save').disabled = false; });
+  });
+  A.init(function () {
+    return A.get('announcement').then(function (x) {
+      if (x.status === 401) return 'unauthorized';
+      if (!x.ok) throw new Error('failed');
+      var c = x.j.config; $('enabled').checked = c.enabled; $('message').value = c.message; $('link').value = c.link; $('linkText').value = c.linkText; $('color').value = c.color; preview();
+    });
+  });
+})();
+</script>
+</body>
+</html>

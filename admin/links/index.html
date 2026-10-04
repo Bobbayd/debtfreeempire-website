@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+<title>Quick links (private)</title>
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="stylesheet" href="/admin/admin.css">
+</head>
+<body>
+<header class="bar">
+  <a class="bar-brand" href="/admin/">Debt Free Empire · Admin</a>
+  <nav class="bar-nav" aria-label="Admin"><a href="/admin/">Dashboard</a><a href="/admin/support/">Support</a><a href="/admin/announcement/">Announcement</a><a href="/admin/products/">Products</a><a href="/admin/updates/">Updates</a><a href="/admin/promos/">Promo codes</a><a href="/admin/broadcast/">Broadcast</a><a href="/admin/emails/">Email signups</a><a href="/admin/health/">Site health</a><a href="/admin/store-links/">Store links</a><a href="/admin/links/">Quick links</a><a href="/" target="_blank" rel="noopener">View site</a><button type="button" id="logoutBtn" hidden>Log out</button></nav>
+</header>
+<div class="wrap">
+  <div class="card" id="loginCard" hidden>
+    <h1>Admin login</h1>
+    <p class="sub">Private. Not linked anywhere and hidden from search engines.</p>
+    <form id="loginForm" autocomplete="off">
+      <label for="pw">Password</label>
+      <input type="password" id="pw" autocomplete="current-password" required>
+      <div class="row"><button type="submit" class="btn" id="loginBtn">Log in</button></div>
+      <p class="msg" id="loginMsg" role="status" aria-live="polite"></p>
+    </form>
+  </div>
+  <div id="app" hidden>
+    <h1>Quick links</h1>
+    <p class="sub">Shortcuts to everything you use to run Debt Free Empire. They open in a new tab.</p>
+    <div class="section-h">Your site</div>
+    <div class="tools">
+      <a class="tool" href="https://www.debtfreeempire.com" target="_blank" rel="noopener"><div class="tool-t">Debt Free Empire (live site)</div><div class="tool-d">The public website.</div></a>
+      <a class="tool" href="https://www.debtfreeempire.com/apps/empire-life-dashboard" target="_blank" rel="noopener"><div class="tool-t">Empire Life Dashboard page</div><div class="tool-d">The app page.</div></a>
+      <a class="tool" href="https://www.debtfreeempire.com/paper-and-prosperity" target="_blank" rel="noopener"><div class="tool-t">Paper &amp; Prosperity page</div><div class="tool-d">The brand page.</div></a>
+    </div>
+    <div class="section-h">Run the site</div>
+    <div class="tools">
+      <a class="tool" href="https://vercel.com/paper-and-prosperity/debtfreeempire" target="_blank" rel="noopener"><div class="tool-t">Vercel project</div><div class="tool-d">Deployments, settings and the admin password setting.</div></a>
+      <a class="tool" href="https://console.upstash.com" target="_blank" rel="noopener"><div class="tool-t">Upstash (email database)</div><div class="tool-d">Where the email signups are stored.</div></a>
+    </div>
+    <div class="section-h">Stores and sales</div>
+    <div class="tools">
+      <a class="tool" href="https://www.etsy.com/shop/PaperandProsperity" target="_blank" rel="noopener"><div class="tool-t">Etsy shop</div><div class="tool-d">Your public Etsy shop.</div></a>
+      <a class="tool" href="https://www.etsy.com/your/shops/me/dashboard" target="_blank" rel="noopener"><div class="tool-t">Etsy shop manager</div><div class="tool-d">Orders, listings and messages.</div></a>
+      <a class="tool" href="https://partner.microsoft.com/dashboard" target="_blank" rel="noopener"><div class="tool-t">Microsoft Partner Center</div><div class="tool-d">Empire Life Dashboard on the Microsoft Store.</div></a>
+      <a class="tool" href="https://appstoreconnect.apple.com" target="_blank" rel="noopener"><div class="tool-t">App Store Connect</div><div class="tool-d">Apple review status and builds.</div></a>
+      <a class="tool" href="https://play.google.com/console" target="_blank" rel="noopener"><div class="tool-t">Google Play Console</div><div class="tool-d">Paper &amp; Prosperity on Google Play.</div></a>
+    </div>
+    <div class="section-h">Email</div>
+    <div class="tools">
+      <a class="tool" href="https://app.kit.com" target="_blank" rel="noopener"><div class="tool-t">Kit</div><div class="tool-d">Your email newsletter tool.</div></a>
+    </div>
+  </div>
+</div>
+<script src="/admin/admin.js"></script>
+<script>
+(function(){ window.Admin.init(function (getJson) { return getJson("/api/admin-stats").then(function (x) { if (x.status === 401) return "unauthorized"; }); }); })();
+</script>
+</body>
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+<title>Products (private)</title>
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="stylesheet" href="/admin/admin.css">
+</head>
+<body>
+<header class="bar">
+  <a class="bar-brand" href="/admin/">Debt Free Empire · Admin</a>
+  <nav class="bar-nav" aria-label="Admin"><a href="/admin/">Dashboard</a><a href="/admin/support/">Support</a><a href="/admin/announcement/">Announcement</a><a href="/admin/products/" aria-current="page">Products</a><a href="/admin/updates/">Updates</a><a href="/admin/promos/">Promo codes</a><a href="/admin/broadcast/">Broadcast</a><a href="/admin/emails/">Email signups</a><a href="/admin/health/">Site health</a><a href="/admin/store-links/">Store links</a><a href="/admin/links/">Quick links</a><a href="/" target="_blank" rel="noopener">View site</a><button type="button" id="logoutBtn" hidden>Log out</button></nav>
+</header>
+<div class="wrap">
+  <div class="card" id="loginCard" hidden>
+    <h1>Admin login</h1>
+    <p class="sub">Private. Not linked anywhere and hidden from search engines.</p>
+    <form id="loginForm" autocomplete="off">
+      <label for="pw">Password</label>
+      <input type="password" id="pw" autocomplete="current-password" required>
+      <div class="row"><button type="submit" class="btn" id="loginBtn">Log in</button></div>
+      <p class="msg" id="loginMsg" role="status" aria-live="polite"></p>
+    </form>
+  </div>
+  <div id="app" hidden>
+    <h1>Products</h1>
+    <p class="sub">Control how each product appears on the homepage cards. Until you press Save on a product, the site keeps its original wording. Changes go live within about a minute.</p>
+    <p class="msg" id="toast" role="status" aria-live="polite"></p>
+    <div id="list"></div>
+  </div>
+</div>
+<script src="/site-dynamic.js"></script>
+<script src="/admin/admin.js"></script>
+<script>
+
+(function () {
+  var A = window.Admin, say = A.say(document.getElementById('toast')), listEl = document.getElementById('list');
+  var DEFS = [
+    { id: 'pp', name: 'Paper & Prosperity', status: 'live', cta: 'Open the Web App' },
+    { id: 'eld', name: 'Empire Life Dashboard', status: 'live', cta: 'Learn More' },
+    { id: 'workbooks', name: 'Workbooks', status: 'live', cta: 'Shop Now' },
+    { id: 'gs', name: 'Grind & Save', status: 'coming-soon', cta: '' },
+    { id: 'arcade', name: 'Empire Arcade', status: 'coming-soon', cta: 'Learn More' }
+  ];
+  function field(label, el) { var w = document.createElement('div'); var l = document.createElement('label'); l.textContent = label; w.appendChild(l); w.appendChild(el); return w; }
+  function check(label, on) { var l = document.createElement('label'); l.className = 'check'; var i = document.createElement('input'); i.type = 'checkbox'; i.checked = on; l.appendChild(i); l.appendChild(document.createTextNode(' ' + label)); return { wrap: l, input: i }; }
+  function render(saved) {
+    listEl.textContent = '';
+    DEFS.forEach(function (d) {
+      var rec = saved[d.id], cur = rec || { status: d.status, price: '', cta: '', featured: false, isNew: false };
+      var card = document.createElement('section'); card.className = 'card';
+      var head = document.createElement('div'); head.className = 'toolbar'; head.style.marginBottom = '4px';
+      head.appendChild(A.cell('h2', d.name)); head.appendChild(A.cell('span', rec ? 'Customised' : 'Using original site text', 'pill ' + (rec ? 'ok' : 'warn'))); card.appendChild(head);
+      var sel = document.createElement('select'); sel.className = 'field wide';
+      [['coming-soon', 'Coming Soon'], ['live', 'Live'], ['sale', 'Sale']].forEach(function (o) { var op = document.createElement('option'); op.value = o[0]; op.textContent = o[1]; if (o[0] === cur.status) op.selected = true; sel.appendChild(op); });
+      var price = document.createElement('input'); price.type = 'text'; price.className = 'field wide'; price.maxLength = 30; price.placeholder = 'e.g. $29 or Free'; price.value = cur.price;
+      var cta = document.createElement('input'); cta.type = 'text'; cta.className = 'field wide'; cta.maxLength = 40; cta.placeholder = d.cta ? 'Currently: ' + d.cta : 'Button text'; cta.value = cur.cta;
+      var g = document.createElement('div'); g.className = 'two'; g.appendChild(field('Status', sel)); g.appendChild(field('Price shown', price)); card.appendChild(g);
+      card.appendChild(field('Button text (blank keeps the current text)', cta));
+      var feat = check('Featured on the homepage (moves to the front, gold outline)', cur.featured), nw = check('Show a NEW badge on the card', cur.isNew);
+      card.appendChild(feat.wrap); card.appendChild(nw.wrap);
+      var row = document.createElement('div'); row.className = 'row';
+      row.appendChild(A.btn('Save ' + d.name, 'btn', function () {
+        A.act('products', { id: d.id, status: sel.value, price: price.value, cta: cta.value, featured: feat.input.checked, isNew: nw.input.checked }).then(function (x) {
+          if (!x.ok) { say(x.j.error); return; } saved[d.id] = x.j.product; say('Saved ' + d.name + '. Live within about a minute.'); render(saved);
+        });
+      }));
+      if (rec) row.appendChild(A.btn('Reset to original', 'mini', function () {
+        if (!confirm('Put ' + d.name + ' back to the original site text?')) return;
+        A.act('products', { id: d.id, action: 'reset' }).then(function (x) { if (!x.ok) { say(x.j.error); return; } delete saved[d.id]; say('Reset.'); render(saved); });
+      }));
+      card.appendChild(row); listEl.appendChild(card);
+    });
+  }
+  A.init(function () {
+    return A.get('products').then(function (x) {
+      if (x.status === 401) return 'unauthorized'; if (!x.ok) throw new Error('failed'); render(x.j.products);
+    });
+  });
+})();
+</script>
+</body>
+</html>

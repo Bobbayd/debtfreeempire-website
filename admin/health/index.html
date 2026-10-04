@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+<title>Site health (private)</title>
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="stylesheet" href="/admin/admin.css">
+</head>
+<body>
+<header class="bar">
+  <a class="bar-brand" href="/admin/">Debt Free Empire · Admin</a>
+  <nav class="bar-nav" aria-label="Admin"><a href="/admin/">Dashboard</a><a href="/admin/support/">Support</a><a href="/admin/announcement/">Announcement</a><a href="/admin/products/">Products</a><a href="/admin/updates/">Updates</a><a href="/admin/promos/">Promo codes</a><a href="/admin/broadcast/">Broadcast</a><a href="/admin/emails/">Email signups</a><a href="/admin/health/">Site health</a><a href="/admin/store-links/">Store links</a><a href="/admin/links/">Quick links</a><a href="/" target="_blank" rel="noopener">View site</a><button type="button" id="logoutBtn" hidden>Log out</button></nav>
+</header>
+<div class="wrap">
+  <div class="card" id="loginCard" hidden>
+    <h1>Admin login</h1>
+    <p class="sub">Private. Not linked anywhere and hidden from search engines.</p>
+    <form id="loginForm" autocomplete="off">
+      <label for="pw">Password</label>
+      <input type="password" id="pw" autocomplete="current-password" required>
+      <div class="row"><button type="submit" class="btn" id="loginBtn">Log in</button></div>
+      <p class="msg" id="loginMsg" role="status" aria-live="polite"></p>
+    </form>
+  </div>
+  <div id="app" hidden>
+    <h1>Site health</h1>
+    <p class="sub">Checks every page on the site and the important store links, so you hear about a broken link before a customer does.</p>
+    <div class="row" style="margin:0 0 20px"><button type="button" class="btn" id="runBtn">Run check now</button><span class="count" id="checked"></span></div>
+    <div id="summary"></div>
+    <div id="out"></div>
+  </div>
+</div>
+<script src="/admin/admin.js"></script>
+<script>
+(function () {
+  var A = window.Admin, out = document.getElementById('out'), summary = document.getElementById('summary'), runBtn = document.getElementById('runBtn'), checked = document.getElementById('checked');
+  function pill(level) { var s = document.createElement('span'); s.className = 'pill ' + level; s.textContent = level === 'ok' ? 'OK' : level === 'warn' ? 'Check' : 'Problem'; return s; }
+  function section(title, rows) {
+    var card = document.createElement('section'); card.className = 'card'; card.appendChild(A.cell('h2', title));
+    var t = document.createElement('table'), tb = document.createElement('tbody');
+    rows.forEach(function (r) {
+      var tr = document.createElement('tr'), a = document.createElement('td'), l = document.createElement('a');
+      l.href = r.url; l.target = '_blank'; l.rel = 'noopener'; l.textContent = r.name; a.appendChild(l);
+      if (r.note) a.appendChild(A.cell('div', r.note, 'note'));
+      var s = document.createElement('td'); s.className = 'date'; s.textContent = (r.status ? r.status : 'no reply') + ' · ' + r.ms + ' ms';
+      var p = document.createElement('td'); p.appendChild(pill(r.level));
+      tr.appendChild(a); tr.appendChild(s); tr.appendChild(p); tb.appendChild(tr);
+    });
+    t.appendChild(tb); card.appendChild(t); return card;
+  }
+  function run(getJson) {
+    runBtn.disabled = true; runBtn.textContent = 'Checking…'; out.textContent = ''; summary.textContent = '';
+    return getJson('/api/admin-health').then(function (x) {
+      if (x.status === 401) return 'unauthorized';
+      if (!x.ok) throw new Error('failed');
+      var all = x.j.site.concat(x.j.outside), bad = all.filter(function (r) { return r.level === 'fail'; }).length, warn = all.filter(function (r) { return r.level === 'warn'; }).length;
+      var box = document.createElement('div'); box.className = 'card banner ' + (bad ? 'fail' : warn ? 'warn' : 'ok');
+      box.textContent = bad ? bad + ' problem' + (bad === 1 ? '' : 's') + ' found. See the rows marked Problem below.' : warn ? 'Everything responds. ' + warn + ' link' + (warn === 1 ? '' : 's') + ' blocked the automatic check, so open ' + (warn === 1 ? 'it' : 'them') + ' yourself once.' : 'All good. Every page and link responded.';
+      summary.appendChild(box);
+      out.appendChild(section('Your site', x.j.site)); out.appendChild(section('Store and outside links', x.j.outside));
+      var es = document.createElement('div'); es.className = 'card banner ' + (x.j.emailStore === 'ok' ? 'ok' : 'fail'); es.textContent = 'Email signup storage: ' + (x.j.emailStore === 'ok' ? 'working' : 'not responding'); out.appendChild(es);
+      checked.textContent = 'Checked ' + A.fmt(x.j.checkedAt);
+    }).catch(function () { summary.appendChild(A.cell('p', 'The check could not run. Try again.', 'msg')); })
+      .then(function (s) { runBtn.disabled = false; runBtn.textContent = 'Run check now'; return s; });
+  }
+  var ref = null;
+  runBtn.addEventListener('click', function () { if (ref) run(ref); });
+  A.init(function (getJson) { ref = getJson; return run(getJson); });
+})();
+</script>
+</body>
+</html>

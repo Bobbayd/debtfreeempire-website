@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+<title>Email signups (private)</title>
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="stylesheet" href="/admin/admin.css">
+</head>
+<body>
+<header class="bar">
+  <a class="bar-brand" href="/admin/">Debt Free Empire · Admin</a>
+  <nav class="bar-nav" aria-label="Admin"><a href="/admin/">Dashboard</a><a href="/admin/support/">Support</a><a href="/admin/announcement/">Announcement</a><a href="/admin/products/">Products</a><a href="/admin/updates/">Updates</a><a href="/admin/promos/">Promo codes</a><a href="/admin/broadcast/">Broadcast</a><a href="/admin/emails/">Email signups</a><a href="/admin/health/">Site health</a><a href="/admin/store-links/">Store links</a><a href="/admin/links/">Quick links</a><a href="/" target="_blank" rel="noopener">View site</a><button type="button" id="logoutBtn" hidden>Log out</button></nav>
+</header>
+<div class="wrap">
+  <div class="card" id="loginCard" hidden>
+    <h1>Admin login</h1>
+    <p class="sub">Private. Not linked anywhere and hidden from search engines.</p>
+    <form id="loginForm" autocomplete="off">
+      <label for="pw">Password</label>
+      <input type="password" id="pw" autocomplete="current-password" required>
+      <div class="row"><button type="submit" class="btn" id="loginBtn">Log in</button></div>
+      <p class="msg" id="loginMsg" role="status" aria-live="polite"></p>
+    </form>
+  </div>
+  <div id="app" hidden>
+    <h1>Email signups</h1>
+    <p class="sub">Everyone who signed up on the main page or the iPhone waitlist.</p>
+    <div class="toolbar">
+      <span class="count" id="totalCount"></span>
+      <div class="row" style="margin:0">
+        <input type="search" id="search" class="field" placeholder="Search emails" aria-label="Search emails">
+        <button type="button" class="btn" id="csvBtn">Export all as CSV</button>
+      </div>
+    </div>
+    <p class="msg" id="toast" role="status" aria-live="polite"></p>
+    <div id="lists"></div>
+  </div>
+</div>
+<script src="/admin/admin.js"></script>
+<script>
+(function () {
+  var A = window.Admin, data = null, term = '', listsEl = document.getElementById('lists'), total = document.getElementById('totalCount'), toast = document.getElementById('toast');
+  function say(t) { toast.textContent = t; clearTimeout(say.t); say.t = setTimeout(function () { toast.textContent = ''; }, 4000); }
+  function csvCell(v) { v = String(v == null ? '' : v); if (/^[=+\-@\t\r]/.test(v)) v = "'" + v; return '"' + v.replace(/"/g, '""') + '"'; }
+  function download(name, text) {
+    var a = document.createElement('a'); a.href = URL.createObjectURL(new Blob(['\ufeff' + text], { type: 'text/csv;charset=utf-8' })); a.download = name;
+    document.body.appendChild(a); a.click(); a.remove(); setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
+  }
+  function csvFor(lists) {
+    var rows = [['List', 'Email', 'Signed up (ISO)']];
+    lists.forEach(function (l) { l.items.forEach(function (it) { rows.push([l.title, it.email, it.date || '']); }); });
+    return rows.map(function (r) { return r.map(csvCell).join(','); }).join('\r\n');
+  }
+  var stamp = function () { return new Date().toISOString().slice(0, 10); };
+  function edit(action, list, email) {
+    return fetch('/api/admin-email-edit', { method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: action, list: list, email: email }) })
+      .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); });
+  }
+  function btn(text, cls, fn) { var b = document.createElement('button'); b.type = 'button'; b.textContent = text; b.className = cls; b.addEventListener('click', fn); return b; }
+
+  function render() {
+    listsEl.textContent = '';
+    var n = 0, q = term.trim().toLowerCase();
+    data.lists.forEach(function (l) {
+      n += l.items.length;
+      var shown = l.items.filter(function (it) { return !q || it.email.indexOf(q) !== -1; });
+      var card = document.createElement('section'); card.className = 'card';
+      var head = document.createElement('div'); head.className = 'toolbar'; head.style.marginBottom = '0';
+      head.appendChild(A.cell('h2', l.title));
+      var right = document.createElement('div'); right.className = 'row'; right.style.margin = '0';
+      right.appendChild(A.cell('span', (q ? shown.length + ' of ' : '') + l.items.length + (l.items.length === 1 ? ' signup' : ' signups'), 'count'));
+      right.appendChild(btn('Copy emails', 'mini', function () {
+        var text = shown.map(function (i) { return i.email; }).join('\n');
+        (navigator.clipboard ? navigator.clipboard.writeText(text) : Promise.reject()).then(function () { say('Copied ' + shown.length + ' email' + (shown.length === 1 ? '' : 's') + '. Paste them wherever you need.'); }, function () { say('Could not copy automatically. Use Export as CSV instead.'); });
+      }));
+      right.appendChild(btn('CSV', 'mini', function () { download('email-signups-' + l.id + '-' + stamp() + '.csv', csvFor([{ title: l.title, items: shown }])); }));
+      head.appendChild(right); card.appendChild(head);
+
+      var add = document.createElement('form'); add.className = 'row'; add.noValidate = true;
+      var inp = document.createElement('input'); inp.type = 'email'; inp.className = 'field'; inp.placeholder = 'Add an email by hand'; inp.setAttribute('aria-label', 'Add an email to ' + l.title);
+      add.appendChild(inp); add.appendChild(btn('Add', 'mini', function () { add.requestSubmit(); }));
+      add.addEventListener('submit', function (e) { e.preventDefault(); if (!inp.value.trim()) return;
+        edit('add', l.id, inp.value).then(function (x) { if (!x.ok) { say(x.j.error || 'Could not add.'); return; } say('Added.'); reload(); }); });
+      card.appendChild(add);
+
+      if (!shown.length) { card.appendChild(A.cell('p', q ? 'No matches.' : 'No signups yet.', 'empty')); }
+      else {
+        var t = document.createElement('table'), thead = document.createElement('thead'), tr = document.createElement('tr');
+        ['Email', 'Signed up', ''].forEach(function (h) { tr.appendChild(A.cell('th', h)); }); thead.appendChild(tr); t.appendChild(thead);
+        var tb = document.createElement('tbody');
+        shown.forEach(function (it) {
+          var r = document.createElement('tr'); r.appendChild(A.cell('td', it.email)); r.appendChild(A.cell('td', A.fmt(it.date), 'date'));
+          var td = document.createElement('td'); td.className = 'act';
+          td.appendChild(btn('Remove', 'mini danger', function () {
+            if (!confirm('Remove ' + it.email + ' from this list?')) return;
+            edit('remove', l.id, it.email).then(function (x) { if (!x.ok) { say(x.j.error || 'Could not remove.'); return; } say('Removed ' + it.email + '.'); reload(); });
+          }));
+          r.appendChild(td); tb.appendChild(r);
+        });
+        t.appendChild(tb); card.appendChild(t);
+      }
+      listsEl.appendChild(card);
+    });
+    total.textContent = n + ' total ' + (n === 1 ? 'signup' : 'signups');
+  }
+
+  function load(getJson) {
+    return getJson('/api/admin-emails').then(function (x) {
+      if (x.status === 401) { data = null; return 'unauthorized'; }
+      if (!x.ok) throw new Error('failed');
+      data = x.j; render();
+    });
+  }
+  var getJsonRef = null;
+  function reload() { if (getJsonRef) load(getJsonRef); }
+  document.getElementById('csvBtn').addEventListener('click', function () { if (data) download('debt-free-empire-email-signups-' + stamp() + '.csv', csvFor(data.lists)); });
+  document.getElementById('search').addEventListener('input', function (e) { term = e.target.value; if (data) render(); });
+  A.init(function (getJson) { getJsonRef = getJson; return load(getJson); });
+})();
+</script>
+</body>
+</html>

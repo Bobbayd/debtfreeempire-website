@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+<title>Admin (private)</title>
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="stylesheet" href="/admin/admin.css">
+</head>
+<body>
+<header class="bar">
+  <a class="bar-brand" href="/admin/">Debt Free Empire · Admin</a>
+  <nav class="bar-nav" aria-label="Admin"><a href="/admin/" aria-current="page">Dashboard</a><a href="/admin/support/">Support</a><a href="/admin/announcement/">Announcement</a><a href="/admin/products/">Products</a><a href="/admin/updates/">Updates</a><a href="/admin/promos/">Promo codes</a><a href="/admin/broadcast/">Broadcast</a><a href="/admin/emails/">Email signups</a><a href="/admin/health/">Site health</a><a href="/admin/store-links/">Store links</a><a href="/admin/links/">Quick links</a><a href="/" target="_blank" rel="noopener">View site</a><button type="button" id="logoutBtn" hidden>Log out</button></nav>
+</header>
+<div class="wrap">
+  <div class="card" id="loginCard" hidden>
+    <h1>Admin login</h1>
+    <p class="sub">Private. Not linked anywhere and hidden from search engines.</p>
+    <form id="loginForm" autocomplete="off">
+      <label for="pw">Password</label>
+      <input type="password" id="pw" autocomplete="current-password" required>
+      <div class="row"><button type="submit" class="btn" id="loginBtn">Log in</button></div>
+      <p class="msg" id="loginMsg" role="status" aria-live="polite"></p>
+    </form>
+  </div>
+  <div id="app" hidden>
+    <h1>Dashboard</h1>
+    <p class="sub">Everything you need to run the site in one place. You stay logged in for 4 hours on this device, or until you click Log out.</p>
+    <div class="stats" id="stats"></div>
+    <div class="section-h">Recent signups</div>
+    <div class="card" id="recentCard"></div>
+    <div class="section-h">Tools</div>
+    <div class="tools"><a class="tool" href="/admin/support/"><div class="tool-t">Support</div><div class="tool-d">Read, reply to and resolve messages from the contact form.</div></a><a class="tool" href="/admin/announcement/"><div class="tool-t">Announcement bar</div><div class="tool-d">A banner across the top of every page. Turn it on, off or change it in a click.</div></a><a class="tool" href="/admin/products/"><div class="tool-t">Products</div><div class="tool-d">Status, price, button text, Featured and NEW badges for each product.</div></a><a class="tool" href="/admin/updates/"><div class="tool-t">What's New</div><div class="tool-d">Write updates for the homepage. Drafts, edits, show or hide.</div></a><a class="tool" href="/admin/promos/"><div class="tool-t">Promo codes</div><div class="tool-d">Keep track of discount codes, expiry dates and how often each is used.</div></a><a class="tool" href="/admin/broadcast/"><div class="tool-t">Broadcast</div><div class="tool-d">Email your newsletter or iPhone waitlist, with a test send first.</div></a>
+      <a class="tool" href="/admin/emails/"><div class="tool-t">Email signups</div><div class="tool-d">Search, add, remove and export every address on both lists.</div></a>
+      <a class="tool" href="/admin/health/"><div class="tool-t">Site health</div><div class="tool-d">One click checks every page and store link and tells you if anything is broken.</div></a>
+      <a class="tool" href="/admin/store-links/"><div class="tool-t">Store links</div><div class="tool-d">Paste the Mac App Store link when Apple approves and the site updates itself. No redeploy.</div></a>
+      <a class="tool" href="/admin/links/"><div class="tool-t">Quick links</div><div class="tool-d">Shortcuts to Vercel, Upstash, Etsy, the app stores and your other dashboards.</div></a>
+    </div>
+  </div>
+</div>
+<script src="/admin/admin.js"></script>
+<script>
+(function () {
+  var A = window.Admin;
+  A.init(function (getJson) {
+    return getJson('/api/admin-stats').then(function (x) {
+      if (x.status === 401) return 'unauthorized';
+      if (!x.ok) throw new Error('failed');
+      var stats = document.getElementById('stats'); stats.textContent = '';
+      x.j.counts.forEach(function (c) {
+        var d = document.createElement('div'); d.className = 'stat';
+        d.appendChild(A.cell('div', String(c.total), 'stat-n'));
+        d.appendChild(A.cell('div', c.title, 'stat-l'));
+        d.appendChild(A.cell('div', c.lastSevenDays + ' in the last 7 days', 'stat-s'));
+        stats.appendChild(d);
+      });
+      var rc = document.getElementById('recentCard'); rc.textContent = '';
+      if (!x.j.recent.length) { rc.appendChild(A.cell('p', 'No signups yet.', 'empty')); }
+      else {
+        var t = document.createElement('table'), th = document.createElement('thead'), tr = document.createElement('tr');
+        ['Email', 'List', 'Signed up'].forEach(function (h) { tr.appendChild(A.cell('th', h)); }); th.appendChild(tr); t.appendChild(th);
+        var tb = document.createElement('tbody');
+        x.j.recent.forEach(function (r) { var row = document.createElement('tr'); row.appendChild(A.cell('td', r.email)); row.appendChild(A.cell('td', r.list)); row.appendChild(A.cell('td', A.fmt(r.date), 'date')); tb.appendChild(row); });
+        t.appendChild(tb); rc.appendChild(t);
+      }
+    });
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+<title>Store links (private)</title>
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="stylesheet" href="/admin/admin.css">
+</head>
+<body>
+<header class="bar">
+  <a class="bar-brand" href="/admin/">Debt Free Empire · Admin</a>
+  <nav class="bar-nav" aria-label="Admin"><a href="/admin/">Dashboard</a><a href="/admin/support/">Support</a><a href="/admin/announcement/">Announcement</a><a href="/admin/products/">Products</a><a href="/admin/updates/">Updates</a><a href="/admin/promos/">Promo codes</a><a href="/admin/broadcast/">Broadcast</a><a href="/admin/emails/">Email signups</a><a href="/admin/health/">Site health</a><a href="/admin/store-links/">Store links</a><a href="/admin/links/">Quick links</a><a href="/" target="_blank" rel="noopener">View site</a><button type="button" id="logoutBtn" hidden>Log out</button></nav>
+</header>
+<div class="wrap">
+  <div class="card" id="loginCard" hidden>
+    <h1>Admin login</h1>
+    <p class="sub">Private. Not linked anywhere and hidden from search engines.</p>
+    <form id="loginForm" autocomplete="off">
+      <label for="pw">Password</label>
+      <input type="password" id="pw" autocomplete="current-password" required>
+      <div class="row"><button type="submit" class="btn" id="loginBtn">Log in</button></div>
+      <p class="msg" id="loginMsg" role="status" aria-live="polite"></p>
+    </form>
+  </div>
+  <div id="app" hidden>
+    <h1>Store links</h1>
+    <p class="sub">When Apple approves Empire Life Dashboard for the Mac App Store, paste its link here. The Empire Life Dashboard page, the Apps page and the homepage card switch from "Coming soon" to a working Mac App Store button within about a minute. No redeploy needed.</p>
+    <div class="card">
+      <h2>Mac App Store link</h2>
+      <form id="macForm" novalidate>
+        <label for="mac">Link (starts with https://apps.apple.com/)</label>
+        <input type="url" id="mac" class="field wide" placeholder="https://apps.apple.com/us/app/…">
+        <div class="row"><button type="submit" class="btn" id="saveBtn">Save</button><button type="button" class="btn secondary" id="clearBtn">Clear (back to Coming soon)</button></div>
+        <p class="msg" id="macMsg" role="status" aria-live="polite"></p>
+      </form>
+    </div>
+    <div class="card"><h2>Other store links</h2><p class="sub" style="margin:8px 0 0">The Microsoft Store, App Store (Paper &amp; Prosperity) and Google Play links are fixed in the site and checked for you on the Site health page.</p></div>
+  </div>
+</div>
+<script src="/admin/admin.js"></script>
+<script>
+(function () {
+  var A = window.Admin, mac = document.getElementById('mac'), msg = document.getElementById('macMsg'), save = document.getElementById('saveBtn');
+  function send(value) {
+    save.disabled = true; msg.textContent = '';
+    return fetch('/api/site-config', { method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ macAppStoreUrl: value }) })
+      .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
+      .then(function (x) { msg.textContent = x.ok ? (x.j.macAppStoreUrl ? 'Saved. The Mac App Store button will appear on the site within about a minute.' : 'Cleared. The site shows "Coming soon" again.') : (x.j.error || 'Could not save.'); if (x.ok) mac.value = x.j.macAppStoreUrl; })
+      .catch(function () { msg.textContent = 'Could not reach the server.'; })
+      .then(function () { save.disabled = false; });
+  }
+  document.getElementById('macForm').addEventListener('submit', function (e) { e.preventDefault(); send(mac.value); });
+  document.getElementById('clearBtn').addEventListener('click', function () { mac.value = ''; send(''); });
+  A.init(function (getJson) {
+    return getJson('/api/admin-stats').then(function (x) {
+      if (x.status === 401) return 'unauthorized';
+      return getJson('/api/site-config').then(function (c) { if (c.ok) mac.value = c.j.macAppStoreUrl || ''; });
+    });
+  });
+})();
+</script>
+</body>
+</html>
