@@ -282,6 +282,8 @@ fetch('/api/site-content',{method:'POST',headers:{'Content-Type':'application/js
 .catch(function(){m.textContent='Could not send. Please try again in a little while.';}).then(function(){b.disabled=false;b.textContent='Send message';});});})();
 </script>
 <script>document.addEventListener('click',function(e){document.querySelectorAll('.nav-dd').forEach(function(d){var btn=e.target.closest('.nav-dd-btn');if(btn&&d.contains(btn)){d.classList.toggle('open');btn.setAttribute('aria-expanded',String(d.classList.contains('open')));}else{d.classList.remove('open');var bb=d.querySelector('.nav-dd-btn');if(bb)bb.setAttribute('aria-expanded','false');}});});</script>
+<script>window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };</script>
+<script defer src="/_vercel/insights/script.js"></script>
 <script src="/site-dynamic.js" defer></script>
 </body>
 </html>

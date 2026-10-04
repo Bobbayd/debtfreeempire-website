@@ -206,6 +206,10 @@
           <p>If you write to us for help, we use your email address and message only to reply to you. We never sell or share it.</p>
         </article>
         <article class="policy-card">
+          <h3>Visiting this website</h3>
+          <p>To see which pages are visited, this website uses Vercel Web Analytics. It counts page views without cookies and does not track you across other sites or collect personal information. This applies to the website only. The app itself still collects nothing.</p>
+        </article>
+        <article class="policy-card">
           <h3>Children</h3>
           <p>Because the app collects no information at all, it collects none from children either.</p>
         </article>
@@ -258,6 +262,8 @@
 </script>
 
 <script>document.addEventListener('click',function(e){document.querySelectorAll('.nav-dd').forEach(function(d){var btn=e.target.closest('.nav-dd-btn');if(btn&&d.contains(btn)){d.classList.toggle('open');btn.setAttribute('aria-expanded',String(d.classList.contains('open')));}else{d.classList.remove('open');var bb=d.querySelector('.nav-dd-btn');if(bb)bb.setAttribute('aria-expanded','false');}});});</script>
+<script>window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };</script>
+<script defer src="/_vercel/insights/script.js"></script>
 <script src="/site-dynamic.js" defer></script>
 </body>
 </html>

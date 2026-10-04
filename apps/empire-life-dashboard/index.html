@@ -66,6 +66,8 @@ fetch('/api/waitlist',{method:'POST',headers:{'Content-Type':'application/json'}
 .then(function(r){return r.json().then(function(j){return {ok:r.ok,j:j};});})
 .then(function(x){if(x.ok){say('You are on the list. We will email you when it launches.',true);f.reset();b.textContent='You are in!';}else{say(x.j&&x.j.error||'Something went wrong. Please try again.',false);b.disabled=false;b.textContent='Notify Me';}})
 .catch(function(){say('Could not reach the server. Please try again in a little while.',false);b.disabled=false;b.textContent='Notify Me';});});})();</script><script>(function(){fetch('/api/site-config').then(function(r){return r.json();}).then(function(c){var u=c&&c.macAppStoreUrl;if(!u||u.indexOf('https://apps.apple.com/')!==0)return;var box=document.getElementById('macAppStore');if(!box)return;var a=document.createElement('a');a.className='app-store-badge';a.href=u;a.target='_blank';a.rel='noopener';a.setAttribute('aria-label','Download on the Mac App Store');var i=document.createElement('img');i.src='/app-store-badge.svg';i.alt='Download on the Mac App Store';i.height=48;i.style.height='48px';a.appendChild(i);box.replaceWith(a);}).catch(function(){});})();</script>
+<script>window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };</script>
+<script defer src="/_vercel/insights/script.js"></script>
 <script src="/site-dynamic.js" defer></script>
 </body>
 </html>

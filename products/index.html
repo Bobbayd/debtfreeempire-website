@@ -42,6 +42,8 @@
 <script>(function(){var f={brand:'all',type:'all'},items=[].slice.call(document.querySelectorAll('.product')),empty=document.getElementById('noResults');function run(){var n=0;items.forEach(function(p){var ok=(f.brand==='all'||p.dataset.brand===f.brand)&&(f.type==='all'||p.dataset.type===f.type);p.hidden=!ok;if(ok)n++;});empty.hidden=n>0;}
 var h=location.hash.slice(1);if(h){var hb=document.querySelector('[data-group=type] [data-v="'+h+'"]');if(hb){document.querySelectorAll('[data-group=type] .chip').forEach(function(c){c.classList.remove('active');});hb.classList.add('active');f.type=h;run();}}
 document.querySelectorAll('.filter-row').forEach(function(r){r.addEventListener('click',function(e){var b=e.target.closest('.chip');if(!b)return;r.querySelectorAll('.chip').forEach(function(c){c.classList.remove('active');});b.classList.add('active');f[r.dataset.group]=b.dataset.v;run();});});})();</script>
+<script>window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };</script>
+<script defer src="/_vercel/insights/script.js"></script>
 <script src="/site-dynamic.js" defer></script>
 </body>
 </html>
