@@ -6,7 +6,15 @@
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="48x48" href="/favicon.png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<title>Debt Free Empire — Approachable tools for your money</title>
+<title>Debt Free Empire — Free Budget App, Debt Payoff Tracker &amp; Savings Tracker</title>
+<meta name="description" content="Debt Free Empire makes calm personal finance tools: a free budget app and debt payoff tracker, zero-based budget planner, savings tracker, spreadsheets and the Empire Life Dashboard.">
+<link rel="canonical" href="https://www.debtfreeempire.com/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Debt Free Empire — Free Budget App, Debt Payoff Tracker &amp; Savings Tracker">
+<meta property="og:description" content="Debt Free Empire makes calm personal finance tools: a free budget app and debt payoff tracker, zero-based budget planner, savings tracker, spreadsheets and the Empire Life Dashboard.">
+<meta property="og:url" content="https://www.debtfreeempire.com/">
+<meta property="og:image" content="https://www.debtfreeempire.com/assets/app/01_Dashboard.jpg">
+<meta name="twitter:card" content="summary_large_image">
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;900&family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300&display=swap');
 
@@ -46,7 +54,7 @@
 
     --overlay-tint: rgba(255,249,243,0.85);
 
-    --quizbar-h: 34px;
+    --quizbar-h: 0px;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -455,7 +463,6 @@
   }
   /* Paper & Prosperity card preview accent */
   .take-action-grid .take-action-card:nth-child(1) { background: var(--pp-card-surface); }
-  /* Empire Arcade card accent */
   .take-action-grid .take-action-card:nth-child(2) { background: #F3EBDD; }
   .take-action-grid .take-action-card:nth-child(3) { background: var(--gold-surface); }
   .take-action-emoji { font-size: 34px; margin-bottom: 14px; }
@@ -1142,9 +1149,7 @@
   .popup-emoji { font-size: 48px; margin-bottom: 16px; display: block; }
   .popup-brand { font-size: 28px; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 8px; }
   .pp-popup .popup-brand { color: #6E7076; }
-  .gs-popup .popup-brand { color: #7A736C; }
   .ll-popup .popup-brand { color: #86868C; }
-  .eg-popup .popup-brand { color: #6B7785; }
 
   .popup-tagline { font-size: 14px; font-style: italic; margin-bottom: 24px; opacity: 0.7; font-family: 'Cormorant Garamond', serif; }
 
@@ -1175,12 +1180,8 @@
 
   .pp-popup .popup-cta { background: #6E7076; color: white; }
   .pp-popup .popup-cta:hover { background: #82848A; }
-  .gs-popup .popup-cta { background: #7A736C; color: white; }
-  .gs-popup .popup-cta:hover { background: #8E8780; }
   .ll-popup .popup-cta { background: #86868C; color: white; }
   .ll-popup .popup-cta:hover { background: #9A9AA0; }
-  .eg-popup .popup-cta { background: #6B7785; color: white; }
-  .eg-popup .popup-cta:hover { background: #7F8996; }
 
   .popup-soon { text-align: center; font-size: 10px; opacity: 0.5; letter-spacing: 2px; text-transform: uppercase; }
 
@@ -1415,6 +1416,59 @@
   @media (prefers-reduced-motion: reduce) { .eai-bubble { transition: none; transform: none; } }
 
   .eai-disabled-note { text-align: center; font-size: 11px; color: var(--text-secondary); padding: 10px 16px 18px; background: var(--bg-main); }
+
+/* NAV: right-aligned CTA + label rows */
+.site-header-nav { margin-left: auto; }
+.nav-dd-menu { min-width: 260px; } .nav-dd-item { white-space: nowrap; }
+  .nav-cta { display: inline-flex; align-items: center; white-space: nowrap; background: var(--lavender); color: var(--card-white); border: 1.5px solid var(--lavender); font-family: 'Montserrat', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; text-decoration: none; padding: 10px 18px; border-radius: 8px; transition: background 0.2s, border-color 0.2s; }
+.nav-cta:hover { background: var(--lavender-hover); border-color: var(--lavender-hover); }
+.nav-cta:focus-visible { outline: 2px solid var(--lavender); outline-offset: 2px; }
+@media (min-width: 900px) and (max-width: 1180px) { .nav-cta { padding: 8px 12px; font-size: 11px; letter-spacing: 0.8px; } }
+.drawer .drawer-label { display: block; font-size: 11px; font-weight: 800; letter-spacing: 1.4px; text-transform: uppercase; color: var(--text-secondary); padding-top: 14px; padding-bottom: 4px; }
+.drawer a.drawer-cta { display: block; text-align: center; margin: 14px 8px 0; padding: 13px 16px; border-radius: 8px; background: var(--lavender); color: var(--card-white); font-size: 12px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; text-decoration: none; }
+.drawer a.drawer-cta:hover { background: var(--lavender-hover); }
+
+/* HOMEPAGE (strategic redesign) */
+.dfe-hero { background: var(--bg-main); padding: 56px 24px 64px; border-bottom: 1px solid var(--gold-soft); }
+.dfe-hero-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1.1fr 1fr; gap: 48px; align-items: center; }
+.dfe-hero-headline { font-size: clamp(30px, 4.6vw, 54px); font-weight: 900; line-height: 1.12; color: var(--text-primary); margin-bottom: 18px; }
+.dfe-hero-sub { font-size: clamp(15px, 2vw, 18px); color: var(--text-secondary); max-width: 540px; margin-bottom: 28px; line-height: 1.6; }
+.dfe-hero-ctas { display: flex; flex-wrap: wrap; gap: 14px; }
+.dfe-devices { display: flex; justify-content: center; align-items: center; gap: 0; }
+.dfe-phone { background: #1A1A1A; border-radius: 28px; padding: 7px; box-shadow: 0 18px 40px rgba(26,26,26,0.22); flex: 0 1 31%; }
+.dfe-phone img { display: block; width: 100%; height: auto; border-radius: 22px; }
+.dfe-phone-main { flex-basis: 38%; position: relative; z-index: 2; margin: 0 -4%; }
+.dfe-phone-side { transform: scale(0.9); opacity: 0.96; }
+.dfe-section { padding: 80px 24px; scroll-margin-top: 80px; text-align: center; }
+.dfe-section.alt { background: var(--bg-alt); }
+.dfe-section-inner { max-width: 1000px; margin: 0 auto; }
+.dfe-kicker { font-size: 11px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--lavender); margin-bottom: 12px; }
+.dfe-feature-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 32px; text-align: left; }
+.dfe-feature-grid-3 { grid-template-columns: repeat(3, 1fr); }
+.dfe-feature { background: var(--card-white); border: 1px solid var(--border); border-top: 3px solid var(--gold-soft); border-radius: 12px; padding: 24px 22px; box-shadow: 0 4px 14px rgba(26,26,26,0.06); }
+.dfe-feature-title { font-size: 17px; font-weight: 800; color: var(--text-primary); margin-bottom: 8px; }
+.dfe-feature-desc { font-size: 14px; line-height: 1.6; color: var(--text-secondary); }
+.dfe-demo { margin-top: 36px; }
+.dfe-demo-note { margin-top: 12px; font-size: 13px; color: var(--text-secondary); }
+.dfe-stores { margin-top: 28px; display: flex; flex-wrap: wrap; justify-content: center; gap: 14px; }
+.dfe-more { margin-top: 26px; font-size: 14px; font-weight: 700; }
+.dfe-more a { color: var(--lavender-hover); text-decoration: none; }
+.dfe-more a:hover { text-decoration: underline; }
+.dfe-tabs { list-style: none; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin: 28px 0 0; padding: 0; }
+.dfe-tabs li { background: var(--card-white); border: 1px solid var(--border); border-radius: 20px; padding: 7px 16px; font-size: 13px; font-weight: 600; color: var(--text-primary); }
+.dfe-quotes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 28px; }
+.dfe-quote { border: 1.5px dashed var(--border); border-radius: 12px; padding: 34px 20px; color: var(--text-secondary); font-size: 14px; font-style: italic; background: rgba(255,255,255,0.5); }
+@media (max-width: 900px) {
+  .dfe-hero { padding: 36px 20px 48px; }
+  .dfe-hero-inner { grid-template-columns: 1fr; gap: 36px; text-align: center; }
+  .dfe-hero-sub { margin-left: auto; margin-right: auto; }
+  .dfe-hero-ctas { justify-content: center; }
+  .dfe-devices { max-width: 420px; margin: 0 auto; }
+}
+@media (max-width: 760px) {
+  .dfe-feature-grid, .dfe-feature-grid-3, .dfe-quotes { grid-template-columns: 1fr; }
+  .dfe-section { padding: 60px 16px; }
+}
 </style>
 </head>
 <body>
@@ -1425,7 +1479,6 @@
     <symbol id="icon-home" viewBox="0 0 24 24"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v10h13V10"/><path d="M10 20v-6h4v6"/></symbol>
     <symbol id="icon-phone" viewBox="0 0 24 24"><rect x="6" y="2.5" width="12" height="19" rx="2.5"/><line x1="10.5" y1="18.5" x2="13.5" y2="18.5"/></symbol>
     <symbol id="icon-heart" viewBox="0 0 24 24"><path d="M20.8 5.6a5.5 5.5 0 0 0-7.8 0L12 6.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 22l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8Z"/></symbol>
-    <symbol id="icon-gamepad" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="11" rx="5.5"/><line x1="7" y1="10.8" x2="7" y2="14.2"/><line x1="5.3" y1="12.5" x2="8.7" y2="12.5"/><circle cx="15" cy="10.7" r="1"/><circle cx="17.7" cy="13.3" r="1"/></symbol>
     <symbol id="icon-cart" viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="18" cy="21" r="1"/><path d="M1 1h3l2.3 12.4a2 2 0 0 0 2 1.6h8.4a2 2 0 0 0 2-1.6L21 6H5.2"/></symbol>
     <symbol id="icon-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5.3"/><circle cx="12" cy="12" r="1.6" fill="currentColor" stroke="none"/></symbol>
     <symbol id="icon-chart" viewBox="0 0 24 24"><line x1="5" y1="20" x2="5" y2="13"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="19" y1="20" x2="19" y2="10"/></symbol>
@@ -1437,20 +1490,7 @@
   </defs>
 </svg>
 
-<div class="quiz-bar">
-  <span class="quiz-bar-lead">Not sure where to begin? Choose a starting point that feels right for you.</span> <a href="#starting-point" id="quizBarLink">See My Options →</a>
-</div>
-
-<header class="site-header">
-  <a href="#top" class="site-header-brand">Debt Free Empire</a>
-  <nav class="site-header-nav" aria-label="Primary">
-    <a class="site-header-link" href="/"><svg class="icon-svg icon-nav" aria-hidden="true" focusable="false" style="color: var(--text-primary);"><use href="#icon-home"/></svg>Home</a>
-    <div class="nav-dd"><button type="button" class="site-header-link nav-dd-btn" aria-expanded="false" aria-haspopup="true" style=""><svg class="icon-svg icon-nav" aria-hidden="true" focusable="false" style="color: var(--lavender);"><use href="#icon-phone"/></svg>Apps <span class="nav-dd-caret">⌄</span></button><div class="nav-dd-menu"><a class="nav-dd-item" href="/apps/empire-life-dashboard">Empire Life Dashboard</a><a class="nav-dd-item" href="/paper-and-prosperity">Paper &amp; Prosperity</a><span class="nav-dd-item soon" aria-disabled="true">Grind &amp; Save<em>Coming soon</em></span><a class="nav-dd-item nav-dd-all" href="/apps">All apps →</a></div></div>
-    <a class="site-header-link" href="/products"><svg class="icon-svg icon-nav" aria-hidden="true" focusable="false" style="color: var(--text-primary);"><use href="#icon-cart"/></svg>Products</a>
-    <a class="site-header-link" href="/empire-games"><svg class="icon-svg icon-nav" aria-hidden="true" focusable="false" style="color: var(--gold-deep);"><use href="#icon-gamepad"/></svg>Empire Games</a>
-    <a class="site-header-link" href="/#about"><svg class="icon-svg icon-nav" aria-hidden="true" focusable="false" style="color: var(--text-primary);"><use href="#icon-info"/></svg>About</a>
-  </nav>
-</header>
+<header class="site-header"><a href="/" class="site-header-brand">Debt Free Empire</a><nav class="site-header-nav" aria-label="Primary"><div class="nav-dd"><button type="button" class="site-header-link nav-dd-btn" aria-expanded="false" aria-haspopup="true">Apps <span class="nav-dd-caret">⌄</span></button><div class="nav-dd-menu"><a class="nav-dd-item" href="/paper-and-prosperity">Paper &amp; Prosperity</a><a class="nav-dd-item" href="/apps/empire-life-dashboard">Empire Life Dashboard</a></div></div><div class="nav-dd"><button type="button" class="site-header-link nav-dd-btn" aria-expanded="false" aria-haspopup="true">Shop <span class="nav-dd-caret">⌄</span></button><div class="nav-dd-menu"><a class="nav-dd-item" href="https://www.etsy.com/shop/PaperandProsperity" target="_blank" rel="noopener">Spreadsheets</a><span class="nav-dd-item soon" aria-disabled="true">Workbooks<em>Coming soon</em></span><span class="nav-dd-item soon" aria-disabled="true">Cash Envelopes<em>Coming soon</em></span></div></div><a class="site-header-link" href="/about">About</a></nav><a class="nav-cta" href="https://web-paper-and-prosperity.vercel.app" target="_blank" rel="noopener">Open Web App</a></header>
 
 <div class="mobile-topbar">
   <a href="#top" class="nav-brand">Debt Free Empire</a>
@@ -1463,319 +1503,144 @@
   <aside class="sidebar" id="sidebar">
     <a href="#top" class="sidebar-brand">Debt Free Empire</a>
 
-    <a class="sidebar-item" href="/" onclick="closeSidebarOnMobile()"><svg class="icon-svg icon-nav" aria-hidden="true" focusable="false" style="color: var(--text-primary);"><use href="#icon-home"/></svg><span class="sidebar-item-text">Home</span></a>
-    <a class="sidebar-item" href="/apps"><svg class="icon-svg icon-nav" aria-hidden="true" focusable="false" style="color: var(--lavender);"><use href="#icon-phone"/></svg><span class="sidebar-item-text">Apps</span></a>
+    <span class="sidebar-label">Apps</span>
+    <a class="sidebar-item" href="/paper-and-prosperity" style="padding-left:40px"><span class="sidebar-item-text">Paper &amp; Prosperity</span></a>
     <a class="sidebar-item" href="/apps/empire-life-dashboard" style="padding-left:40px"><span class="sidebar-item-text">Empire Life Dashboard</span></a>
-    <a class="sidebar-item" href="/paper-and-prosperity" style="padding-left:40px"><span class="sidebar-item-text">Paper & Prosperity</span></a>
-    <span class="sidebar-item" style="padding-left:40px;opacity:.7;cursor:default"><span class="sidebar-item-text">Grind & Save <em style="font-style:normal;font-size:9px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;background:var(--lavender-soft);padding:3px 8px;border-radius:20px;margin-left:6px">Coming soon</em></span></span>
-    <a class="sidebar-item" href="/products"><svg class="icon-svg icon-nav" aria-hidden="true" focusable="false" style="color: var(--text-primary);"><use href="#icon-cart"/></svg><span class="sidebar-item-text">Products</span></a>
-    <a class="sidebar-item" href="/empire-games"><svg class="icon-svg icon-nav" aria-hidden="true" focusable="false" style="color: var(--gold-deep);"><use href="#icon-gamepad"/></svg><span class="sidebar-item-text">Empire Games</span></a>
-    <div class="sidebar-divider"></div>
-    <a href="#about" class="sidebar-item" onclick="closeSidebarOnMobile()">
-      <svg class="icon-svg icon-nav" aria-hidden="true" focusable="false" style="color: var(--text-primary);"><use href="#icon-info"/></svg>
-      <span class="sidebar-item-text">About</span>
-    </a>
+    <span class="sidebar-label">Shop</span>
+    <a class="sidebar-item" href="https://www.etsy.com/shop/PaperandProsperity" target="_blank" rel="noopener" style="padding-left:40px"><span class="sidebar-item-text">Spreadsheets</span></a>
+    <span class="sidebar-item" style="padding-left:40px;opacity:.7;cursor:default"><span class="sidebar-item-text">Workbooks <em style="font-style:normal;font-size:9px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;background:var(--lavender-soft);padding:3px 8px;border-radius:20px;margin-left:6px">Coming soon</em></span></span>
+    <span class="sidebar-item" style="padding-left:40px;opacity:.7;cursor:default"><span class="sidebar-item-text">Cash Envelopes <em style="font-style:normal;font-size:9px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;background:var(--lavender-soft);padding:3px 8px;border-radius:20px;margin-left:6px">Coming soon</em></span></span>
+    <a class="sidebar-item" href="/about"><span class="sidebar-item-text">About</span></a>
+    <a class="drawer-cta" href="https://web-paper-and-prosperity.vercel.app" target="_blank" rel="noopener" style="margin:14px 8px">Open Web App</a>
   </aside>
 
   <div class="main-content">
-    <div class="hero-image-section" id="top">
-      <img class="hero-image" src="./hero-office.jpeg" alt="A bright, minimalist home workspace with a laptop on a wooden desk, a sunlit window, and a green plant" />
-    </div>
-
-    <div class="welcome-section">
-      <div class="hero-brand">Debt Free Empire</div>
-
-      <blockquote class="quote-banner" id="quoteBanner">
-        <span class="quote-banner-line" aria-hidden="true"></span>
-        <p class="quote-banner-text" id="quoteBannerText">&nbsp;</p>
-        <span class="quote-banner-line" aria-hidden="true"></span>
-      </blockquote>
-
-      <div class="hero-eyebrow">Welcome To Debt Free Empire</div>
-      <h1 class="hero-headline">Money can feel overwhelming. Your next step doesn't have to.</h1>
-      <p class="hero-subtitle">Debt Free Empire gives you approachable tools to understand your money, create a plan, and make progress at your own pace. No judgment. No financial experience required.</p>
-      <div class="hero-cta-row">
-        <a href="#starting-point" id="heroPrimaryCta" class="hero-cta-btn">Help Me Get Started</a>
-        <a href="#take-action" class="hero-cta-btn-secondary">Explore Available Tools</a>
-      </div>
-      <p class="hero-reassurance">Start where you are. Use what helps. Build from there.</p>
-      <div class="hero-divider"></div>
-    </div>
-
-<!-- AS SEEN ON -->
-<!-- Hidden — no real profile URL exists in the codebase for TikTok, Instagram, Pinterest, Google Play, or Etsy.
-     To show this section: for each real platform, uncomment/add an <a> like:
-     <a class="as-seen-on-box" href="[REAL PROFILE URL]" target="_blank" rel="noopener" aria-label="Debt Free Empire on [Platform]">[Platform]</a>
-     and remove the `hidden` attribute below. See completion report. -->
-<section id="as-seen-on" class="as-seen-on-section" hidden>
-  <div class="as-seen-on-label">Find Debt Free Empire On</div>
-  <div class="as-seen-on-grid"></div>
-</section>
-
-<!-- BEGINNER STARTING POINT -->
-<section id="starting-point" class="beginner-section">
-  <h2 class="store-heading">What would you like help with first?</h2>
-  <div class="store-heading-underline"></div>
-  <p class="section-sub" style="margin-bottom:0;">Choose the option that feels closest to where you are today. You can always explore the other tools later.</p>
-  <div class="beginner-grid">
-    <div class="beginner-card">
-      <div class="beginner-card-title">Build My First Budget</div>
-      <p class="beginner-card-desc">Start with a simple view of your income, expenses, and the money you have available.</p>
-      <a class="beginner-card-btn" href="/paper-and-prosperity#feature-budget">Start Budgeting</a>
-    </div>
-    <div class="beginner-card">
-      <div class="beginner-card-title">Make a Debt Payoff Plan</div>
-      <p class="beginner-card-desc">Organize what you owe and see how your payments can change your debt-free timeline.</p>
-      <a class="beginner-card-btn" href="/paper-and-prosperity#feature-debt-payoff">Plan My Payoff</a>
-    </div>
-    <div class="beginner-card">
-      <div class="beginner-card-title">Start Saving</div>
-      <p class="beginner-card-desc">Turn a goal into smaller, manageable steps and track your progress as it grows.</p>
-      <a class="beginner-card-btn" href="/paper-and-prosperity#feature-savings">Set a Savings Goal</a>
-    </div>
-  </div>
-</section>
-
-<!-- ROBERT'S STORY -->
-<section id="story" class="story-section">
-  <!-- Text-only for now. To add the founder photo later: add class="has-photo" to
-       .story-grid below and insert <img class="story-photo" src="..." alt="..."> as
-       the first child, ahead of .story-text. -->
-  <div class="story-grid">
-    <div class="story-text">
-      <div class="story-label">Why I Built Debt Free Empire</div>
-      <h2 class="story-headline">Built from real financial struggle.</h2>
-      <p class="story-paragraph">
-        Debt Free Empire was created from the experience of trying to make sense of money while life was
-        already demanding enough. I wanted tools that felt clear, practical, and encouraging — not
-        complicated or judgmental.
-      </p>
-      <p class="story-paragraph">
-        You do not need to have everything figured out before you begin. You only need an honest starting
-        point and a next step you can manage.
-      </p>
-      <p class="story-paragraph" style="font-style:italic; font-family:'Cormorant Garamond', serif; font-size:16px; color: var(--gold-deep);">
-        Your progress does not have to look perfect to be meaningful.
-      </p>
-      <a href="#about" class="story-btn">Read My Story</a>
-    </div>
-  </div>
-</section>
-
-<!-- SCROLLING TICKER -->
-<div class="ticker-section">
-  <div class="ticker-track">
-    <span>UNDERSTAND YOUR MONEY • BUILD YOUR PLAN • CELEBRATE YOUR PROGRESS • CREATE YOUR FUTURE • UNDERSTAND YOUR MONEY • BUILD YOUR PLAN • CELEBRATE YOUR PROGRESS • CREATE YOUR FUTURE •&nbsp;</span>
-    <span>UNDERSTAND YOUR MONEY • BUILD YOUR PLAN • CELEBRATE YOUR PROGRESS • CREATE YOUR FUTURE • UNDERSTAND YOUR MONEY • BUILD YOUR PLAN • CELEBRATE YOUR PROGRESS • CREATE YOUR FUTURE •&nbsp;</span>
-  </div>
-</div>
-
-<!-- TESTIMONIALS (hidden until genuine reviews exist) -->
-<section id="testimonials" class="testimonials-section" hidden>
-  <h2 class="store-heading">What People Are Saying</h2>
-  <div class="store-heading-underline"></div>
-  <div class="testimonials-grid">
-    <div class="testimonial-card">
-      <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
-      <div class="testimonial-text">Review coming soon</div>
-    </div>
-    <div class="testimonial-card">
-      <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
-      <div class="testimonial-text">Review coming soon</div>
-    </div>
-    <div class="testimonial-card">
-      <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
-      <div class="testimonial-text">Review coming soon</div>
-    </div>
-  </div>
-  <p class="testimonials-note">Be one of the first to share your experience.</p>
-</section>
-
-<!-- CHOOSE YOUR NEXT STEP (available tools) -->
-<section id="take-action" class="take-action-section">
-  <h2 class="store-heading">Choose Your Next Step</h2>
-  <div class="store-heading-underline"></div>
-  <p class="section-sub" style="margin-bottom:0;">Explore tools designed to make budgeting, debt payoff, and saving easier to understand — one step at a time.</p>
-  <div class="take-action-grid">
-    <div class="take-action-card" data-product="pp">
-      <span class="take-action-emoji" style="color: var(--lavender);"><svg class="icon-svg icon-lg" aria-hidden="true" focusable="false"><use href="#icon-heart"/></svg></span>
-      <span class="take-action-status live" data-p-status data-status-badge="pp">Available on Web, App Store &amp; Google Play</span>
-      <div class="take-action-title">Paper & Prosperity</div>
-      <p class="take-action-desc">A calm, approachable financial-planning app designed to help you budget, track debt, build savings, and understand your complete financial picture.</p>
-      <button class="take-action-btn" data-p-btn onclick="window.open('https://web-paper-and-prosperity.vercel.app', '_blank')">Open the Web App</button>
-    </div>
-    <div class="take-action-card" data-product="eld">
-      <span class="take-action-emoji" style="color: var(--gold-deep);"><svg class="icon-svg icon-lg" aria-hidden="true" focusable="false"><use href="#icon-chart"/></svg></span>
-      <span class="take-action-status live" data-p-status id="eldStatus">Available on Windows · Mac coming soon</span>
-      <div class="take-action-title">Empire Life Dashboard</div>
-      <p class="take-action-desc">A calm all-in-one life dashboard for managing your money, health, routines, home, relationships and dreams. One purchase. No subscription.</p>
-      <a href="/apps/empire-life-dashboard" class="take-action-btn" data-p-btn>Learn More</a>
-    </div>
-    <div class="take-action-card" data-product="arcade">
-      <span class="take-action-emoji" style="color: var(--gold-deep);"><svg class="icon-svg icon-lg" aria-hidden="true" focusable="false"><use href="#icon-gamepad"/></svg></span>
-      <span class="take-action-status soon" data-p-status data-status-badge="arcade">Coming Soon</span>
-      <div class="take-action-title">Empire Arcade</div>
-      <p class="take-action-desc">Empire Arcade will be the home of Debt Free Empire's interactive games. Coming soon.</p>
-      <div class="take-action-btn-row">
-        <button class="take-action-btn" data-p-btn onclick="openBrand('eg')">Learn More</button>
-      </div>
-    </div>
-    <div class="take-action-card" data-product="workbooks">
-      <span class="take-action-emoji" style="color: var(--text-primary);"><svg class="icon-svg icon-lg" aria-hidden="true" focusable="false"><use href="#icon-cart"/></svg></span>
-      <div class="take-action-title">Browse the Store</div>
-      <p class="take-action-desc">Spreadsheets, workbooks, and premium cash envelopes.</p>
-      <a href="#store" class="take-action-btn" data-p-btn>Shop Now</a>
-    </div>
-  </div>
-
-  <div class="coming-next-wrap">
-    <div class="coming-next-label">More tools are on the way</div>
-    <div class="coming-next-grid">
-      <div class="coming-next-card" data-product="gs">
-        <div class="coming-next-title">Grind & Save</div>
-        <div class="coming-next-desc">A focused personal-finance experience built around consistent action, clear goals, and long-term progress.</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- HOW IT WORKS -->
-<section id="how-it-works" class="how-it-works-section">
-  <h2 class="store-heading">Getting started can be simple.</h2>
-  <div class="store-heading-underline"></div>
-  <div class="how-it-works-grid">
-    <div class="how-card">
-      <span class="how-badge">1</span>
-      <span class="how-emoji" style="color: var(--text-primary);"><svg class="icon-svg icon-lg" aria-hidden="true" focusable="false"><use href="#icon-target"/></svg></span>
-      <div class="how-title">Choose Your Focus</div>
-      <p class="how-desc">Begin with budgeting, debt payoff, or saving — whichever feels most important today.</p>
-    </div>
-    <div class="how-card">
-      <span class="how-badge">2</span>
-      <span class="how-emoji" style="color: var(--text-primary);"><svg class="icon-svg icon-lg" aria-hidden="true" focusable="false"><use href="#icon-chart"/></svg></span>
-      <div class="how-title">See Your Numbers Clearly</div>
-      <p class="how-desc">Enter your information and use the tools to understand where your money is going.</p>
-    </div>
-    <div class="how-card">
-      <span class="how-badge">3</span>
-      <span class="how-emoji" style="color: var(--text-primary);"><svg class="icon-svg icon-lg" aria-hidden="true" focusable="false"><use href="#icon-trophy"/></svg></span>
-      <div class="how-title">Build at Your Own Pace</div>
-      <p class="how-desc">Return regularly, track your progress, and adjust your plan as your life changes.</p>
-    </div>
-  </div>
-</section>
-
-<!-- BRAND CARDS (consolidated into "Choose Your Next Step" above to avoid a duplicate, potentially conflicting product grid — see completion report) -->
-<section id="brands" class="brands-section" hidden>
-  <div class="brands-title">What's inside the empire</div>
-  <div class="brands-grid">
-    <div class="brand-card pp" onclick="openBrand('pp')">
-      <span class="brand-emoji">💜</span>
-      <div class="brand-name">Paper & Prosperity</div>
-      <div class="brand-desc">The personal finance app for people ready to take control of their money.</div>
-      <span class="brand-status status-live">Live Now</span>
-      <span class="brand-learn">→</span>
-    </div>
-
-    <div class="brand-card gs" onclick="openBrand('gs')">
-      <span class="brand-emoji">💪</span>
-      <div class="brand-name">Grind & Save</div>
-      <div class="brand-desc">No-nonsense finance app built for men serious about crushing debt.</div>
-      <span class="brand-status status-soon">Coming Soon</span>
-      <span class="brand-learn">→</span>
-    </div>
-
-    <div class="brand-card eg" onclick="openBrand('eg')">
-      <span class="brand-emoji">🏆</span>
-      <div class="brand-name">Empire Arcade</div>
-      <div class="brand-desc">Approachable, money-themed games that teach financial literacy without the lecture.</div>
-      <span class="brand-status status-soon">Coming Soon</span>
-      <span class="brand-learn">→</span>
-    </div>
-  </div>
-</section>
-
-<!-- SOCIAL PROOF (hidden — stats are not verifiable from the codebase; see completion report) -->
-<section id="social-proof" class="social-proof-section" hidden>
-  <div class="social-proof-grid">
-    <div class="stat-block">
-      <div class="stat-number">500+</div>
-      <div class="stat-label">People on the journey</div>
-    </div>
-    <div class="stat-block">
-      <div class="stat-number">9</div>
-      <div class="stat-label">Envelope collections</div>
-    </div>
-    <div class="stat-block">
-      <div class="stat-number">50+</div>
-      <div class="stat-label">Games coming to the arcade</div>
-    </div>
-  </div>
-</section>
-
-<!-- STORE -->
-<section id="store" class="page-section store-section">
-  <div class="section-inner">
-    <h2 class="store-heading">The Empire Store</h2>
-    <div class="store-heading-underline"></div>
-    <p class="section-sub">Practical spreadsheets and printable tools for budgeting, planning, tracking, and organizing your financial life.</p>
-
-    <div class="store-grid" style="grid-template-columns: 1fr; max-width: 480px; margin: 0 auto;">
-      <div class="store-card">
-        <span class="store-card-emoji" style="color: var(--text-primary);"><svg class="icon-svg icon-md" aria-hidden="true" focusable="false"><use href="#icon-chart"/></svg></span>
-        <span class="brand-status status-live" style="margin-bottom:10px;">Available on Etsy</span>
-        <div class="store-card-title">Spreadsheets</div>
-        <p class="store-card-desc">Practical spreadsheets for budgeting, planning, tracking, and organizing your financial life.</p>
-        <a class="take-action-btn" style="display:block; text-align:center; text-decoration:none;" href="https://www.etsy.com/shop/PaperandProsperity" target="_blank" rel="noopener noreferrer">Shop Spreadsheets on Etsy</a>
-      </div>
-    </div>
-
-    <div class="coming-next-wrap">
-      <div class="coming-next-label">More tools are on the way</div>
-      <p class="section-sub" style="margin-bottom:16px; max-width: 640px;">Debt Free Empire is continuing to expand with new ways to budget, save, learn, and track your progress. Join the newsletter if you would like to know when something new becomes available.</p>
-      <div class="coming-next-grid">
-        <div class="coming-next-card">
-          <div class="coming-next-title">PDFs & Printables</div>
-          <div class="coming-next-desc">Printable financial tools designed to make budgeting, saving, and tracking progress easier to see and manage.</div>
+    <!-- HERO -->
+    <section class="dfe-hero" id="top">
+      <div class="dfe-hero-inner">
+        <div class="dfe-hero-text">
+          <h1 class="dfe-hero-headline">Organize Your Financial Life. One Calm Dashboard.</h1>
+          <p class="dfe-hero-sub">Track your daily budget, see your exact debt-free date, and reach your savings milestones with tools built to look premium and feel stress-free.</p>
+          <div class="dfe-hero-ctas">
+            <a href="https://web-paper-and-prosperity.vercel.app" target="_blank" rel="noopener" class="hero-cta-btn">Launch Free App</a>
+            <a href="https://www.etsy.com/shop/PaperandProsperity" target="_blank" rel="noopener" class="hero-cta-btn-secondary">Explore Printed Planners</a>
+          </div>
         </div>
-        <div class="coming-next-card">
-          <div class="coming-next-title">Physical Workbooks</div>
-          <div class="coming-next-desc">Guided physical workbooks for hands-on budgeting, debt payoff, saving, and financial reflection.</div>
-        </div>
-        <div class="coming-next-card">
-          <div class="coming-next-title">Cash Envelopes</div>
-          <div class="coming-next-desc">Premium printable cash envelope collections.</div>
+        <div class="dfe-devices" aria-label="Paper &amp; Prosperity app screens">
+          <div class="dfe-phone dfe-phone-side"><img src="/assets/app/04_Debt_Payoff.jpg" alt="Paper &amp; Prosperity debt payoff screen showing a debt-free date" width="270" height="480" loading="eager"></div>
+          <div class="dfe-phone dfe-phone-main"><img src="/assets/app/01_Dashboard.jpg" alt="Paper &amp; Prosperity dashboard screen with daily budget" width="270" height="480" loading="eager"></div>
+          <div class="dfe-phone dfe-phone-side"><img src="/assets/app/06_Savings_Vaults.jpg" alt="Paper &amp; Prosperity savings vaults screen" width="270" height="480" loading="eager"></div>
         </div>
       </div>
-    </div>
-  </div>
-</section>
+    </section>
 
-<!-- APP DOWNLOAD -->
-<section id="app-download" class="page-section app-download-section">
-  <div class="section-inner">
-    <h2 class="section-title">Take the Empire With You</h2>
-    <p class="section-sub">Paper & Prosperity is available on the web, the App Store, and Google Play.</p>
-    <div class="app-download-buttons">
-      <a class="app-store-badge" href="https://apps.apple.com/us/app/paper-prosperity/id6809006042" target="_blank" rel="noopener" aria-label="Download on the App Store"><img src="/app-store-badge.svg" alt="Download on the App Store" height="56"></a>
-      <a class="app-store-badge" href="https://play.google.com/store/apps/details?id=com.paperandprosperity.paper_and_prosperity" target="_blank" rel="noopener" aria-label="Download on Google Play"><img src="/google-play-badge.svg" alt="Download on Google Play" height="56"></a>
-      <a href="https://web-paper-and-prosperity.vercel.app" target="_blank" rel="noopener" class="app-download-btn">Open the Web App</a>
-      
-    </div>
-  </div>
-</section>
+    <!-- HOW IT WORKS -->
+    <section id="how-it-works" class="how-it-works-section">
+      <h2 class="store-heading">How it works</h2>
+      <div class="store-heading-underline"></div>
+      <div class="how-it-works-grid">
+        <div class="how-card">
+          <span class="how-badge">1</span>
+          <div class="how-title">Add your numbers</div>
+          <p class="how-desc">Start with your income, bills, debts, and savings goals. Estimates are fine — you can refine them anytime.</p>
+        </div>
+        <div class="how-card">
+          <span class="how-badge">2</span>
+          <div class="how-title">See your finish line</div>
+          <p class="how-desc">Get your daily budget and your debt-free date, calculated for you automatically.</p>
+        </div>
+        <div class="how-card">
+          <span class="how-badge">3</span>
+          <div class="how-title">Build at your own pace</div>
+          <p class="how-desc">Check in when you can, adjust as life changes, and watch your progress grow.</p>
+        </div>
+      </div>
+    </section>
 
-<!-- ABOUT -->
-<section id="about" class="page-section about-section">
-  <div class="section-inner">
-    <h2 class="about-headline">One company. Different ways to move forward.</h2>
-    <p class="about-body">
-      Debt Free Empire brings approachable financial tools together in one place—from apps and spreadsheets
-      to workbooks, printables, and interactive games. Choose the format that works for you and build your
-      financial system one manageable step at a time.
-    </p>
-  </div>
-</section>
+    <!-- PAPER & PROSPERITY FEATURES -->
+    <section id="paper-and-prosperity" class="dfe-section">
+      <div class="dfe-section-inner">
+        <div class="dfe-kicker">Paper &amp; Prosperity</div>
+        <h2 class="store-heading">Budget. Save. Thrive.</h2>
+        <div class="store-heading-underline"></div>
+        <p class="section-sub">A calm, free money app for your budget, debt, and savings — on the web, iPhone, iPad, Mac and Android.</p>
+        <div class="dfe-feature-grid">
+          <div class="dfe-feature">
+            <h3 class="dfe-feature-title">Debt Simulator</h3>
+            <p class="dfe-feature-desc">See your exact debt-free date automatically — so you can finally see the finish line.</p>
+          </div>
+          <div class="dfe-feature">
+            <h3 class="dfe-feature-title">Savings Vaults</h3>
+            <p class="dfe-feature-desc">Build savings for what matters most — watch your progress grow every month.</p>
+          </div>
+          <div class="dfe-feature">
+            <h3 class="dfe-feature-title">Budget Tracker</h3>
+            <p class="dfe-feature-desc">Every dollar has a job. Know exactly where your money is going before you spend it.</p>
+          </div>
+          <div class="dfe-feature">
+            <h3 class="dfe-feature-title">Bill Calendar</h3>
+            <p class="dfe-feature-desc">Never miss a payment again — see every bill before it's due.</p>
+          </div>
+          <div class="dfe-feature">
+            <h3 class="dfe-feature-title">Your Money Coach</h3>
+            <p class="dfe-feature-desc">Ask anything about your budget and get answers based on your actual numbers.</p>
+          </div>
+        </div>
+        <div class="dfe-demo">
+          <a href="https://web-paper-and-prosperity.vercel.app" target="_blank" rel="noopener" class="hero-cta-btn">View Live Demo — No Sign Up</a>
+          <p class="dfe-demo-note">Explore with example data — no account needed</p>
+        </div>
+        <div class="app-download-buttons dfe-stores">
+          <a class="app-store-badge" href="https://apps.apple.com/us/app/paper-prosperity/id6809006042" target="_blank" rel="noopener" aria-label="Download on the App Store"><img src="/app-store-badge.svg" alt="Download on the App Store" height="48"></a>
+          <a class="app-store-badge" href="https://play.google.com/store/apps/details?id=com.paperandprosperity.paper_and_prosperity" target="_blank" rel="noopener" aria-label="Get it on Google Play"><img src="/google-play-badge.svg" alt="Get it on Google Play" height="48"></a>
+        </div>
+        <p class="dfe-more"><a href="/paper-and-prosperity">Learn more about Paper &amp; Prosperity →</a></p>
+      </div>
+    </section>
+
+    <!-- EMPIRE LIFE DASHBOARD FEATURES -->
+    <section id="empire-life-dashboard" class="dfe-section alt">
+      <div class="dfe-section-inner">
+        <div class="dfe-kicker">Empire Life Dashboard</div>
+        <h2 class="store-heading">Your whole life, calmly organized.</h2>
+        <div class="store-heading-underline"></div>
+        <p class="section-sub">A desktop life planner with nine gentle tabs. Private, with no account — one purchase and no subscription.</p>
+        <div class="dfe-feature-grid dfe-feature-grid-3">
+          <div class="dfe-feature"><h3 class="dfe-feature-title">Finance</h3><p class="dfe-feature-desc">Plan your budget and see your safe-to-spend balance and savings goal in one calm place.</p></div>
+          <div class="dfe-feature"><h3 class="dfe-feature-title">Health &amp; Wellness</h3><p class="dfe-feature-desc">Track habits and how you feel. Rest days pause your streak and never break it.</p></div>
+          <div class="dfe-feature"><h3 class="dfe-feature-title">Home &amp; Life</h3><p class="dfe-feature-desc">Home maintenance, car care, subscriptions and warranties, kept up with gentle reminders.</p></div>
+        </div>
+        <ul class="dfe-tabs" aria-label="All nine tabs">
+          <li>Dashboard</li><li>Finance</li><li>Health &amp; Wellness</li><li>Lifestyle</li><li>Time &amp; Planning</li><li>Books &amp; Podcasts</li><li>Home &amp; Life</li><li>People &amp; Dates</li><li>Dreams &amp; Goals</li>
+        </ul>
+        <p class="dfe-more"><a class="take-action-btn" style="display:inline-flex;align-items:center;text-decoration:none;max-width:none;width:auto;padding:13px 26px;" href="/apps/empire-life-dashboard">See Empire Life Dashboard</a></p>
+      </div>
+    </section>
+
+    <!-- WORKBOOKS — COMING SOON -->
+    <section id="workbooks" class="dfe-section">
+      <div class="dfe-section-inner">
+        <span class="take-action-status soon">Coming Soon</span>
+        <h2 class="store-heading" style="margin-top:14px;">Workbooks</h2>
+        <div class="store-heading-underline"></div>
+        <p class="section-sub">Guided physical workbooks for hands-on budgeting, debt payoff, saving, and financial reflection. Cash envelopes are on the way too.</p>
+        <p class="dfe-more"><a href="#newsletter">Get notified when workbooks launch →</a></p>
+      </div>
+    </section>
+
+    <!-- TESTIMONIALS PLACEHOLDER -->
+    <section id="testimonials" class="dfe-section alt">
+      <div class="dfe-section-inner">
+        <h2 class="store-heading">What People Are Saying</h2>
+        <div class="store-heading-underline"></div>
+        <div class="dfe-quotes">
+          <div class="dfe-quote"><span>Reviews coming soon</span></div>
+          <div class="dfe-quote"><span>Reviews coming soon</span></div>
+          <div class="dfe-quote"><span>Reviews coming soon</span></div>
+        </div>
+        <p class="testimonials-note">Be one of the first to share your experience.</p>
+      </div>
+    </section>
 
 <!-- NEWSLETTER -->
 <section id="newsletter" class="page-section newsletter-section">
@@ -1794,11 +1659,11 @@
 
 <div class="footer">
   © 2026 Debt Free Empire ·
-  <a href="/paper-and-prosperity">Paper & Prosperity</a> ·
-  <a href="/apps">Apps</a> ·
-  <a href="/products">Products</a> ·
-  <a href="/empire-games">Empire Games</a> ·
-  <a href="#about">About</a> ·
+  <a href="/paper-and-prosperity">Paper &amp; Prosperity</a> ·
+  <a href="/apps/empire-life-dashboard">Empire Life Dashboard</a> ·
+  <a href="/resources">Resources</a> · <a href="/debt-calculator">Debt Calculator</a> · <a href="/about">About</a> ·
+  <a href="/support">Support</a> ·
+  <a href="/privacy">Privacy</a> ·
   <a href="/support#message">Contact</a> · <a href="/admin/" rel="nofollow">Admin</a>
   <span class="footer-close-line">Start where you are. Build what comes next.</span>
 </div>
@@ -1863,47 +1728,6 @@
   </div>
 </div>
 
-<!-- GRIND & SAVE POPUP -->
-<div class="popup-overlay" id="gs-popup-overlay" onclick="closeBrand(event, 'gs')">
-  <div class="popup-box gs-popup">
-    <button class="popup-close" onclick="closePopup('gs')" aria-label="Close">×</button>
-    <span class="popup-emoji" style="color: var(--gold-deep);"><svg class="icon-svg icon-lg" aria-hidden="true" focusable="false"><use href="#icon-flame"/></svg></span>
-    <div class="popup-brand">Grind & Save</div>
-    <div class="popup-tagline">"Work Hard. Save Smart. Build Wealth."</div>
-    <div class="popup-divider"></div>
-    <div class="popup-features-title">What's inside</div>
-    <ul class="popup-features">
-      <li><svg class="icon-svg popup-feature-icon" aria-hidden="true" focusable="false"><use href="#icon-check"/></svg> Money Map — zero-based budgeting, no nonsense</li>
-      <li><svg class="icon-svg popup-feature-icon" aria-hidden="true" focusable="false"><use href="#icon-check"/></svg> Debt Crusher — track and destroy every debt</li>
-      <li><svg class="icon-svg popup-feature-icon" aria-hidden="true" focusable="false"><use href="#icon-check"/></svg> Stacks — build your savings targets</li>
-      <li><svg class="icon-svg popup-feature-icon" aria-hidden="true" focusable="false"><use href="#icon-check"/></svg> Wealth Score — your financial health at a glance</li>
-      <li><svg class="icon-svg popup-feature-icon" aria-hidden="true" focusable="false"><use href="#icon-check"/></svg> Cash Stack — cash envelope system with bill tracking</li>
-      <li><svg class="icon-svg popup-feature-icon" aria-hidden="true" focusable="false"><use href="#icon-check"/></svg> Property Tax Tracker — never get caught off guard</li>
-      <li><svg class="icon-svg popup-feature-icon" aria-hidden="true" focusable="false"><use href="#icon-check"/></svg> Cash Runway — know your financial safety net</li>
-      <li><svg class="icon-svg popup-feature-icon" aria-hidden="true" focusable="false"><use href="#icon-check"/></svg> Your personal financial data stays on your device. Only anonymized budget totals are shared when using Your Money Coach.</li>
-    </ul>
-    <button class="popup-cta" onclick="closePopup('gs'); openEmailPopup();">Keep Me Updated</button>
-    <div class="popup-soon" data-status-pill="gs">Coming Soon</div>
-  </div>
-</div>
-
-<!-- EMPIRE ARCADE POPUP (internal id 'eg' preserved for routing) -->
-<div class="popup-overlay" id="eg-popup-overlay" onclick="closeBrand(event, 'eg')">
-  <div class="popup-box eg-popup">
-    <button class="popup-close" onclick="closePopup('eg')" aria-label="Close">×</button>
-    <span class="popup-emoji" style="color: var(--gold-deep);"><svg class="icon-svg icon-lg" aria-hidden="true" focusable="false"><use href="#icon-trophy"/></svg></span>
-    <div class="popup-brand">Empire Arcade</div>
-    <div class="popup-tagline">"Play. Learn. Level up your money mindset."</div>
-    <div class="popup-divider"></div>
-    <p style="font-size:13px; line-height:1.6; color: var(--text-secondary); margin-bottom: 20px;">
-      Empire Arcade will be the home of Debt Free Empire's interactive games. Coming soon.
-    </p>
-
-    <button class="popup-cta" onclick="closePopup('eg'); openEmailPopup();">Keep Me Updated</button>
-    <div class="popup-soon">Coming Soon</div>
-  </div>
-</div>
-
 <!-- EMAIL SIGNUP POPUP -->
 <div class="email-popup-overlay" id="emailPopupOverlay" onclick="closeEmailPopup(event)">
   <div class="email-popup-box" role="dialog" aria-modal="true" aria-labelledby="emailPopupTitle" aria-describedby="emailPopupDesc" id="emailPopupBox">
@@ -1928,9 +1752,7 @@
      product can never say "Live" in one place and "Coming Soon" in another.
   --------------------------------------------------------------------- */
   const PRODUCT_STATUS = {
-    pp:     { pill: 'Available',       pillClass: 'live', badge: 'Available on Web, App Store & Google Play' },
-    gs:     { pill: 'Coming Soon',     pillClass: 'soon', badge: 'Coming Soon' },
-    arcade: { pill: 'Coming Soon',     pillClass: 'soon', badge: 'Coming Soon' }
+    pp:     { pill: 'Available',       pillClass: 'live', badge: 'Available on Web, App Store & Google Play' }
   };
 
   function applyProductStatus() {

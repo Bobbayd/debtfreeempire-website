@@ -1,6 +1,11 @@
 {
   "redirects": [
     {
+      "source": "/empire-games",
+      "destination": "/",
+      "permanent": true
+    },
+    {
       "source": "/empire-life-dashboard",
       "destination": "/apps/empire-life-dashboard",
       "permanent": false

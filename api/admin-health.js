@@ -4,7 +4,7 @@ import { redis } from './_redis.js';
 
 // Checks that the site's pages and the important outside links respond. Requires the admin login cookie.
 const SITE = 'https://www.debtfreeempire.com';
-const PAGES = ['/', '/apps', '/apps/empire-life-dashboard', '/paper-and-prosperity', '/paper-and-prosperity/app', '/paper-and-prosperity/debt-payoff', '/products', '/empire-games', '/support', '/privacy', '/assets/eld/walkthrough.mp4'];
+const PAGES = ['/', '/apps', '/apps/empire-life-dashboard', '/paper-and-prosperity', '/paper-and-prosperity/app', '/paper-and-prosperity/debt-payoff', '/products', '/about', '/support', '/privacy', '/assets/eld/walkthrough.mp4'];
 const OUTSIDE = [
   { name: 'Microsoft Store: Empire Life Dashboard', url: 'https://apps.microsoft.com/detail/9NFTF14DSH6S' },
   { name: 'App Store: Paper & Prosperity', url: 'https://apps.apple.com/us/app/paper-prosperity/id6809006042' },
