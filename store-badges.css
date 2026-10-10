@@ -1,0 +1,15 @@
+/* Empire Life Dashboard: free-trial pill and store badges */
+.eld-trial { display: inline-flex; align-items: center; gap: 8px; margin: 6px 0 4px; padding: 10px 22px; border-radius: 999px; background: var(--lavender, #8A72B8); color: #fff; font-weight: 800; font-size: 17px; letter-spacing: .3px; box-shadow: 0 6px 18px rgba(138,114,184,.32); }
+.eld-trial small { font-weight: 600; font-size: 12.5px; opacity: .92; letter-spacing: .2px; }
+.eld-badges { display: flex; flex-wrap: wrap; gap: 18px 22px; align-items: flex-start; margin: 14px 0 6px; }
+.eld-badges.center { justify-content: center; }
+.eld-badge-item { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
+.eld-badges.center .eld-badge-item { align-items: center; }
+.eld-badge-item a, .eld-badge-item .eld-badge-img { display: inline-flex; line-height: 0; border-radius: 8px; }
+.eld-badge-item img { display: block; height: 48px; width: auto; }
+.eld-badge-item.is-soon img { filter: grayscale(.25) opacity(.55); }
+.eld-badge-item.is-soon .eld-badge-img { cursor: default; }
+.eld-badge-item a:focus-visible { outline: 2px solid var(--lavender, #8A72B8); outline-offset: 2px; }
+.eld-badge-cap { font-size: 12px; font-weight: 700; color: #4A433B; letter-spacing: .2px; }
+.eld-badge-note { font-size: 12.5px; color: #55515B; margin: 2px 0 0; }
+@media (max-width: 900px) { .eld-badges { justify-content: center; } .eld-badge-item { align-items: center; } }
