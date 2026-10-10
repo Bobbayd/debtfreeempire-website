@@ -6,6 +6,11 @@
       "permanent": true
     },
     {
+      "source": "/empire-games/",
+      "destination": "/",
+      "permanent": true
+    },
+    {
       "source": "/empire-life-dashboard",
       "destination": "/apps/empire-life-dashboard",
       "permanent": false
@@ -40,6 +45,15 @@
     },
     {
       "source": "/api/admin-(.*)",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ]
+    },
+    {
+      "source": "/freebies.html",
       "headers": [
         {
           "key": "X-Robots-Tag",

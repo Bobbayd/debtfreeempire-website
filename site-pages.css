@@ -218,7 +218,7 @@ a { color: var(--lavender-hover); }
 /* FOOTER */
 .footer {
   font-size: 11px; color: var(--footer-text-secondary); letter-spacing: 2px; text-transform: uppercase;
-  text-align: center; padding: 40px 24px; background: var(--footer-bg); line-height: 2;
+  text-align: center; padding: 40px 24px 96px; background: var(--footer-bg); line-height: 2;
 }
 .footer a { color: var(--gold-soft); text-decoration: none; margin: 0 4px; }
 .footer a:hover { text-decoration: underline; }
