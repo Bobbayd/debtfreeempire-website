@@ -29,7 +29,7 @@
 .dfe-split-phones img:nth-child(2) { height: 340px; }
 .dfe-split-desktop img { width: 100%; max-width: 520px; height: auto; border-radius: 12px; border: 1px solid #DDD5E5; box-shadow: 0 8px 22px rgba(26,26,26,.14); }
 .dfe-split-card .dfe-hero-ctas { justify-content: center; margin-top: auto; }
-.dfe-split-card .eld-badges { justify-content: center; margin-top: auto; }
+.dfe-split-card .eld-badges { justify-content: center; margin-top: 4px; }
 .dfe-split-card .eld-badge-item { align-items: center; }
 @media (max-width: 900px) { .dfe-split-cards { grid-template-columns: 1fr; } .dfe-split-media { min-height: 0; } .dfe-split-phones img { height: auto; width: 27%; min-width: 0; } .dfe-split-phones img:nth-child(2) { height: auto; width: 33%; } }
 @media (max-width: 480px) { .dfe-split { padding: 32px 16px 44px; } .dfe-split-card { padding: 22px 16px 20px; min-width: 0; } .dfe-split-cards, .dfe-split-inner { min-width: 0; } .dfe-split-phones { gap: 8px; } }
