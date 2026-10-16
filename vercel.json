@@ -14,6 +14,11 @@
       "source": "/empire-life-dashboard",
       "destination": "/apps/empire-life-dashboard",
       "permanent": false
+    },
+    {
+      "source": "/:l([a-z0-9])",
+      "destination": "/?utm_source=heycatch&utm_campaign=:l",
+      "permanent": false
     }
   ],
   "headers": [
@@ -22,7 +27,7 @@
       "headers": [
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https:; media-src 'self' blob:; connect-src 'self' https:; frame-ancestors 'self'; base-uri 'self'; object-src 'none'"
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://esm.sh https://in.heycatch.ai; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https:; media-src 'self' blob:; connect-src 'self' https:; frame-ancestors 'self'; base-uri 'self'; object-src 'none'"
         },
         {
           "key": "X-Content-Type-Options",
