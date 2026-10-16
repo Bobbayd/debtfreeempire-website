@@ -1,6 +1,11 @@
 import { countRequestToday, getClientIp } from './_rateLimit.js';
 
 const DAILY_LIMIT = 20;
+// Overall cap across everyone per day, so a script using many IP addresses cannot
+// drain the Anthropic balance. Raise it if real usage grows.
+const GLOBAL_DAILY_LIMIT = 300;
+const MAX_QUESTION_CHARS = 1000;
+const MAX_SUMMARY_CHARS = 6000;
 
 // Who the coach is and how it answers. This part never changes between
 // requests, so it is sent as its own cached block (see `system` below).
@@ -134,10 +139,21 @@ export default async function handler(req, res) {
   if (!question || !budgetSummary) {
     return res.status(400).json({ error: 'Missing question or budget summary' });
   }
+  if (typeof question !== 'string' || typeof budgetSummary !== 'string') {
+    return res.status(400).json({ error: 'Invalid request' });
+  }
+  if (question.length > MAX_QUESTION_CHARS || budgetSummary.length > MAX_SUMMARY_CHARS) {
+    return res.status(413).json({ error: 'Request too large' });
+  }
 
   const used = await countRequestToday('ai', getClientIp(req));
   if (used > DAILY_LIMIT) {
     return res.status(429).json({ error: 'Daily limit reached. Please try again tomorrow.' });
+  }
+
+  const usedGlobal = await countRequestToday('ai-global', 'all');
+  if (usedGlobal > GLOBAL_DAILY_LIMIT) {
+    return res.status(429).json({ error: 'The Money Coach is very busy right now. Please try again tomorrow.' });
   }
 
   try {

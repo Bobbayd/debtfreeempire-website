@@ -1,6 +1,8 @@
 import { countRequestToday, getClientIp } from './_rateLimit.js';
 
 const DAILY_LIMIT = 10;
+// Overall cap across everyone per day (see api/ai.js).
+const GLOBAL_DAILY_LIMIT = 100;
 const MAX_QUESTION_CHARS = 500;
 const MAX_HISTORY_MESSAGES = 6;
 
@@ -41,6 +43,11 @@ export default async function handler(req, res) {
   const used = await countRequestToday('empire-ai', getClientIp(req));
   if (used > DAILY_LIMIT) {
     return res.status(429).json({ error: 'Daily limit reached. Please come back tomorrow.' });
+  }
+
+  const usedGlobal = await countRequestToday('empire-ai-global', 'all');
+  if (usedGlobal > GLOBAL_DAILY_LIMIT) {
+    return res.status(429).json({ error: 'The assistant is very busy right now. Please come back tomorrow.' });
   }
 
   // The API requires alternating roles starting with "user"; drop any leading
