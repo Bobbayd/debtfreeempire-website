@@ -1469,7 +1469,21 @@
   .dfe-feature-grid, .dfe-feature-grid-3, .dfe-quotes { grid-template-columns: 1fr; }
   .dfe-section { padding: 60px 16px; }
 }
-</style>
+
+  /* ── HERO ─────────────────────────────────────────── */
+  .hero-section { background: var(--bg-main); padding: 64px 24px 48px; text-align: center; }
+  .hero-inner { max-width: 680px; margin: 0 auto; }
+  .hero-headline { font-size: clamp(1.75rem, 5vw, 2.6rem); font-weight: 800; line-height: 1.2; color: var(--text-primary); margin: 0 0 20px; letter-spacing: -0.5px; }
+  .hero-sub { font-size: 1.05rem; color: var(--text-secondary); line-height: 1.65; max-width: 560px; margin: 0 auto 28px; }
+  .hero-note { font-size: 0.78rem; color: var(--text-secondary); margin-top: 10px; opacity: 0.8; }
+  @media (max-width: 480px) {
+    .hero-section { padding: 48px 20px 36px; }
+    .hero-headline { font-size: 1.7rem; }
+    .hero-cta-row { flex-direction: column; align-items: center; }
+    .hero-cta-btn, .hero-cta-btn-secondary { width: 100%; max-width: 320px; text-align: center; }
+  }
+
+  </style>
 <link rel="stylesheet" href="/store-badges.css">
 
 <!-- D5.5: Structured Data -->
@@ -1584,6 +1598,17 @@
 
   <div class="main-content">
     <!-- HERO -->
+    <section class="hero-section" id="top" aria-label="Hero">
+      <div class="hero-inner">
+        <h1 class="hero-headline">See Your Debt-Free Date.<br>Organize Your Whole Life.</h1>
+        <p class="hero-sub">Two calm apps for people tired of feeling behind — a free budget &amp; debt tracker and a one-time-purchase life planner. No bank connection. No subscription.</p>
+        <div class="hero-cta-row">
+          <a class="hero-cta-btn" href="https://web-paper-and-prosperity.vercel.app" target="_blank" rel="noopener">Start Free — Paper &amp; Prosperity</a>
+          <a class="hero-cta-btn-secondary" href="/apps/empire-life-dashboard">Try Empire Life Dashboard</a>
+        </div>
+        <p class="hero-note">Paper &amp; Prosperity is free forever · Empire Life Dashboard is $37 one-time</p>
+      </div>
+    </section>
 
     <!-- HOW IT WORKS -->
     <section id="how-it-works" class="how-it-works-section">
