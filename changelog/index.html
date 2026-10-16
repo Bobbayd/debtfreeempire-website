@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="48x48" href="/favicon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<title>Changelog — Debt Free Empire</title>
+<meta name="description" content="What's new in Paper & Prosperity and Empire Life Dashboard. App updates, new features, and bug fixes.">
+<link rel="canonical" href="https://www.debtfreeempire.com/changelog">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Debt Free Empire">
+<meta property="og:title" content="Changelog — Debt Free Empire">
+<meta property="og:description" content="What's new in Paper & Prosperity and Empire Life Dashboard. App updates, new features, and bug fixes.">
+<meta property="og:url" content="https://www.debtfreeempire.com/changelog">
+<link rel="stylesheet" href="/site-pages.css">
+<link rel="stylesheet" href="/pages.css">
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+<symbol id="icon-menu" viewBox="0 0 24 24"><line x1="3" y1="6.500" x2="21" y2="6.500"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="17.500" x2="21" y2="17.500"/></symbol>
+</defs></svg>
+<header class="site-header"><a href="/" class="site-header-brand">Debt Free Empire</a><nav class="site-header-nav" aria-label="Primary"><div class="nav-dd"><button type="button" class="site-header-link nav-dd-btn" aria-expanded="false" aria-haspopup="true">Apps <span class="nav-dd-caret">⌄</span></button><div class="nav-dd-menu"><a class="nav-dd-item" href="/paper-and-prosperity">Paper &amp; Prosperity</a><a class="nav-dd-item" href="/apps/empire-life-dashboard">Empire Life Dashboard</a></div></div><div class="nav-dd"><button type="button" class="site-header-link nav-dd-btn" aria-expanded="false" aria-haspopup="true">Shop <span class="nav-dd-caret">⌄</span></button><div class="nav-dd-menu"><a class="nav-dd-item" href="https://www.etsy.com/shop/PaperandProsperity" target="_blank" rel="noopener">Spreadsheets</a><span class="nav-dd-item soon" aria-disabled="true">Workbooks<em>Coming soon</em></span><span class="nav-dd-item soon" aria-disabled="true">Cash Envelopes<em>Coming soon</em></span></div></div><a class="site-header-link" href="/about">About</a><a class="site-header-link" href="/pricing">Pricing</a></nav><a class="nav-cta" href="https://web-paper-and-prosperity.vercel.app" target="_blank" rel="noopener">Open Web App</a></header>
+<div class="mobile-topbar"><a href="/" class="nav-brand">Debt Free Empire</a><button class="menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false" aria-controls="drawer"><svg class="icon-svg" style="width:20px;height:20px;" aria-hidden="true" focusable="false"><use href="#icon-menu"/></svg></button></div>
+<nav class="drawer" id="drawer" aria-label="Menu"><a href="/" class="drawer-brand">Debt Free Empire</a><span class="drawer-item drawer-label">Apps</span><a class="drawer-item drawer-sub" href="/paper-and-prosperity">Paper &amp; Prosperity</a><a class="drawer-item drawer-sub" href="/apps/empire-life-dashboard">Empire Life Dashboard</a><span class="drawer-item drawer-label">Shop</span><a class="drawer-item drawer-sub" href="https://www.etsy.com/shop/PaperandProsperity" target="_blank" rel="noopener">Spreadsheets</a><span class="drawer-item drawer-sub soon">Workbooks <em>Coming soon</em></span><span class="drawer-item drawer-sub soon">Cash Envelopes <em>Coming soon</em></span><a class="drawer-item" href="/about">About</a><a class="drawer-item" href="/pricing">Pricing</a><a class="drawer-cta" href="https://web-paper-and-prosperity.vercel.app" target="_blank" rel="noopener">Open Web App</a><div class="drawer-divider"></div><a class="drawer-item" href="/support">Support</a><a class="drawer-item" href="/privacy">Privacy Policy</a></nav>
+<div class="scrim" id="scrim"></div>
+
+<main>
+<section class="welcome-section">
+  <div class="hero-eyebrow">Changelog</div>
+  <h1 class="hero-headline">What's new</h1>
+  <p class="hero-subtitle">Updates, new features, and fixes for Paper &amp; Prosperity and Empire Life Dashboard.</p>
+  <div class="hero-divider"></div>
+</section>
+
+<section class="page-section">
+  <div class="section-inner seo-prose" style="max-width:720px;">
+
+    <!-- FILTER PILLS -->
+    <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:40px;">
+      <button onclick="filterLog('all')" id="pill-all" style="font-size:13px;font-weight:700;padding:6px 16px;border-radius:20px;border:none;background:var(--lavender);color:#fff;cursor:pointer;">All</button>
+      <button onclick="filterLog('pp')" id="pill-pp" style="font-size:13px;font-weight:600;padding:6px 16px;border-radius:20px;border:1px solid var(--border);background:#fff;color:var(--text-secondary);cursor:pointer;">Paper &amp; Prosperity</button>
+      <button onclick="filterLog('eld')" id="pill-eld" style="font-size:13px;font-weight:600;padding:6px 16px;border-radius:20px;border:1px solid var(--border);background:#fff;color:var(--text-secondary);cursor:pointer;">Empire Life Dashboard</button>
+    </div>
+
+    <!-- ENTRIES -->
+    <div class="log-entry" data-app="eld" style="margin-bottom:40px;padding-bottom:40px;border-bottom:1px solid var(--border);">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;flex-wrap:wrap;">
+        <span style="font-size:11px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;color:var(--lavender);">Empire Life Dashboard</span>
+        <span style="font-size:12px;color:var(--text-secondary);">October 13, 2026</span>
+        <span style="font-size:11px;font-weight:700;background:var(--sage);color:#fff;padding:2px 8px;border-radius:10px;">v1.0 Launch</span>
+      </div>
+      <h2 style="font-size:20px;font-weight:800;color:var(--text-primary);margin:0 0 12px;">Empire Life Dashboard is live</h2>
+      <p>Empire Life Dashboard is now available on the Mac App Store and Microsoft Store. One-time purchase, no subscription, no bank connection required.</p>
+      <ul style="margin:12px 0 0;padding-left:20px;display:flex;flex-direction:column;gap:6px;font-size:14px;color:var(--text-primary);">
+        <li>Budget planner with monthly tracking</li>
+        <li>Debt payoff tracker with debt-free date simulator</li>
+        <li>Savings goals tracker</li>
+        <li>Daily planner &amp; habit tracker</li>
+        <li>7-day free trial on Mac and Windows</li>
+        <li>30-day money-back guarantee</li>
+      </ul>
+      <div style="display:flex;gap:12px;margin-top:16px;flex-wrap:wrap;">
+        <a href="https://apps.apple.com/us/app/empire-life-dashboard/id6816514942?mt=12" target="_blank" rel="noopener" style="font-size:13px;font-weight:600;color:var(--lavender);text-decoration:none;">Mac App Store →</a>
+        <a href="https://apps.microsoft.com/detail/9NFTF14DSH6S" target="_blank" rel="noopener" style="font-size:13px;font-weight:600;color:var(--lavender);text-decoration:none;">Microsoft Store →</a>
+      </div>
+    </div>
+
+    <div class="log-entry" data-app="pp" style="margin-bottom:40px;padding-bottom:40px;border-bottom:1px solid var(--border);">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;flex-wrap:wrap;">
+        <span style="font-size:11px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;color:var(--sage);">Paper &amp; Prosperity</span>
+        <span style="font-size:12px;color:var(--text-secondary);">October 2026</span>
+        <span style="font-size:11px;font-weight:700;background:var(--sage);color:#fff;padding:2px 8px;border-radius:10px;">Update</span>
+      </div>
+      <h2 style="font-size:20px;font-weight:800;color:var(--text-primary);margin:0 0 12px;">Mac App Store launch</h2>
+      <p>Paper &amp; Prosperity is now available on the Mac App Store — same free app, now native on Mac alongside iPhone, iPad, Android, and the web.</p>
+      <div style="margin-top:16px;">
+        <a href="https://apps.apple.com/us/app/paper-prosperity/id6809006042" target="_blank" rel="noopener" style="font-size:13px;font-weight:600;color:var(--sage);text-decoration:none;">App Store →</a>
+      </div>
+    </div>
+
+    <div class="log-entry" data-app="pp" style="margin-bottom:40px;padding-bottom:40px;border-bottom:1px solid var(--border);">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;flex-wrap:wrap;">
+        <span style="font-size:11px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;color:var(--sage);">Paper &amp; Prosperity</span>
+        <span style="font-size:12px;color:var(--text-secondary);">September 2026</span>
+        <span style="font-size:11px;font-weight:700;background:#e8d5f5;color:var(--lavender);padding:2px 8px;border-radius:10px;">v1.0.4</span>
+      </div>
+      <h2 style="font-size:20px;font-weight:800;color:var(--text-primary);margin:0 0 12px;">iOS &amp; Android launch</h2>
+      <p>Paper &amp; Prosperity launched on the App Store and Google Play. Free budget planner, debt payoff tracker with a debt-free date, savings vaults, and bill calendar — no subscription, no ads.</p>
+      <ul style="margin:12px 0 0;padding-left:20px;display:flex;flex-direction:column;gap:6px;font-size:14px;color:var(--text-primary);">
+        <li>All features free — no subscription tier</li>
+        <li>Onboarding overflow bug fixed</li>
+        <li>Splash screen updated</li>
+        <li>Dark mode settings tap feedback fixed</li>
+        <li>19 tests passing</li>
+      </ul>
+      <div style="display:flex;gap:12px;margin-top:16px;flex-wrap:wrap;">
+        <a href="https://apps.apple.com/us/app/paper-prosperity/id6809006042" target="_blank" rel="noopener" style="font-size:13px;font-weight:600;color:var(--sage);text-decoration:none;">App Store →</a>
+        <a href="https://play.google.com/store/apps/details?id=com.paperandprosperity.paper_and_prosperity" target="_blank" rel="noopener" style="font-size:13px;font-weight:600;color:var(--sage);text-decoration:none;">Google Play →</a>
+      </div>
+    </div>
+
+    <p style="font-size:13px;color:var(--text-secondary);text-align:center;">More updates coming soon. Follow <a href="https://www.instagram.com/debtfreeempire" target="_blank" rel="noopener" style="color:var(--lavender);">@debtfreeempire</a> for announcements.</p>
+
+  </div>
+</section>
+</main>
+
+<footer class="footer">© 2026 Debt Free Empire ·
+<a href="/apps">Apps</a> · <a href="/paper-and-prosperity">Paper &amp; Prosperity</a> · <a href="/products">Products</a> · <a href="/pricing">Pricing</a> · <a href="/changelog">Changelog</a> · <a href="/pricing">Pricing</a> · <a href="/changelog">Changelog</a> · <a href="/resources">Resources</a> · <a href="/debt-calculator">Debt Calculator</a> · <a href="/about">About</a> · <a href="/support">Support</a> · <a href="/privacy">Privacy</a> · <a href="/support#message">Contact</a>
+<span class="footer-close-line">Start where you are. Build what comes next.</span></footer>
+
+<script>(function(){var b=document.getElementById('menuBtn'),d=document.getElementById('drawer'),s=document.getElementById('scrim');function set(o){d.classList.toggle('open',o);s.classList.toggle('open',o);b.setAttribute('aria-expanded',String(o));}b.addEventListener('click',function(){set(!d.classList.contains('open'));});s.addEventListener('click',function(){set(false);});document.addEventListener('keydown',function(e){if(e.key==='Escape')set(false);});document.addEventListener('click',function(e){document.querySelectorAll('.nav-dd').forEach(function(d){var btn=e.target.closest('.nav-dd-btn');if(btn&&d.contains(btn)){d.classList.toggle('open');btn.setAttribute('aria-expanded',String(d.classList.contains('open')));}else{d.classList.remove('open');var bb=d.querySelector('.nav-dd-btn');if(bb)bb.setAttribute('aria-expanded','false');}});});})();</script>
+<script>
+function filterLog(app) {
+  document.querySelectorAll('.log-entry').forEach(function(el) {
+    el.style.display = (app === 'all' || el.dataset.app === app) ? '' : 'none';
+  });
+  document.querySelectorAll('[id^="pill-"]').forEach(function(btn) {
+    var active = btn.id === 'pill-' + app;
+    btn.style.background = active ? 'var(--lavender)' : '#fff';
+    btn.style.color = active ? '#fff' : 'var(--text-secondary)';
+    btn.style.fontWeight = active ? '700' : '600';
+    btn.style.border = active ? 'none' : '1px solid var(--border)';
+  });
+}
+</script>
+<script>window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };</script>
+<script defer src="/_vercel/insights/script.js"></script>
+<script src="/site-dynamic.js" defer></script>
+</body>
+</html>
