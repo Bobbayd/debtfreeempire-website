@@ -1749,6 +1749,109 @@ main#main { display: block; }
 .h2-eld-tabs-title { font-size: 11px; font-weight: 800; letter-spacing: 1.6px; text-transform: uppercase; color: var(--dfe-gold-deep); margin-bottom: 10px; }
 .h2-eld-tabs ul { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 8px; }
 .h2-eld-tabs li { font-size: 12.5px; font-weight: 600; color: var(--dfe-body); background: var(--dfe-card); border: 1px solid var(--dfe-gold); border-radius: 20px; padding: 5px 12px; }
+
+/* ===== v2.1 richer look ===== */
+/* phone menu: real button */
+.sidebar a.drawer-cta { display:block !important; text-align:center; margin:18px 8px 0 !important; padding:14px 16px; border-radius:10px; font-size:13px; font-weight:800; letter-spacing:1.3px; text-transform:uppercase; text-decoration:none !important; outline:none; box-shadow:0 6px 16px rgba(142,111,62,.22); }
+
+/* hero art */
+.h2-hero { position:relative; overflow:hidden; }
+.h2-hero::before { content:""; position:absolute; width:520px; height:520px; right:-160px; top:-180px; border-radius:50%; background:radial-gradient(circle, rgba(228,197,144,.35), rgba(228,197,144,0) 70%); pointer-events:none; }
+.h2-hero::after { content:""; position:absolute; width:420px; height:420px; left:-200px; bottom:-220px; border-radius:50%; background:radial-gradient(circle, rgba(228,197,144,.25), rgba(228,197,144,0) 70%); pointer-events:none; }
+.h2-hero-inner { position:relative; z-index:1; }
+.h2-hero-visual { position:relative; min-height:500px; display:flex; align-items:center; justify-content:center; }
+.h2-glow { position:absolute; width:360px; height:360px; border-radius:50%; background:radial-gradient(circle, #F3E3C3 0%, rgba(243,227,195,0) 70%); }
+.h2-phone { position:absolute; width:230px; height:auto; border-radius:30px; border:7px solid #fff; box-shadow:0 26px 50px rgba(61,53,46,.18); }
+.h2-hero-visual img.h2-phone { width:230px; max-width:none; border-radius:30px; border:7px solid #fff; }
+.h2-phone-front { position:relative; z-index:2; transform:rotate(-2deg); }
+.h2-phone-back { z-index:1; transform:translate(105px, 18px) rotate(7deg) scale(.88); opacity:.95; }
+.h2-float { position:absolute; z-index:3; display:flex; align-items:center; gap:10px; background:#FFFDF9; border:1px solid var(--dfe-gold); border-radius:14px; padding:10px 14px; box-shadow:0 12px 28px rgba(61,53,46,.14); }
+.h2-float small { display:block; font-size:10px; font-weight:800; letter-spacing:1.2px; text-transform:uppercase; color:var(--dfe-muted); }
+.h2-float b { display:block; font-size:15px; font-weight:900; color:var(--dfe-ink); }
+.h2-float-emoji { font-size:22px; }
+.h2-float .icon-svg { width:22px; height:22px; color:var(--dfe-gold-deep); }
+.h2-float-a { left:-6px; top:70px; }
+.h2-float-b { right:-10px; bottom:80px; }
+.h2-sparkle { position:absolute; z-index:3; fill:var(--dfe-gold); stroke:none; }
+.h2-sparkle-1 { width:26px; height:26px; top:34px; right:40px; }
+.h2-sparkle-2 { width:16px; height:16px; bottom:40px; left:40px; fill:var(--dfe-gold-deep); }
+@media (prefers-reduced-motion: no-preference) {
+  .h2-float-a { animation: h2bob 5s ease-in-out infinite; }
+  .h2-float-b { animation: h2bob 6s ease-in-out infinite reverse; }
+  .h2-sparkle-1 { animation: h2twinkle 3.2s ease-in-out infinite; }
+}
+@keyframes h2bob { 0%,100% { transform:translateY(0) } 50% { transform:translateY(-8px) } }
+@keyframes h2twinkle { 0%,100% { opacity:1; transform:scale(1) } 50% { opacity:.45; transform:scale(.8) } }
+
+/* promises: gold badges */
+.h2-promises { gap:14px 30px; padding:20px 24px; background:linear-gradient(180deg,#FFFDF9,#FBF6EC); }
+.h2-promises .icon-svg { width:32px; height:32px; padding:7px; border-radius:50%; background:var(--dfe-soft); border:1px solid var(--dfe-gold); color:var(--dfe-btn); stroke-width:1.8; box-sizing:border-box; }
+
+/* steps */
+.h2-steps { position:relative; }
+.h2-step { position:relative; transition:transform .25s, box-shadow .25s; }
+.h2-step:hover { transform:translateY(-3px); box-shadow:0 14px 30px rgba(61,53,46,.08); }
+.h2-step-top { display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; }
+.h2-step-top .h2-step-num { margin:0; background:transparent; border:0; font-size:34px; font-weight:900; color:var(--dfe-gold); width:auto; height:auto; line-height:1; }
+.h2-step-icon { width:48px; height:48px; border-radius:14px; display:flex; align-items:center; justify-content:center; background:linear-gradient(135deg,#F7EBD3,#EED9B0); }
+.h2-step-icon .icon-svg { width:24px; height:24px; color:var(--dfe-btn); stroke-width:1.8; }
+
+/* app cards: gentle lift */
+.h2-app { transition:transform .25s, box-shadow .25s; }
+.h2-app:hover { transform:translateY(-4px); box-shadow:0 18px 40px rgba(61,53,46,.12); }
+
+/* debt-free moment */
+.h2-moment { background:radial-gradient(ellipse at 80% 30%, #F3E3C3 0%, rgba(243,227,195,0) 55%), linear-gradient(180deg,#FBF6EC,#F7F0E3); border-top:1px solid var(--dfe-line); border-bottom:1px solid var(--dfe-line); }
+.h2-moment-grid { display:grid; grid-template-columns:1.05fr .95fr; gap:56px; align-items:center; text-align:left; }
+.h2-moment .h2-title { text-align:left; }
+.h2-moment-sub { font-size:16px; line-height:1.7; color:var(--dfe-body); margin:16px 0 24px; max-width:480px; }
+.h2-callouts { list-style:none; padding:0; margin:0 0 28px; display:flex; flex-direction:column; gap:14px; }
+.h2-callouts li { display:flex; gap:14px; align-items:flex-start; background:#FFFDF9; border:1px solid var(--dfe-line); border-radius:14px; padding:14px 16px; font-size:14px; line-height:1.55; color:var(--dfe-body); }
+.h2-callouts li b { display:block; color:var(--dfe-ink); font-size:15px; margin-bottom:2px; }
+.h2-callouts li > span, .h2-pin { flex-shrink:0; width:28px; height:28px; border-radius:50%; background:var(--dfe-btn); color:#fff; font-weight:800; font-size:13px; display:inline-flex; align-items:center; justify-content:center; box-shadow:0 0 0 4px rgba(228,197,144,.45); }
+.h2-moment-note { font-size:12px; color:var(--dfe-muted); margin-top:12px; }
+.h2-moment-shot { position:relative; margin:0; justify-self:center; }
+.h2-moment-shot img { display:block; width:100%; max-width:390px; height:auto; border-radius:22px; border:8px solid #fff; box-shadow:0 30px 60px rgba(61,53,46,.18); }
+.h2-pin { position:absolute; }
+.h2-pin-1 { top:13%; right:-12px; }
+.h2-pin-2 { top:38%; right:-12px; }
+.h2-pin-3 { top:64%; right:-12px; }
+
+/* founder card */
+.h2-founder .h2-rule { margin-bottom:56px; }
+.h2-quote-card { position:relative; background:#FFFDF9; border:1px solid var(--dfe-gold); border-radius:20px; padding:44px 40px 30px; box-shadow:0 14px 36px rgba(61,53,46,.07); }
+.h2-quote-mark { position:absolute; top:-30px; left:50%; transform:translateX(-50%); width:60px; height:60px; border-radius:50%; background:var(--dfe-btn); color:#fff; font-family:Georgia,serif; font-size:54px; line-height:78px; text-align:center; }
+
+/* guides: colored tops */
+.h2-guide { border-top:3px solid var(--dfe-gold); }
+
+/* reveal on scroll (only when JS adds .h2-js) */
+.h2-js .h2-reveal { opacity:0; transform:translateY(18px); transition:opacity .6s ease, transform .6s ease; }
+.h2-js .h2-reveal.h2-in { opacity:1; transform:none; }
+@media (prefers-reduced-motion: reduce) { .h2-js .h2-reveal { opacity:1; transform:none; transition:none; } .h2-step:hover, .h2-app:hover { transform:none; } }
+
+@media (max-width: 900px) {
+  .h2-hero-visual { min-height:430px; margin-top:6px; }
+  .h2-hero-visual img.h2-phone { width:190px; }
+  .h2-phone-back { transform:translate(80px, 14px) rotate(7deg) scale(.88); }
+  .h2-float-a { left:2%; top:40px; }
+  .h2-float-b { right:2%; bottom:50px; }
+  .h2-moment-grid { grid-template-columns:1fr; gap:36px; }
+  .h2-moment-copy { text-align:center; }
+  .h2-moment .h2-title { text-align:center; }
+  .h2-moment-sub { margin-left:auto; margin-right:auto; }
+  .h2-callouts { text-align:left; }
+}
+@media (max-width: 560px) {
+  .h2-promises { gap:12px; }
+  .h2-promises span { width:100%; }
+  .h2-hero-visual img.h2-phone { width:170px; }
+  .h2-phone-back { transform:translate(64px, 12px) rotate(7deg) scale(.88); }
+  .h2-float { padding:8px 11px; }
+  .h2-float b { font-size:13px; }
+  .h2-quote-card { padding:40px 22px 24px; }
+  .h2-pin { display:none; }
+}
 /* RESPONSIVE */
 @media (max-width: 900px) {
   .h2-hero-inner { grid-template-columns: 1fr; gap: 34px; text-align: center; }
@@ -1785,7 +1888,15 @@ main#main { display: block; }
     <symbol id="icon-flame" viewBox="0 0 24 24"><path d="M12 21.5c3.9 0 7-2.6 7-6.8 0-2.9-1.9-4.9-2.9-6.7-.3 1.9-1.3 2.9-1.9 2.9.5-2.9-1-5.8-3.4-7.2C11 6 9.1 7.9 9.1 10.7c-1-.5-1.7-1.6-1.9-2.9-1.4 1.9-1.9 3.8-1.9 6.7 0 4.2 2.9 6.8 6.7 6.8Z"/></symbol>
     <symbol id="icon-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><line x1="12" y1="11" x2="12" y2="16.3"/><circle cx="12" cy="7.7" r="0.9" fill="currentColor" stroke="none"/></symbol>
     <symbol id="icon-menu" viewBox="0 0 24 24"><line x1="3" y1="6.5" x2="21" y2="6.5"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="17.5" x2="21" y2="17.5"/></symbol>
-    <symbol id="icon-check" viewBox="0 0 24 24"><polyline points="4,13 9,18 20,6"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2.5"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></symbol>
+<symbol id="i-device" viewBox="0 0 24 24"><rect x="7" y="2.5" width="10" height="19" rx="2.5"/><line x1="11" y1="18.5" x2="13" y2="18.5"/></symbol>
+<symbol id="i-tag" viewBox="0 0 24 24"><path d="M3 12V4h8l10 10-8 8z"/><circle cx="7.5" cy="8.5" r="1.4"/><line x1="10" y1="17" x2="17" y2="10"/></symbol>
+<symbol id="i-chat" viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/><line x1="8" y1="9.5" x2="16" y2="9.5"/><line x1="8" y1="12.5" x2="13" y2="12.5"/></symbol>
+<symbol id="i-pencil" viewBox="0 0 24 24"><path d="M4 20l1-5L16 4l4 4L9 19z"/><line x1="13.5" y1="6.5" x2="17.5" y2="10.5"/></symbol>
+<symbol id="i-flag" viewBox="0 0 24 24"><line x1="5" y1="21" x2="5" y2="3"/><path d="M5 4h12l-2.5 4L17 12H5"/></symbol>
+<symbol id="i-leaf" viewBox="0 0 24 24"><path d="M5 19C5 10 11 5 20 4c0 9-5 15-14 15z"/><path d="M5 19c3-4 6-7 10-9"/></symbol>
+<symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 2l2 7 7 3-7 3-2 7-2-7-7-3 7-3z"/></symbol>
+<symbol id="icon-check" viewBox="0 0 24 24"><polyline points="4,13 9,18 20,6"/></symbol>
   </defs>
 </svg>
 
@@ -1807,8 +1918,8 @@ main#main { display: block; }
     <a class="sidebar-item" href="/apps/empire-life-dashboard" style="padding-left:40px"><span class="sidebar-item-text">Empire Life Dashboard</span></a>
     <span class="sidebar-label">Shop</span>
     <a class="sidebar-item" href="https://www.etsy.com/shop/PaperandProsperity" target="_blank" rel="noopener" style="padding-left:40px"><span class="sidebar-item-text">Spreadsheets</span></a>
-    <span class="sidebar-item" style="padding-left:40px;opacity:.7;cursor:default"><span class="sidebar-item-text">Workbooks <em style="font-style:normal;font-size:9px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;background:var(--lavender-soft);padding:3px 8px;border-radius:20px;margin-left:6px">Coming soon</em></span></span>
-    <span class="sidebar-item" style="padding-left:40px;opacity:.7;cursor:default"><span class="sidebar-item-text">Cash Envelopes <em style="font-style:normal;font-size:9px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;background:var(--lavender-soft);padding:3px 8px;border-radius:20px;margin-left:6px">Coming soon</em></span></span>
+    <span class="sidebar-item" style="padding-left:40px;opacity:.7;cursor:default"><span class="sidebar-item-text">Workbooks <em style="font-style:normal;font-size:9px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;background:var(--dfe-soft);border:1px solid var(--dfe-gold);color:var(--dfe-btn);padding:3px 8px;border-radius:20px;margin-left:6px">Coming soon</em></span></span>
+    <span class="sidebar-item" style="padding-left:40px;opacity:.7;cursor:default"><span class="sidebar-item-text">Cash Envelopes <em style="font-style:normal;font-size:9px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;background:var(--dfe-soft);border:1px solid var(--dfe-gold);color:var(--dfe-btn);padding:3px 8px;border-radius:20px;margin-left:6px">Coming soon</em></span></span>
     <a class="sidebar-item" href="/about"><span class="sidebar-item-text">About</span></a>
     <a class="drawer-cta" href="https://web-paper-and-prosperity.vercel.app" target="_blank" rel="noopener" style="margin:14px 8px">Start Free</a>
   </aside>
@@ -1833,18 +1944,24 @@ main#main { display: block; }
           </div>
           <p class="h2-alt-link">Want your whole life organized on your computer? <a href="#apps">Meet Empire Life Dashboard →</a></p>
         </div>
-        <div class="h2-hero-visual">
-          <img src="/assets/app/ios/01_Dashboard.jpg" width="640" height="1385" alt="Paper &amp; Prosperity dashboard on iPhone showing the debt-free date countdown, budget and savings">
+        <div class="h2-hero-visual" aria-hidden="false">
+          <div class="h2-glow" aria-hidden="true"></div>
+          <img class="h2-phone h2-phone-back" src="/assets/app/ios/04_Debt_Payoff.jpg" width="640" height="1385" alt="" aria-hidden="true" loading="lazy">
+          <img class="h2-phone h2-phone-front" src="/assets/app/ios/01_Dashboard.jpg" width="640" height="1385" alt="Paper &amp; Prosperity dashboard on iPhone showing the debt-free date countdown, budget and savings">
+          <div class="h2-float h2-float-a" aria-hidden="true"><span class="h2-float-emoji">🎉</span><span><small>Debt-free date</small><b>Apr 2, 2031</b></span></div>
+          <div class="h2-float h2-float-b" aria-hidden="true"><svg class="icon-svg"><use href="#i-flag"/></svg><span><small>Finish line</small><b>4 yrs 6 mos to go</b></span></div>
+          <svg class="h2-sparkle h2-sparkle-1" aria-hidden="true"><use href="#i-spark"/></svg>
+          <svg class="h2-sparkle h2-sparkle-2" aria-hidden="true"><use href="#i-spark"/></svg>
         </div>
       </div>
     </section>
 
     <!-- PROMISES -->
     <div class="h2-promises" role="list">
-      <span role="listitem"><svg class="icon-svg" aria-hidden="true" focusable="false"><use href="#icon-check"/></svg>No bank connection</span>
-      <span role="listitem"><svg class="icon-svg" aria-hidden="true" focusable="false"><use href="#icon-check"/></svg>Your budget is stored on your device</span>
-      <span role="listitem"><svg class="icon-svg" aria-hidden="true" focusable="false"><use href="#icon-check"/></svg>No subscription</span>
-      <span role="listitem"><svg class="icon-svg" aria-hidden="true" focusable="false"><use href="#icon-check"/></svg>A real person replies within 48 hours</span>
+      <span role="listitem"><svg class="icon-svg" aria-hidden="true" focusable="false"><use href="#i-lock"/></svg>No bank connection</span>
+      <span role="listitem"><svg class="icon-svg" aria-hidden="true" focusable="false"><use href="#i-device"/></svg>Your budget is stored on your device</span>
+      <span role="listitem"><svg class="icon-svg" aria-hidden="true" focusable="false"><use href="#i-tag"/></svg>No subscription</span>
+      <span role="listitem"><svg class="icon-svg" aria-hidden="true" focusable="false"><use href="#i-chat"/></svg>A real person replies within 48 hours</span>
     </div>
 
     <!-- HOW IT WORKS (keep this id: site-dynamic.js inserts "What's New" before it) -->
@@ -1854,18 +1971,18 @@ main#main { display: block; }
         <h2 class="h2-title">From "where did it go?" to a plan you can see.</h2>
         <div class="h2-rule"></div>
         <div class="h2-steps">
-          <div class="h2-step">
-            <span class="h2-step-num">1</span>
+          <div class="h2-step h2-reveal">
+            <div class="h2-step-top"><span class="h2-step-icon"><svg class="icon-svg" aria-hidden="true"><use href="#i-pencil"/></svg></span><span class="h2-step-num">1</span></div>
             <h3>Add your numbers</h3>
             <p>Your income, bills, debts and savings goals. Rough estimates are fine. You can refine them anytime.</p>
           </div>
-          <div class="h2-step">
-            <span class="h2-step-num">2</span>
+          <div class="h2-step h2-reveal">
+            <div class="h2-step-top"><span class="h2-step-icon"><svg class="icon-svg" aria-hidden="true"><use href="#i-flag"/></svg></span><span class="h2-step-num">2</span></div>
             <h3>See your finish line</h3>
             <p>Your daily budget and your debt-free date are calculated for you, so you finally know when you'll be done.</p>
           </div>
-          <div class="h2-step">
-            <span class="h2-step-num">3</span>
+          <div class="h2-step h2-reveal">
+            <div class="h2-step-top"><span class="h2-step-icon"><svg class="icon-svg" aria-hidden="true"><use href="#i-leaf"/></svg></span><span class="h2-step-num">3</span></div>
             <h3>Go at your own pace</h3>
             <p>A short weekly check-in keeps you on track. Rest days pause your streak, so a busy week never erases your progress.</p>
           </div>
@@ -1882,7 +1999,7 @@ main#main { display: block; }
         <div class="h2-apps">
 
           <!-- Paper & Prosperity: wears its own pastel lavender brand -->
-          <article class="h2-app h2-app-pp" id="paper-and-prosperity">
+          <article class="h2-app h2-app-pp h2-reveal" id="paper-and-prosperity">
             <div class="h2-app-head">
               <img class="h2-app-logo" src="/assets/pp/icon.png" width="56" height="56" alt="Paper &amp; Prosperity app icon">
               <div>
@@ -1911,7 +2028,7 @@ main#main { display: block; }
           </article>
 
           <!-- Empire Life Dashboard: wears its own cream & gold brand -->
-          <article class="h2-app h2-app-eld" id="empire-life-dashboard">
+          <article class="h2-app h2-app-eld h2-reveal" id="empire-life-dashboard">
             <div class="h2-app-head">
               <img class="h2-app-logo" src="/assets/eld/icon.png" width="56" height="56" alt="Empire Life Dashboard icon">
               <div>
@@ -1953,14 +2070,40 @@ main#main { display: block; }
       </div>
     </section>
 
+    <!-- THE DEBT-FREE MOMENT -->
+    <section class="h2-section h2-moment" id="debt-free-moment">
+      <div class="h2-inner h2-wide h2-moment-grid">
+        <div class="h2-moment-copy">
+          <div class="h2-kicker">The moment that matters</div>
+          <h2 class="h2-title">This is the screen you open on payday.</h2>
+          <p class="h2-moment-sub">Slide in a little extra and watch your finish line move closer. Real math, calculated for you, no spreadsheets.</p>
+          <ol class="h2-callouts">
+            <li><span>1</span><div><b>Add an extra $250 a month</b>Try any amount and pick snowball or avalanche.</div></li>
+            <li><span>2</span><div><b>Your new debt-free date</b>November 2030, right there in front of you.</div></li>
+            <li><span>3</span><div><b>4 months sooner, $1,840 saved</b>See exactly what that extra money buys you.</div></li>
+          </ol>
+          <div class="h2-moment-actions">
+            <a class="h2-btn" href="https://web-paper-and-prosperity.vercel.app" target="_blank" rel="noopener">Try It Live — No Sign-Up</a>
+          </div>
+          <p class="h2-moment-note">Example numbers. Yours will be based on your own debts.</p>
+        </div>
+        <figure class="h2-moment-shot h2-reveal">
+          <img src="/assets/app/05_Debt_Simulator.jpg" width="540" height="960" loading="lazy" alt="Paper &amp; Prosperity Debt Simulator: an extra $250 a month moves the debt-free date to November 2030, 4 months sooner, saving $1,840 in interest">
+          <span class="h2-pin h2-pin-1" aria-hidden="true">1</span>
+          <span class="h2-pin h2-pin-2" aria-hidden="true">2</span>
+          <span class="h2-pin h2-pin-3" aria-hidden="true">3</span>
+        </figure>
+      </div>
+    </section>
+
     <!-- FOUNDER -->
     <section class="h2-section" id="founder">
       <div class="h2-inner h2-founder">
         <div class="h2-kicker">Why Debt Free Empire exists</div>
         <h2 class="h2-title">Built by someone who's been there.</h2>
         <div class="h2-rule"></div>
-        <p class="h2-quote">"I started building these tools after going through my own money struggles and realizing that most budgeting apps felt either overwhelming, judgmental or built around monthly subscriptions."</p>
-        <p class="h2-sign">Robert Daniels, Founder · Southern California</p>
+        <div class="h2-quote-card h2-reveal"><span class="h2-quote-mark" aria-hidden="true">&ldquo;</span><p class="h2-quote">"I started building these tools after going through my own money struggles and realizing that most budgeting apps felt either overwhelming, judgmental or built around monthly subscriptions."</p>
+        <p class="h2-sign">Robert Daniels, Founder · Southern California</p></div>
         <p class="h2-founder-note">We're new, and you'd be one of our first users. Tell us what's working and what isn't. Your feedback shapes what we build next.</p>
         <div class="h2-founder-links">
           <a href="/about">Read our story →</a>
@@ -1977,7 +2120,7 @@ main#main { display: block; }
         <h2 class="h2-title">Is this right for you?</h2>
         <div class="h2-rule"></div>
         <div class="h2-fitgrid">
-          <div class="h2-fitcard yes">
+          <div class="h2-fitcard yes h2-reveal">
             <h3>Right for you if…</h3>
             <ul>
               <li>You feel behind and want a calm, judgment-free plan</li>
@@ -1986,7 +2129,7 @@ main#main { display: block; }
               <li>You want to see exactly when you'll be debt free</li>
             </ul>
           </div>
-          <div class="h2-fitcard no">
+          <div class="h2-fitcard no h2-reveal">
             <h3>Probably not for you if…</h3>
             <ul>
               <li>You want your bank to sync every purchase automatically. Here you enter your own numbers. <a href="/vs-ynab">YNAB</a> or <a href="/vs-monarch-money">Monarch Money</a> may fit better.</li>
@@ -2004,19 +2147,19 @@ main#main { display: block; }
         <h2 class="h2-title">Start learning, free.</h2>
         <div class="h2-rule"></div>
         <div class="h2-guides">
-          <a class="h2-guide" href="/resources/how-to-budget-for-beginners">
+          <a class="h2-guide h2-reveal" href="/resources/how-to-budget-for-beginners">
             <span class="h2-guide-tag">Guide</span>
             <h3>How to Budget for Beginners</h3>
             <p>Six simple steps, a real example budget and no jargon.</p>
             <span class="h2-guide-go">Read the guide →</span>
           </a>
-          <a class="h2-guide" href="/debt-calculator">
+          <a class="h2-guide h2-reveal" href="/debt-calculator">
             <span class="h2-guide-tag">Free tool</span>
             <h3>Debt Payoff Calculator</h3>
             <p>Find your debt-free date and see what an extra $50 a month saves.</p>
             <span class="h2-guide-go">Try the calculator →</span>
           </a>
-          <a class="h2-guide" href="/resources">
+          <a class="h2-guide h2-reveal" href="/resources">
             <span class="h2-guide-tag">Resources</span>
             <h3>Free Budgeting Resources</h3>
             <p>Spreadsheets, trackers and printables to get organized.</p>
@@ -2074,6 +2217,8 @@ main#main { display: block; }
 </section>
 
     </main>
+<script>(function(){if(!('IntersectionObserver' in window))return;var d=document.documentElement;d.classList.add('h2-js');var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('h2-in');io.unobserve(e.target);}});},{rootMargin:'0px 0px -8% 0px'});document.querySelectorAll('.h2-reveal').forEach(function(el){io.observe(el);});})();</script>
+
 
 <footer class="footer">© 2026 Debt Free Empire ·
 <a href="/apps">Apps</a> · <a href="/paper-and-prosperity">Paper &amp; Prosperity</a> · <a href="/products">Products</a> · <a href="/pricing">Pricing</a> · <a href="/changelog">Changelog</a> · <a href="/resources">Resources</a> · <a href="/debt-calculator">Debt Calculator</a> · <a href="/about">About</a> · <a href="/support">Support</a> · <a href="/privacy">Privacy</a> · <a href="/paper-and-prosperity/privacy">App Privacy</a> · <a href="/support#message">Contact</a>
