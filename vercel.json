@@ -16,6 +16,21 @@
       "permanent": false
     },
     {
+      "source": "/freebies",
+      "destination": "/resources",
+      "permanent": true
+    },
+    {
+      "source": "/freebies/",
+      "destination": "/resources",
+      "permanent": true
+    },
+    {
+      "source": "/freebies.html",
+      "destination": "/resources",
+      "permanent": true
+    },
+    {
       "source": "/:l([a-z0-9])",
       "destination": "/?utm_source=heycatch&utm_campaign=:l",
       "permanent": false
@@ -71,15 +86,6 @@
     },
     {
       "source": "/api/admin-(.*)",
-      "headers": [
-        {
-          "key": "X-Robots-Tag",
-          "value": "noindex, nofollow"
-        }
-      ]
-    },
-    {
-      "source": "/freebies.html",
       "headers": [
         {
           "key": "X-Robots-Tag",
