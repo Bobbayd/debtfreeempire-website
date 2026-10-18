@@ -10,7 +10,8 @@ const OUTSIDE = [
   { name: 'App Store: Paper & Prosperity', url: 'https://apps.apple.com/us/app/paper-prosperity/id6809006042' },
   { name: 'Google Play: Paper & Prosperity', url: 'https://play.google.com/store/apps/details?id=com.paperandprosperity.paper_and_prosperity' },
   { name: 'Etsy shop', url: 'https://www.etsy.com/shop/PaperandProsperity' },
-  { name: 'Paper & Prosperity web app', url: 'https://web-paper-and-prosperity.vercel.app' }
+  { name: 'Paper & Prosperity web app', url: 'https://app.debtfreeempire.com' },
+  { name: 'Paper & Prosperity web app (old address)', url: 'https://web-paper-and-prosperity.vercel.app' }
 ];
 
 async function check(name, url, soft) {

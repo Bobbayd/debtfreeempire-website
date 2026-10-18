@@ -10,7 +10,7 @@
 - Available: iPhone, iPad, Android, Mac, Web
 - App Store: https://apps.apple.com/us/app/paper-prosperity/id6809006042
 - Google Play: https://play.google.com/store/apps/details?id=com.paperandprosperity.paper_and_prosperity
-- Web: https://web-paper-and-prosperity.vercel.app
+- Web: https://app.debtfreeempire.com
 - Product page: https://www.debtfreeempire.com/paper-and-prosperity
 
 ### Empire Life Dashboard ($37 one-time)
