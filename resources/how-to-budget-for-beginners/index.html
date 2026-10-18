@@ -41,6 +41,41 @@
 .callout.note { margin: 30px 0 40px; background: var(--card-white); border: 1px solid var(--border); border-left: 3px solid var(--lavender); }
 .note-title { font-size: 11px !important; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--lavender-hover) !important; margin-bottom: 6px; }
 .callout.note p:not(.note-title) { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 19px; line-height: 1.55; }
+
+/* ===== article cover hero + DFE gold on this page ===== */
+:root { --lavender:#8E6F3E; --lavender-hover:#76592F; --lavender-tint:rgba(228,197,144,.25); --lavender-soft:#F3EBDD; }
+.art-hero { padding-bottom:84px !important; background:radial-gradient(ellipse at 85% 20%,#F3E3C3 0%,rgba(243,227,195,0) 55%),linear-gradient(180deg,#FAF7F2,#F7F0E3); border-bottom:1px solid #EAE2D4; padding:44px 24px 56px; }
+.art-hero-inner { max-width:1120px; margin:0 auto; display:grid; grid-template-columns:1.1fr .9fr; gap:56px; align-items:center; }
+.art-copy { text-align:left; }
+.art-copy .hero-eyebrow { color:#A8864F; }
+.art-h1 { font-size:clamp(30px,3.6vw,46px) !important; line-height:1.12 !important; text-align:left; margin:0 0 16px !important; max-width:none !important; }
+.art-h1 span { display:block; font-family:Georgia,'Times New Roman',serif; font-style:italic; font-weight:400; color:#A8864F; font-size:.62em; line-height:1.3; margin-top:10px; }
+.art-sub { text-align:left !important; margin:0 0 16px !important; max-width:560px; font-size:17px !important; }
+.art-byline { margin:0 0 22px; font-size:14px; color:var(--text-secondary); }
+.art-ctas { justify-content:flex-start !important; margin-bottom:0 !important; }
+.art-cover { margin:0; justify-self:center; width:100%; max-width:430px; }
+.nb { position:relative; display:flex; background:#FFFDF9; border:1px solid #E4C590; border-radius:18px; box-shadow:0 30px 60px rgba(61,53,46,.16); transform:rotate(1.5deg); }
+.nb-rings { width:34px; flex-shrink:0; border-right:1px dashed #E4C590; display:flex; flex-direction:column; justify-content:space-around; align-items:center; padding:18px 0; }
+.nb-rings i { width:12px; height:12px; border-radius:50%; background:#F3EBDD; border:2px solid #C9A45C; }
+.nb-page { flex:1; padding:48px 24px 22px; background:repeating-linear-gradient(180deg,transparent 0 33px,#F1E8D8 33px 34px); }
+.nb-title { font-family:Georgia,serif; font-style:italic; font-size:21px; color:#3D352E; margin:0 0 10px; }
+.nb-title span { font-size:14px; color:#9A9083; }
+.nb-row, .nb-total { display:flex; justify-content:space-between; gap:12px; font-size:14.5px; line-height:34px; color:#4A433B; }
+.nb-row em { font-style:italic; color:#A8864F; font-size:12.5px; }
+.nb-row b { font-weight:700; color:#3D352E; }
+.nb-in b { color:#527A5A; }
+.nb-total { margin-top:6px; border-top:2px solid #3D352E; font-weight:800; color:#3D352E; }
+.nb-total b { font-size:20px; color:#8E6F3E; }
+.nb-stamp { position:absolute; right:-22px; bottom:-48px; transform:rotate(-8deg); background:#8E6F3E; color:#FFFDF9; font-weight:800; font-size:13px; letter-spacing:.4px; line-height:1.25; text-align:center; padding:12px 14px; border-radius:12px; box-shadow:0 12px 24px rgba(61,53,46,.22); }
+.nb-note { position:absolute; left:-40px; top:-34px; transform:rotate(-6deg); background:#F7E7B8; color:#5c4a28; font-family:Georgia,serif; font-style:italic; font-size:14px; line-height:1.3; padding:12px 14px; border-radius:4px; box-shadow:0 10px 20px rgba(61,53,46,.15); }
+@media (max-width: 900px) {
+  .art-hero-inner { grid-template-columns:1fr; gap:44px; }
+  .art-copy, .art-h1, .art-sub { text-align:center !important; }
+  .art-sub { margin-left:auto !important; margin-right:auto !important; }
+  .art-ctas { justify-content:center !important; }
+  .art-cover { max-width:360px; }
+  .nb-note { left:-10px; top:-30px; } .nb-stamp { right:-6px; bottom:-44px; }
+}
 </style>
 <script type="application/ld+json">
 {
@@ -180,13 +215,31 @@ analytics.init({
 <symbol id="icon-check" viewBox="0 0 24 24"><polyline points="4.500,12.500 10,18 19.500,6.500"/></symbol>
 <symbol id="icon-link" viewBox="0 0 24 24"><path d="M10 14a4 4 0 0 0 5.700 0l3-3a4 4 0 0 0-5.700-5.700l-1 1"/><path d="M14 10a4 4 0 0 0-5.700 0l-3 3a4 4 0 0 0 5.700 5.700l1-1"/></symbol>
 </defs></svg>
-<header class="site-header"><a href="/" class="site-header-brand">Debt Free Empire</a><nav class="site-header-nav" aria-label="Primary"><div class="nav-dd"><button type="button" class="site-header-link nav-dd-btn" aria-expanded="false" aria-haspopup="true">Apps <span class="nav-dd-caret">⌄</span></button><div class="nav-dd-menu"><a class="nav-dd-item" href="/paper-and-prosperity">Paper &amp; Prosperity</a><a class="nav-dd-item" href="/apps/empire-life-dashboard">Empire Life Dashboard</a></div></div><div class="nav-dd"><button type="button" class="site-header-link nav-dd-btn" aria-expanded="false" aria-haspopup="true">Shop <span class="nav-dd-caret">⌄</span></button><div class="nav-dd-menu"><a class="nav-dd-item" href="https://www.etsy.com/shop/PaperandProsperity" target="_blank" rel="noopener">Spreadsheets</a><span class="nav-dd-item soon" aria-disabled="true">Workbooks<em>Coming soon</em></span><span class="nav-dd-item soon" aria-disabled="true">Cash Envelopes<em>Coming soon</em></span></div></div><a class="site-header-link" href="/about">About</a><a class="site-header-link" href="/pricing">Pricing</a><a class="site-header-link" href="/support">Support</a></nav><a class="nav-cta" href="https://app.paperandprosperity.shop" target="_blank" rel="noopener">Open Web App</a></header>
-<div class="mobile-topbar"><a href="/" class="nav-brand">Debt Free Empire</a><button class="menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false" aria-controls="drawer"><svg class="icon-svg" style="width:20px;height:20px;" aria-hidden="true" focusable="false"><use href="#icon-menu"/></svg></button></div>
-<nav class="drawer" id="drawer" aria-label="Menu"><a href="/" class="drawer-brand">Debt Free Empire</a><span class="drawer-item drawer-label">Apps</span><a class="drawer-item drawer-sub" href="/paper-and-prosperity">Paper &amp; Prosperity</a><a class="drawer-item drawer-sub" href="/apps/empire-life-dashboard">Empire Life Dashboard</a><span class="drawer-item drawer-label">Shop</span><a class="drawer-item drawer-sub" href="https://www.etsy.com/shop/PaperandProsperity" target="_blank" rel="noopener">Spreadsheets</a><span class="drawer-item drawer-sub soon">Workbooks <em>Coming soon</em></span><span class="drawer-item drawer-sub soon">Cash Envelopes <em>Coming soon</em></span><a class="drawer-item" href="/about">About</a><a class="drawer-item" href="/pricing">Pricing</a><a class="drawer-cta" href="https://app.paperandprosperity.shop" target="_blank" rel="noopener">Open Web App</a><div class="drawer-divider"></div><a class="drawer-item" href="/support">Support</a><a class="drawer-item" href="/privacy">Privacy Policy</a></nav>
+<header class="site-header"><a href="/" class="site-header-brand">Debt Free <em>Empire</em></a><nav class="site-header-nav" aria-label="Primary"><div class="nav-dd"><button type="button" class="site-header-link nav-dd-btn" aria-expanded="false" aria-haspopup="true">Apps <span class="nav-dd-caret">⌄</span></button><div class="nav-dd-menu"><a class="nav-dd-item" href="/paper-and-prosperity">Paper &amp; Prosperity</a><a class="nav-dd-item" href="/apps/empire-life-dashboard">Empire Life Dashboard</a></div></div><div class="nav-dd"><button type="button" class="site-header-link nav-dd-btn" aria-expanded="false" aria-haspopup="true">Shop <span class="nav-dd-caret">⌄</span></button><div class="nav-dd-menu"><a class="nav-dd-item" href="https://www.etsy.com/shop/PaperandProsperity" target="_blank" rel="noopener">Spreadsheets</a><span class="nav-dd-item soon" aria-disabled="true">Workbooks<em>Coming soon</em></span><span class="nav-dd-item soon" aria-disabled="true">Cash Envelopes<em>Coming soon</em></span></div></div><a class="site-header-link" href="/about">About</a><a class="site-header-link" href="/pricing">Pricing</a><a class="site-header-link" href="/support">Support</a></nav><a class="nav-cta" href="https://app.paperandprosperity.shop" target="_blank" rel="noopener">Start Free</a></header>
+<div class="mobile-topbar"><a href="/" class="nav-brand">Debt Free <em>Empire</em></a><button class="menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false" aria-controls="drawer"><svg class="icon-svg" style="width:20px;height:20px;" aria-hidden="true" focusable="false"><use href="#icon-menu"/></svg></button></div>
+<nav class="drawer" id="drawer" aria-label="Menu"><a href="/" class="drawer-brand">Debt Free <em>Empire</em></a><span class="drawer-item drawer-label">Apps</span><a class="drawer-item drawer-sub" href="/paper-and-prosperity">Paper &amp; Prosperity</a><a class="drawer-item drawer-sub" href="/apps/empire-life-dashboard">Empire Life Dashboard</a><span class="drawer-item drawer-label">Shop</span><a class="drawer-item drawer-sub" href="https://www.etsy.com/shop/PaperandProsperity" target="_blank" rel="noopener">Spreadsheets</a><span class="drawer-item drawer-sub soon">Workbooks <em>Coming soon</em></span><span class="drawer-item drawer-sub soon">Cash Envelopes <em>Coming soon</em></span><a class="drawer-item" href="/about">About</a><a class="drawer-item" href="/pricing">Pricing</a><a class="drawer-cta" href="https://app.paperandprosperity.shop" target="_blank" rel="noopener">Start Free</a><div class="drawer-divider"></div><a class="drawer-item" href="/support">Support</a><a class="drawer-item" href="/privacy">Privacy Policy</a></nav>
 <div class="scrim" id="scrim"></div>
 <main>
 <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> <span aria-hidden="true">›</span> <a href="/resources">Resources</a> <span aria-hidden="true">›</span> <span aria-current="page">How to Budget for Beginners</span></nav>
-<section class="welcome-section"><div class="hero-eyebrow">Budgeting Basics</div><h1 class="hero-headline">How to Budget for Beginners (When You Have No Idea Where Your Money Goes)</h1><p class="hero-subtitle">To budget as a beginner, write down what you actually take home, list your bills and everyday spending, then give every dollar a job until nothing is left unassigned. Check in once a week. That's the whole secret, and you can start tonight.</p><p class="byline" style="margin:10px 0 0;font-size:14px;color:var(--text-secondary)">By <a href="/author/robert-daniels" rel="author">Robert Daniels</a>, Founder of Debt Free Empire · Updated October 2026 · 9 min read</p><div class="hero-cta-row"><a class="btn-primary" href="/apps">See Our Free Budget Apps</a><a class="btn-secondary" href="/debt-calculator">Find Your Debt-Free Date</a></div><div class="hero-divider"></div></section>
+<section class="art-hero"><div class="art-hero-inner"><div class="art-copy"><div class="hero-eyebrow">Budgeting Basics · Beginner Guide</div><h1 class="hero-headline art-h1">How to Budget for Beginners <span>(When You Have No Idea Where Your Money Goes)</span></h1><p class="hero-subtitle art-sub">To budget as a beginner, write down what you actually take home, list your bills and everyday spending, then give every dollar a job until nothing is left unassigned. Check in once a week. That's the whole secret, and you can start tonight.</p><p class="byline art-byline">By <a href="/author/robert-daniels" rel="author">Robert Daniels</a>, Founder of Debt Free Empire · Updated October 2026 · 9 min read</p><div class="hero-cta-row art-ctas"><a class="btn-primary" href="#steps">Start the 6 Steps</a><a class="btn-secondary" href="/debt-calculator">Find Your Debt-Free Date</a></div></div><figure class="art-cover" aria-label="Example beginner budget: $3,200 take-home pay, every dollar assigned, $0 left">
+  <div class="nb">
+    <div class="nb-rings" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+    <div class="nb-page">
+      <p class="nb-title">My first budget <span>· this month</span></p>
+      <div class="nb-row nb-in"><span>Take-home pay</span><b>$3,200</b></div>
+      <div class="nb-row"><span>Rent</span><b>$1,150</b></div>
+      <div class="nb-row"><span>Bills &amp; phone</span><b>$210</b></div>
+      <div class="nb-row"><span>Groceries</span><b>$450</b></div>
+      <div class="nb-row"><span>Gas, insurance &amp; more</span><b>$490</b></div>
+      <div class="nb-row"><span>Debt payments</span><b>$560</b></div>
+      <div class="nb-row"><span>Savings</span><b>$200</b></div>
+      <div class="nb-row"><span>Fun money <em>(on purpose!)</em></span><b>$140</b></div>
+      <div class="nb-total"><span>Left to assign</span><b>$0</b></div>
+    </div>
+    <div class="nb-stamp" aria-hidden="true">Every dollar<br>has a job ✓</div>
+    <div class="nb-note" aria-hidden="true">Check in<br>every Sunday</div>
+  </div>
+</figure></div></section>
 
 <section class="page-section"><div class="section-inner seo-prose article">
 <p class="lede">You get paid on Friday. By Wednesday you're checking your balance before you buy groceries, doing quick math in the checkout line, and wondering how it went so fast. You didn't buy anything big. It just… left.</p>
@@ -215,7 +268,7 @@ analytics.init({
 </div></section>
 
 <section class="page-section alt"><div class="section-inner seo-prose article">
-<h2 class="section-title" id="steps">How do you make a budget for the first time?</h2><div class="section-underline"></div>
+<h2 class="section-title" id="steps" style="scroll-margin-top:100px">How do you make a budget for the first time?</h2><div class="section-underline"></div>
 <p>Here's the simple six-step process. Pour a coffee, put on some music and go one step at a time.</p>
 
 <h3>1. Write down what you actually bring home</h3>
