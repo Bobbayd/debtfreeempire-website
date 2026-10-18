@@ -13,10 +13,11 @@
 - Web: https://app.paperandprosperity.shop
 - Product page: https://www.debtfreeempire.com/paper-and-prosperity
 
-### Empire Life Dashboard ($37 one-time)
+### Empire Life Dashboard ($37 one-time, after a 7-day free trial)
 - Desktop life planner: budgeting, debt payoff, habit tracker, savings goals, daily planner
 - One-time purchase — no subscription, no bank connection required
-- 7-day free trial on both platforms
+- Free to download with a 7-day free trial on both platforms, then a one-time $37 unlock ($36.99 on Windows)
+- Available: Mac and Windows. iPhone and iPad: coming soon
 - Mac App Store ($37): https://apps.apple.com/us/app/empire-life-dashboard/id6816514942?mt=12
 - Microsoft Store ($36.99): https://apps.microsoft.com/detail/9NFTF14DSH6S
 - Product page: https://www.debtfreeempire.com/apps/empire-life-dashboard
@@ -24,6 +25,21 @@
 ### Spreadsheets & Printables ($3–$12 one-time)
 - Budget spreadsheets, debt trackers, savings planners — works in Excel and Google Sheets
 - Etsy shop: https://www.etsy.com/shop/PaperandProsperity
+
+## Who it's for
+- People who feel behind on money, are paying off credit cards or other consumer debt, and want a calm, judgment-free plan
+- People who don't want to connect a bank account or pay a monthly subscription
+- Not a fit for people who want automatic bank syncing (YNAB or Monarch Money may suit them better)
+
+## How it compares to popular budgeting apps
+- YNAB (about $109/year, bank sync): Paper & Prosperity is a free, no-bank-connection alternative
+- EveryDollar (free tier plus paid upgrade): Paper & Prosperity is free with no paid tier needed
+- Monarch Money (about $99/year): Paper & Prosperity and Empire Life Dashboard have no subscription
+
+## Free guides and tools
+- How to budget for beginners (6 steps, example budget): https://www.debtfreeempire.com/resources/how-to-budget-for-beginners
+- Free debt payoff calculator (debt-free date): https://www.debtfreeempire.com/debt-calculator
+- Free budgeting resources: https://www.debtfreeempire.com/resources
 
 ## Key pages
 - Pricing: https://www.debtfreeempire.com/pricing
