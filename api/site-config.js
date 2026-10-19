@@ -15,6 +15,18 @@ function cleanStoreUrl(v) {
   return u.toString();
 }
 
+// Adds Apple Analytics campaign params so website referrals show up in App Store Connect.
+function withCampaign(v) {
+  if (!v) return '';
+  try {
+    const u = new URL(v);
+    u.searchParams.set('pt', '122963705');
+    u.searchParams.set('ct', 'website_eld_page');
+    u.searchParams.set('mt', '12');
+    return u.toString();
+  } catch (e) { return v; }
+}
+
 export default async function handler(req, res) {
   if (req.method === 'GET') {
     res.setHeader('Cache-Control', 'public, max-age=0, s-maxage=30, stale-while-revalidate=60');
@@ -22,7 +34,7 @@ export default async function handler(req, res) {
       const [flat] = await redis([['HGETALL', KEY]]);
       const cfg = {};
       for (let i = 0; i + 1 < (flat || []).length; i += 2) if (FIELDS.includes(flat[i])) cfg[flat[i]] = flat[i + 1];
-      return res.status(200).json({ macAppStoreUrl: cfg.macAppStoreUrl || '', iosAppStoreUrl: cfg.iosAppStoreUrl || '' });
+      return res.status(200).json({ macAppStoreUrl: withCampaign(cfg.macAppStoreUrl), iosAppStoreUrl: cfg.iosAppStoreUrl || '' });
     } catch (e) {
       return res.status(200).json({ macAppStoreUrl: '', iosAppStoreUrl: '' });
     }

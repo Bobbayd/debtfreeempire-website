@@ -21,3 +21,50 @@ document.addEventListener('click', function (e) {
     }
   }
 }, true);
+
+// Site-wide: clicks on links to the Empire Life Dashboard page or its stores (e.g. from articles).
+document.addEventListener('click', function (e) {
+  var a = e.target && e.target.closest ? e.target.closest('a[href]') : null;
+  if (!a) return;
+  var href = a.href || '';
+  var toEld = (a.hostname.replace(/^www\./, '') === 'debtfreeempire.com' && a.pathname.indexOf('/apps/empire-life-dashboard') === 0);
+  var toStore = STORES.some(function (s) { return href.indexOf(s.match) !== -1; });
+  if (!toEld && !toStore) return;
+  try {
+    analytics.trackEvent('article_cta_click', { destination: href, page: location.pathname });
+  } catch (err) {}
+}, true);
+
+// ELD page: scroll depth milestones, each fired once per page load.
+if (location.pathname.indexOf('empire-life-dashboard') !== -1) {
+  var fired = {};
+  var onScroll = function () {
+    var doc = document.documentElement;
+    var scrollable = doc.scrollHeight - window.innerHeight;
+    if (scrollable <= 0) return;
+    var pct = (window.scrollY / scrollable) * 100;
+    [25, 50, 75, 100].forEach(function (d) {
+      if (pct >= d - 0.5 && !fired[d]) {
+        fired[d] = true;
+        try { analytics.trackEvent('eld_scroll_depth', { depth: d }); } catch (err) {}
+      }
+    });
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+}
+
+// Notify Me form: the page posts to /api/waitlist; fire waitlist_signup when the response is ok.
+var nativeFetch = window.fetch;
+window.fetch = function (input) {
+  var p = nativeFetch.apply(this, arguments);
+  try {
+    var url = typeof input === 'string' ? input : (input && input.url) || '';
+    if (url.indexOf('/api/waitlist') !== -1) {
+      p.then(function (res) {
+        if (res && res.ok) analytics.trackEvent('waitlist_signup', { page: location.pathname });
+      }).catch(function () {});
+    }
+  } catch (err) {}
+  return p;
+};
