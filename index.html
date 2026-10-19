@@ -1736,6 +1736,9 @@ main#main { display: block; }
 .email-popup-btn:hover { background: var(--dfe-btn-hover) !important; }
 .email-popup-btn:focus-visible, .email-btn:focus-visible { outline-color: var(--dfe-ink) !important; }
 .eai-fab { background: var(--dfe-band) !important; border-color: var(--dfe-gold) !important; }
+.eai-fab { width: auto; height: 52px; padding: 0 20px 0 16px; gap: 8px; border-radius: 999px; font-size: 18px; }
+.eai-fab-label { font-family: 'Montserrat', sans-serif; font-size: 14px; font-weight: 700; letter-spacing: .2px; color: var(--dfe-ink, #3D352E); white-space: nowrap; }
+.eai-panel { bottom: 84px; }
 .sidebar:not(.open) { box-shadow: none; }
 .site-header-brand em, .nav-brand em, .sidebar-brand em { font-family: Georgia, 'Times New Roman', serif; font-style: italic; font-weight: 400; text-transform: none; letter-spacing: 0; color: var(--dfe-gold-deep); font-size: 1.22em; margin-left: 2px; }
 .site-header-brand { font-size: 19px; letter-spacing: 1.8px; }
@@ -2228,7 +2231,7 @@ main#main { display: block; }
 
 
 <!-- EMPIRE AI CHAT WIDGET -->
-<button type="button" class="eai-fab" id="eaiFab" aria-label="Open Empire AI chat" aria-expanded="false" aria-controls="eaiPanel" hidden>⚡</button>
+<button type="button" class="eai-fab" id="eaiFab" aria-label="Open Empire AI chat" aria-expanded="false" aria-controls="eaiPanel" hidden><span aria-hidden="true">⚡</span><span class="eai-fab-label" id="eaiFabLabel">Ask Empire AI</span></button>
 <div class="eai-bubble" id="eaiBubble" role="status" hidden>
   <button type="button" class="eai-bubble-text" id="eaiBubbleText">Hey! Need help finding the right tools? 👋</button>
   <button type="button" class="eai-bubble-close" id="eaiBubbleClose" aria-label="Dismiss Empire AI greeting">×</button>
@@ -2685,20 +2688,24 @@ main#main { display: block; }
       bubbleHideTimer = setTimeout(hideBubble, 10000);
     }
 
+    var fabLabel = document.getElementById('eaiFabLabel');
+    var openedAt = 0;
     function openPanel() {
       hideBubble();
+      openedAt = Date.now();
       panel.classList.add('open');
       fab.setAttribute('aria-expanded', 'true');
-      if (!ls(true, K_ACCEPTED)) {
-        disclaimer.classList.add('show');
-        document.getElementById('eaiDisclaimerBtn').focus();
-      } else {
-        input.focus();
-      }
+      fab.setAttribute('aria-label', 'Close Empire AI chat');
+      if (fabLabel) fabLabel.textContent = 'Close chat';
+      // The disclaimer is shown in the panel footer, so open straight to the chat.
+      ls(false, K_ACCEPTED, '1');
+      input.focus();
     }
     function closePanel() {
       panel.classList.remove('open');
       fab.setAttribute('aria-expanded', 'false');
+      fab.setAttribute('aria-label', 'Open Empire AI chat');
+      if (fabLabel) fabLabel.textContent = 'Ask Empire AI';
       fab.focus();
     }
     function turnOff() {
@@ -2721,7 +2728,14 @@ main#main { display: block; }
     });
     updateRemaining();
 
-    fab.addEventListener('click', function () { panel.classList.contains('open') ? closePanel() : openPanel(); });
+    fab.addEventListener('click', function () {
+      if (panel.classList.contains('open')) {
+        if (Date.now() - openedAt < 600) return; // ignore a quick double-click so the chat doesn't flash shut
+        closePanel();
+      } else {
+        openPanel();
+      }
+    });
     document.getElementById('eaiClose').addEventListener('click', closePanel);
     document.getElementById('eaiOff').addEventListener('click', turnOff);
     document.getElementById('eaiDisclaimerBtn').addEventListener('click', function () {
