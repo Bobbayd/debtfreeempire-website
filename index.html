@@ -1721,6 +1721,10 @@ main#main { display: block; }
 
 /* guides: colored tops */
 .h2-guide { border-top:3px solid var(--dfe-gold); }
+.h2-pp-badges .eld-badge-item img { height:34px; width:auto; }
+.h2-also { margin:14px 0 6px; font-size:12.5px; font-weight:700; color:var(--dfe-body); text-align:center; }
+.h2-blog-more { text-align:center; margin-top:22px; font-size:14px; font-weight:700; }
+.h2-blog-more a { color:var(--dfe-btn); }
 
 /* reveal on scroll (only when JS adds .h2-js) */
 .h2-js .h2-reveal { opacity:0; transform:translateY(18px); transition:opacity .6s ease, transform .6s ease; }
@@ -1921,7 +1925,7 @@ main#main { display: block; }
     <section id="how-it-works" class="h2-section">
       <div class="h2-inner">
         <div class="h2-kicker">How it works</div>
-        <h2 class="h2-title">From "where did it go?" to a plan you can see.</h2>
+        <h2 class="h2-title">From &ldquo;where did it go?&rdquo; to a plan you can see.</h2>
         <div class="h2-rule"></div>
         <div class="h2-steps">
           <div class="h2-step h2-reveal">
@@ -1969,14 +1973,15 @@ main#main { display: block; }
               <li>Your Money Coach, an optional AI helper</li>
             </ul>
             <img class="h2-app-shot" src="/assets/app/ios/04_Debt_Payoff.jpg" width="640" height="1385" loading="lazy" alt="Paper &amp; Prosperity debt payoff screen on iPhone">
+            <div class="h2-app-actions">
+              <a class="h2-app-btn" href="https://app.paperandprosperity.shop" target="_blank" rel="noopener">Start Free — No Account Needed</a>
+              <a class="h2-app-more" href="/paper-and-prosperity">Learn more →</a>
+            </div>
+            <p class="h2-also">Or get it in your app store:</p>
             <div class="eld-badges center h2-eld-badges h2-pp-badges">
               <div class="eld-badge-item"><a href="https://apps.apple.com/us/app/paper-prosperity/id6809006042" target="_blank" rel="noopener" aria-label="Download Paper &amp; Prosperity on the App Store for iPhone and iPad"><img src="/app-store-badge.svg" alt="Download on the App Store" width="144" height="48"></a><span class="eld-badge-cap">iPhone &amp; iPad · Free</span></div>
               <div class="eld-badge-item"><a href="https://apps.apple.com/us/app/paper-prosperity/id6809006042?mt=12" target="_blank" rel="noopener" aria-label="Download Paper &amp; Prosperity on the Mac App Store"><img src="/app-store-badge.svg" alt="Download on the Mac App Store" width="144" height="48"></a><span class="eld-badge-cap">Mac · Free</span></div>
               <div class="eld-badge-item"><a href="https://play.google.com/store/apps/details?id=com.paperandprosperity.paper_and_prosperity" target="_blank" rel="noopener" aria-label="Get Paper &amp; Prosperity on Google Play"><img src="/google-play-badge.svg" alt="Get it on Google Play" width="162" height="48"></a><span class="eld-badge-cap">Android · Free</span></div>
-            </div>
-            <div class="h2-app-actions">
-              <a class="h2-app-btn" href="https://app.paperandprosperity.shop" target="_blank" rel="noopener">Start Free — No Account Needed</a>
-              <a class="h2-app-more" href="/paper-and-prosperity">Learn more →</a>
             </div>
           </article>
 
@@ -2046,6 +2051,36 @@ main#main { display: block; }
           <span class="h2-pin h2-pin-2" aria-hidden="true">2</span>
           <span class="h2-pin h2-pin-3" aria-hidden="true">3</span>
         </figure>
+      </div>
+    </section>
+
+    <!-- FROM THE BLOG -->
+    <section class="h2-section" id="from-the-blog">
+      <div class="h2-inner h2-wide">
+        <div class="h2-kicker">From the blog</div>
+        <h2 class="h2-title">Practical money guides.</h2>
+        <div class="h2-rule"></div>
+        <div class="h2-guides">
+          <a class="h2-guide h2-reveal" href="/resources/blog/snowball-vs-avalanche">
+            <span class="h2-guide-tag">Debt payoff</span>
+            <h3>Snowball vs Avalanche: Behavior Beats Math</h3>
+            <p>The math says avalanche, but behavior says snowball. How to pick the method you will actually stick with.</p>
+            <span class="h2-guide-go">Read the post →</span>
+          </a>
+          <a class="h2-guide h2-reveal" href="/resources/blog/stop-living-paycheck-to-paycheck">
+            <span class="h2-guide-tag">Budgeting</span>
+            <h3>How to Stop Living Paycheck to Paycheck</h3>
+            <p>Start with a one-month buffer, then build a budget around your actual pay dates.</p>
+            <span class="h2-guide-go">Read the post →</span>
+          </a>
+          <a class="h2-guide h2-reveal" href="/resources/blog/how-fast-to-pay-off-credit-card-debt">
+            <span class="h2-guide-tag">Debt payoff</span>
+            <h3>How Fast to Pay Off Credit Card Debt: Real Numbers</h3>
+            <p>See real timelines for $5,000 and $6,000 balances at different monthly payments.</p>
+            <span class="h2-guide-go">Read the post →</span>
+          </a>
+        </div>
+        <p class="h2-blog-more"><a href="/resources/blog">See all guides on the blog →</a></p>
       </div>
     </section>
 
