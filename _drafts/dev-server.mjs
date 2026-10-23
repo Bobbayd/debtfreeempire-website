@@ -80,7 +80,7 @@ globalThis.fetch = async (url, opts = {}) => {
 };
 
 // ---------- tiny Vercel-style req/res ----------
-const MIME = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.png': 'image/png', '.jpg': 'image/jpeg', '.svg': 'image/svg+xml', '.xml': 'application/xml', '.txt': 'text/plain' };
+const MIME = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.png': 'image/png', '.jpg': 'image/jpeg', '.svg': 'image/svg+xml', '.xml': 'application/xml', '.txt': 'text/plain', '.mp4': 'video/mp4' };
 const server = http.createServer(async (req, res) => {
   const url = new URL(req.url, 'http://x');
   if (url.pathname === '/__dev/emails') { res.setHeader('Content-Type', 'application/json'); return res.end(JSON.stringify(emails)); }
@@ -107,6 +107,19 @@ const server = http.createServer(async (req, res) => {
   if (!fs.existsSync(p)) { res.statusCode = 404; return res.end('not found'); }
   res.setHeader('Content-Type', MIME[path.extname(p)] || 'application/octet-stream');
   res.setHeader('Cache-Control', 'no-store');
+  // Byte ranges, so <video> can seek like it does on Vercel.
+  res.setHeader('Accept-Ranges', 'bytes');
+  const range = /^bytes=(\d*)-(\d*)$/.exec(req.headers.range || '');
+  if (range) {
+    const size = fs.statSync(p).size;
+    const start = range[1] === '' ? Math.max(0, size - Number(range[2])) : Number(range[1]);
+    const end = range[1] !== '' && range[2] !== '' ? Math.min(Number(range[2]), size - 1) : size - 1;
+    if (start > end || start >= size) { res.statusCode = 416; res.setHeader('Content-Range', `bytes */${size}`); return res.end(); }
+    res.statusCode = 206;
+    res.setHeader('Content-Range', `bytes ${start}-${end}/${size}`);
+    res.setHeader('Content-Length', end - start + 1);
+    return fs.createReadStream(p, { start, end }).pipe(res);
+  }
   fs.createReadStream(p).pipe(res);
 });
 server.listen(PORT, () => console.log('dev rig on http://localhost:' + PORT));
