@@ -16,7 +16,17 @@ CURRENT FACTS (from the Debt Free Empire website — do not claim anything beyon
 - Blog: free guides on debt payoff, budgeting, weekly planning, home upkeep and habits at debtfreeempire.com/resources/blog.
 - Free printable cash envelope tracker (a printable sheet, not physical envelopes) at debtfreeempire.com/resources/printables/cash-envelope-tracker.
 Do not invent prices, features, release dates or discounts.
+PRIVACY: Never ask for or repeat passwords, account or card numbers, Social Security numbers or other personal information. If a visitor shares any, do not repeat it; tell them not to share such details here and answer only the general question.
 FORMAT: You are answering inside a small chat bubble. Reply in plain text only — no markdown, no headings, no bold, no bullet lists. Use 2-4 short sentences.`;
+
+const SENSITIVE_MESSAGE = "For your safety, please don't share passwords, account numbers, Social Security numbers or other personal information here. I haven't sent that message, so feel free to ask again without those details.";
+
+// Backstop for the same check the widget runs in the browser.
+function looksSensitive(text) {
+  if (/\b\d{3}-\d{2}-\d{4}\b/.test(text) || /\b\d{9}\b/.test(text)) return true;
+  if (/\b\d{4}[ -]\d{4}[ -]\d{4}[ -]\d{1,7}\b/.test(text) || /\b\d{13,19}\b/.test(text)) return true;
+  return /\b(password|passcode|passphrase|pin|ssn|social security( number)?)\b[^.?!\n]{0,15}(\bis\b|:|=)\s*\S+/i.test(text);
+}
 
 const ESCALATE_MESSAGE = 'Great question! Our team will look into this and get back to you soon. 💜';
 
@@ -40,6 +50,10 @@ export default async function handler(req, res) {
   }
   if (question.length > MAX_QUESTION_CHARS) {
     return res.status(400).json({ error: 'Question is too long' });
+  }
+
+  if (looksSensitive(question)) {
+    return res.status(200).json({ answer: SENSITIVE_MESSAGE });
   }
 
   const used = await countRequestToday('empire-ai', getClientIp(req));

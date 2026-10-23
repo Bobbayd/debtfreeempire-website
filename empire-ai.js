@@ -19,6 +19,7 @@
   </div>
   <div class="eai-messages" id="eaiMessages" role="log" aria-live="polite"></div>
   <div class="eai-chips" id="eaiChips"></div>
+  <p class="eai-privacy-note" id="eaiPrivacyNote">Please don't enter passwords, account numbers or other personal information.</p>
   <form class="eai-form" id="eaiForm" autocomplete="off">
     <label for="eaiInput" style="position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0);">Ask Empire AI a question</label>
     <input class="eai-input" id="eaiInput" type="text" maxlength="500" placeholder="Ask about building your empire…" />
@@ -32,7 +33,7 @@
   </div>
   <div class="eai-disclaimer-overlay" id="eaiDisclaimer" role="alertdialog" aria-labelledby="eaiDisclaimerText">
     <div class="eai-disclaimer-box">
-      <p id="eaiDisclaimerText">Empire AI provides general information about Debt Free Empire products only. It is not legal, tax, or financial advice.</p>
+      <p id="eaiDisclaimerText">Empire AI provides general information about Debt Free Empire products only. It is not legal, tax, or financial advice. Please don't share passwords, account numbers or other personal information.</p>
       <button type="button" class="eai-disclaimer-btn" id="eaiDisclaimerBtn">Got it! 💪</button>
     </div>
   </div>
@@ -54,6 +55,13 @@
     var GREETING = "Hey! I'm Empire AI. Ask me anything about building your debt free empire. 💪";
     var LIMIT_MSG = "You've reached today's limit of 10 Empire AI questions. Come back tomorrow! 💪";
     var ERROR_MSG = "Something went wrong reaching Empire AI. Please try again in a moment.";
+    var SENSITIVE_MSG = "For your safety, please don't share passwords, account numbers, Social Security numbers or other personal information here. I haven't sent that message, so feel free to ask again without those details.";
+    // Obvious sensitive patterns: SSN, card-style numbers, and "password is ..." style phrases.
+    function looksSensitive(t) {
+      if (/\b\d{3}-\d{2}-\d{4}\b/.test(t) || /\b\d{9}\b/.test(t)) return true;
+      if (/\b\d{4}[ -]\d{4}[ -]\d{4}[ -]\d{1,7}\b/.test(t) || /\b\d{13,19}\b/.test(t)) return true;
+      return /\b(password|passcode|passphrase|pin|ssn|social security( number)?)\b[^.?!\n]{0,15}(\bis\b|:|=)\s*\S+/i.test(t);
+    }
     var SUGGESTED = [
       'What app should I start with?',
       'How do the workbooks work?',
@@ -122,6 +130,7 @@
     function ask(question) {
       question = (question || '').trim();
       if (!question || busy) return;
+      if (looksSensitive(question)) { input.value = ''; addMessage(SENSITIVE_MSG, 'ai'); return; }
       if (remaining() === 0) { addMessage(LIMIT_MSG, 'ai'); updateRemaining(); return; }
 
       addMessage(question, 'user');
