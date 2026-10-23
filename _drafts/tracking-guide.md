@@ -21,7 +21,7 @@ or anything typed into forms, the survey or the Empire AI chat is ever recorded 
 | `app_scroll_depth` | Reached 50% or 100% of the page (`app`, `depth`) |
 
 ## Visitor survey (stored in our own database, not HeyCatch)
-One optional question on the two app pages, about 20 seconds after arriving: "What are you hoping to get help with?"
+One optional question on the two app pages, once they scroll about 40% down the page, or after 25 seconds, whichever comes first: "What are you hoping to get help with?"
 Options: paying off debt, a budget I'll stick to, saving for a goal, organizing my whole life, just looking, something else (optional short note).
 Not shown to anyone who already clicked a download link or answered/dismissed it before. Stored with app, device, OS, referrer type and
 whether the visitor can install, with no name, email or IP, and deleted after 90 days.

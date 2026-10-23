@@ -14,14 +14,22 @@ const NEEDS = [
 export function start(ctx) {
   const KEY = 'dfe_survey_' + ctx.app;
   try { if (localStorage.getItem(KEY)) return; } catch (e) { return; } // can't remember a dismissal, so don't ask
-  let delay = 20000;
+  let delay = 25000;
   try { const t = parseInt(localStorage.getItem('dfe_survey_delay_ms'), 10); if (t >= 0) delay = t; } catch (e) { /* default */ }
 
+  // Ask once the visitor has read about 40% of the page, or after 25 seconds on screen, whichever comes first.
   let seen = 0;
+  const trigger = () => { clearInterval(timer); window.removeEventListener('scroll', onScroll); show(); };
   const timer = setInterval(() => {
     if (document.visibilityState === 'visible') seen += 500;
-    if (seen >= delay) { clearInterval(timer); show(); }
+    if (seen >= delay) trigger();
   }, 500);
+  function onScroll() {
+    const de = document.documentElement;
+    const room = de.scrollHeight - window.innerHeight;
+    if (room > 0 && (window.scrollY || de.scrollTop) / room >= 0.4) trigger();
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
 
   function remember() { try { localStorage.setItem(KEY, '1'); } catch (e) { /* ignore */ } }
 
