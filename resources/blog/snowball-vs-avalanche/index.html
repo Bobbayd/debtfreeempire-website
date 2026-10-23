@@ -94,6 +94,69 @@ a.cat-tag:hover { background: var(--lavender-soft); }
   ]
 }
 </script>
+<style>
+.post-body h2, .post-body h3 { scroll-margin-top: 100px; }
+.post-body h3 { margin-top: 26px; }
+.post-body .toc { margin: 30px 0 34px; background: var(--card-white); border: 1px solid var(--border); border-top: 3px solid var(--gold-soft); border-radius: 12px; padding: 22px 26px; }
+.post-body .note-title { font-size: 11px !important; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--gold-deep) !important; }
+.post-body .toc ol { margin-top: 10px; }
+.post-body .toc li { font-size: 14.5px; margin-bottom: 4px; }
+.post-body .toc a { text-decoration: none; }
+.post-body .toc a:hover { text-decoration: underline; }
+.post-body .takeaways { margin-top: 0; }
+.post-body .takeaways ul { margin-top: 10px; }
+.post-body .takeaways li:last-child { margin-bottom: 0; }
+.post-body .cmp-wrap + p { margin-top: 14px; }
+.post-body .faq { margin-top: 18px; }
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Is snowball or avalanche better?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Avalanche costs less interest, and snowball gives you a closed account sooner. In the example above, avalanche saved about $210 and one month, while snowball closed its first account in month 3 instead of month 15. If you tend to quit plans early, the faster win is usually worth the small difference."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does the avalanche method always save money?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Almost always, because it targets the highest rate first. The savings shrink to nearly nothing when your rates are close together, and the two orders can be identical when your smallest balance also has the highest rate."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I switch from snowball to avalanche halfway through?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Your total monthly payment stays the same, so switching just means pointing the extra at a different target. Switching to avalanche once you have a win or two is exactly what a hybrid plan does."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What if my highest-rate debt is also my biggest balance?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Avalanche will take the longest to deliver a first win in that case. In the example, the largest balance had the highest rate and avalanche's first closed account came in month 15. Consider clearing a small balance first, then switching to highest-rate-first."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How much extra do I need for either method to work?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Any extra helps, and more helps faster. In the example, putting $280 a month above the $220 minimums turned almost eight years of payments into under two. Start with an amount you can repeat every payday, then raise it after your first closed account."
+      }
+    }
+  ]
+}
+</script>
 <script type="module">
 import { analytics } from 'https://esm.sh/@heycatch/sdk@0.8.3';
 analytics.init({
@@ -132,7 +195,85 @@ analytics.init({
 </div></header>
 
 <section class="page-section post-body"><div class="section-inner seo-prose article">
+<div class="callout takeaways"><p class="note-title">Key takeaways</p><ul>
+<li>On a typical three-card balance, avalanche saves roughly $210 and one month compared with snowball, a small gap next to the cost of quitting.</li>
+<li>In the example below, snowball closes your first account in month 3, while avalanche takes until month 15 to close its first one.</li>
+<li>After six months the two methods leave you owing almost the same amount ($6,098 vs $6,065), so the early difference is behavior, not math.</li>
+<li>If your highest rate sits far above the rest, lean avalanche; if you have quit a payoff plan before, lean snowball.</li>
+<li>Whichever you pick, the same three moves drive the result: pay every minimum, aim the extra at one target, and keep your total payment fixed as balances close.</li>
+</ul></div>
+<div class="toc"><p class="note-title">Table of contents</p><ol>
+<li><a href="#what-is-the-difference-between-the-debt">What is the difference between the debt snowball and debt avalanche methods?</a></li>
+<li><a href="#which-method-saves-more-money">Which method saves more money?</a></li>
+<li><a href="#why-does-behavior-beat-math">Why does behavior beat math?</a></li>
+<li><a href="#how-do-you-choose-between-snowball-and">How do you choose between snowball and avalanche?</a></li>
+<li><a href="#what-is-a-hybrid-snowball-avalanche-plan">What is a hybrid snowball-avalanche plan?</a></li>
+<li><a href="#how-do-you-start-this-week">How do you start this week?</a></li>
+<li><a href="#which-tools-help-you-track-your-payoff">Which tools help you track your payoff plan?</a></li>
+</ol></div>
 <p class="lede">Snowball vs avalanche gets debated like it’s the whole strategy. The math says avalanche, but behavior says snowball, and behavior wins. The method that gets you to start and keep going is the one that pays off your debt. Everything else is spreadsheet optimization.</p>
+<h2 id="what-is-the-difference-between-the-debt">What is the difference between the debt snowball and debt avalanche methods?</h2>
+<p>Both methods work the same way: you pay the minimum on every debt, then put every spare dollar on one target debt. When that debt is gone, you roll its entire payment onto the next one. The only difference is how you choose the target.</p>
+<ul>
+<li><strong>Snowball:</strong> target the smallest balance first, regardless of interest rate.</li>
+<li><strong>Avalanche:</strong> target the highest interest rate first, regardless of balance.</li>
+</ul>
+<p>Same total payment, different order. Avalanche is built to minimize interest. Snowball is built to give you a closed account as early as possible. For a deeper side-by-side, see our <a href="/resources/blog/best-credit-card-debt-payoff-strategy">payoff strategy guide</a>.</p>
+<h2 id="which-method-saves-more-money">Which method saves more money?</h2>
+<p>Avalanche, by arithmetic. Every dollar you send to the highest rate stops the most expensive interest from compounding. The question is how much more it saves, and whether that amount is worth caring about.</p>
+<h3>A worked example with three cards</h3>
+<p>All figures are illustrative. Say you owe $8,200 across three cards and can put $500 a month toward debt in total (minimums plus extra):</p>
+<ul>
+<li>Store card: $800 at 15% APR, $30 minimum</li>
+<li>Visa: $2,400 at 22% APR, $65 minimum</li>
+<li>Mastercard: $5,000 at 26% APR, $125 minimum</li>
+</ul>
+<p>Minimums add up to $220, so $280 is extra. Here is how the two orders compare, month by month, with the freed-up payments rolled forward:</p>
+<div class="cmp-wrap"><table class="cmp-table"><thead><tr><th scope="col">Method</th><th scope="col">Payoff order</th><th scope="col">First account closed</th><th scope="col">Debt-free in</th><th scope="col">Total interest</th></tr></thead><tbody>
+<tr><th scope="row">Snowball</th><td>Store card, Visa, Mastercard</td><td>Month 3</td><td>21 months</td><td>~$1,950</td></tr>
+<tr><th scope="row">Avalanche</th><td>Mastercard, Visa, Store card</td><td>Month 15</td><td>20 months</td><td>~$1,740</td></tr>
+<tr><th scope="row">Minimums only</th><td>n/a</td><td>Month 33</td><td>~94 months (almost 8 years)</td><td>~$8,570</td></tr>
+</tbody></table></div>
+<h3>What the difference is actually worth</h3>
+<p>Avalanche saves about $210 and one month. Spread over 20 months, that is roughly $10 a month. Now look at the bottom row: paying only the minimums costs over $6,500 more in interest than either method. The choice between snowball and avalanche is a rounding error next to the choice to start.</p>
+<h3>Where you stand after six months</h3>
+<p>The math barely separates the two for the first half year. After six months of $500 payments, avalanche leaves you owing about $6,065 and snowball about $6,098, a gap of roughly $33. The big difference is what the last six months felt like: snowball has already wiped out the store card, while avalanche has three open balances, all smaller but none gone.</p>
+<h2 id="why-does-behavior-beat-math">Why does behavior beat math?</h2>
+<p>Because the plan only works if you are still following it. A payoff plan is a long run of small, repeated decisions, and the first few months are the hardest. If your first win arrives in month 3, you have proof the plan works while your motivation is still fresh. If it arrives in month 15, you have to keep paying for more than a year with no account to cross off.</p>
+<h3>The first-win effect</h3>
+<p>A closed account does something a balance chart cannot: it frees up a minimum payment that you can immediately roll into the next debt, and it makes the progress visible. That is why a method that costs a little more can still finish first in real life. A plan you abandon in month 5 saves exactly $0 in interest.</p>
+<h3>When the math should win</h3>
+<p>Behavior wins when the cost of the gap is small. It does not always stay small. As a rough rule of thumb, if your highest rate sits many points above your smallest balance's rate, or if your largest balance carries your highest rate (so avalanche's first win is far away and also saves the most), the dollar gap grows and avalanche deserves more weight. Run your own numbers in the free <a href="/debt-calculator">debt calculator</a> before you decide.</p>
+<h2 id="how-do-you-choose-between-snowball-and">How do you choose between snowball and avalanche?</h2>
+<p>Ask three questions and go with the majority answer.</p>
+<h3>Question 1: Have you started and quit a payoff plan before?</h3>
+<p>If yes, choose snowball. You already know that the hard part is staying with it, so optimize for the early win.</p>
+<h3>Question 2: Is the gap between your rates wide?</h3>
+<p>If your highest APR is far above your other rates, avalanche has more to save, so it earns more weight. If your rates are within a few points of each other, the order barely matters, and you should pick on motivation.</p>
+<h3>Question 3: Is one balance close to gone?</h3>
+<p>If a small balance is within a month or two of zero, clear it first no matter which method you chose. It frees a payment right away.</p>
+<h2 id="what-is-a-hybrid-snowball-avalanche-plan">What is a hybrid snowball-avalanche plan?</h2>
+<p>A hybrid starts with snowball and switches to avalanche: you clear one or two small balances for the quick win, then go highest-rate-first for everything else. You give up a little interest compared with pure avalanche, and you get a faster first win than pure avalanche. It works best when motivation is your real constraint. We walk through a hybrid with real numbers in <a href="/resources/blog/best-credit-card-debt-payoff-strategy">the payoff strategy guide</a>.</p>
+<h2 id="how-do-you-start-this-week">How do you start this week?</h2>
+<p>You can have a plan running in under an hour.</p>
+<ul>
+<li>Write down every balance, APR, and minimum payment on one page.</li>
+<li>Choose snowball or avalanche using the three questions above, and commit to it for 90 days before you reconsider.</li>
+<li>Decide your total monthly payment (minimums plus extra) and treat it as fixed, even as individual minimums disappear.</li>
+<li>Put the extra on your target debt, pay minimums on the rest, and roll the whole payment forward each time a debt closes.</li>
+<li>Check your debt-free date once a month and log each payment.</li>
+</ul>
+<p>If you want to see how fast a specific balance can go, start with <a href="/resources/blog/how-fast-to-pay-off-credit-card-debt">how fast to pay off credit card debt</a>. If student loans or tax debt are in the mix, see <a href="/resources/blog/how-to-pay-off-student-debt-fast">which debt to attack first</a>.</p>
+<h2 id="which-tools-help-you-track-your-payoff">Which tools help you track your payoff plan?</h2>
+<p>You need three things: each balance with its rate and minimum, a debt-free date that updates when you pay extra, and a way to see both orders side by side. The free <a href="/debt-calculator">debt calculator</a> shows your date, and the debt payoff tracker and simulator in <a href="/paper-and-prosperity">Paper &amp; Prosperity</a> lets you follow it over time. The honest tradeoff: there is no bank connection, so you enter your payments yourself. That takes a minute or two each month, and it is part of why people stay aware of their progress.</p>
+<h2 id="faq">FAQ</h2>
+<div class="faq">
+<details><summary>Is snowball or avalanche better?</summary><div class="answer"><p>Avalanche costs less interest, and snowball gives you a closed account sooner. In the example above, avalanche saved about $210 and one month, while snowball closed its first account in month 3 instead of month 15. If you tend to quit plans early, the faster win is usually worth the small difference.</p></div></details>
+<details><summary>Does the avalanche method always save money?</summary><div class="answer"><p>Almost always, because it targets the highest rate first. The savings shrink to nearly nothing when your rates are close together, and the two orders can be identical when your smallest balance also has the highest rate.</p></div></details>
+<details><summary>Can I switch from snowball to avalanche halfway through?</summary><div class="answer"><p>Yes. Your total monthly payment stays the same, so switching just means pointing the extra at a different target. Switching to avalanche once you have a win or two is exactly what a hybrid plan does.</p></div></details>
+<details><summary>What if my highest-rate debt is also my biggest balance?</summary><div class="answer"><p>Avalanche will take the longest to deliver a first win in that case. In the example, the largest balance had the highest rate and avalanche's first closed account came in month 15. Consider clearing a small balance first, then switching to highest-rate-first.</p></div></details>
+<details><summary>How much extra do I need for either method to work?</summary><div class="answer"><p>Any extra helps, and more helps faster. In the example, putting $280 a month above the $220 minimums turned almost eight years of payments into under two. Start with an amount you can repeat every payday, then raise it after your first closed account.</p></div></details>
+</div>
 </div></section>
 
 <div class="post-back"><a href="/resources/blog">← Back to all posts</a></div>
