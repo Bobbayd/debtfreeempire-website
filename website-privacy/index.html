@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="48x48" href="/favicon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<title>Website Privacy &amp; Cookie Policy | Debt Free Empire</title>
+<meta name="description" content="How the Debt Free Empire website handles analytics, comments, fonts and (if we ever add them) ads. Our apps have their own policies.">
+<link rel="canonical" href="https://www.debtfreeempire.com/website-privacy">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Debt Free Empire">
+<meta property="og:title" content="Website Privacy &amp; Cookie Policy">
+<meta property="og:description" content="How the Debt Free Empire website handles analytics, comments, fonts and (if we ever add them) ads. Our apps have their own policies.">
+<meta property="og:url" content="https://www.debtfreeempire.com/website-privacy">
+<meta property="og:image" content="https://www.debtfreeempire.com/assets/app/01_Dashboard.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://www.debtfreeempire.com/assets/app/01_Dashboard.jpg">
+<link rel="stylesheet" href="/site-pages.css">
+<link rel="stylesheet" href="/pages.css">
+<style>
+:root { --lavender:#8E6F3E; --lavender-hover:#76592F; --lavender-tint:rgba(228,197,144,.25); --lavender-soft:#F3EBDD; }
+.crumbs { max-width: 808px; margin: 0 auto; padding: 22px 24px 0; font-size: 13px; color: var(--text-secondary); }
+.crumbs a { color: var(--lavender-hover); text-decoration: none; }
+.policy { max-width: 760px; margin: 0 auto; padding: 34px 24px 70px; }
+.policy h1 { font-size: clamp(28px,4vw,40px); font-weight: 900; line-height: 1.15; margin-bottom: 8px; }
+.policy .eff { font-size: 13px; color: var(--text-secondary); margin-bottom: 26px; }
+.policy h2 { font-size: 20px; font-weight: 800; margin: 30px 0 8px; }
+.policy p, .policy li { font-size: 15.5px; line-height: 1.75; }
+.policy p + p { margin-top: 12px; }
+.policy ul { padding-left: 22px; margin: 10px 0 0; }
+.policy li { margin-bottom: 6px; }
+.policy .note { background: var(--gold-surface); border: 1px solid var(--gold-soft); border-left: 3px solid var(--gold-deep); border-radius: 12px; padding: 16px 20px; margin: 18px 0; }
+@media (max-width: 700px) { .crumbs { padding: 18px 16px 0; } .policy { padding: 26px 16px 56px; } }
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Debt Free Empire",
+  "url": "https://www.debtfreeempire.com",
+  "logo": "https://www.debtfreeempire.com/assets/dfe-logo.png",
+  "founder": { "@type": "Person", "name": "Robert Daniels" },
+  "description": "Debt Free Empire makes private, no-subscription apps to help people pay off debt and organize their finances.",
+    "sameAs": [
+      "https://www.instagram.com/debtfreeempire",
+      "https://x.com/DebtFreeEmpire",
+      "https://www.tiktok.com/@debt.free.empire",
+      "https://www.facebook.com/DebtFreeEmpire"
+    ]
+  }
+</script>
+<script type="module">
+import { analytics } from 'https://esm.sh/@heycatch/sdk@0.8.3';
+analytics.init({
+  projectKey: 'hck_pk_INmEuZQrvLQFeRnp_RAAZCCCTR2g-Zh5',
+  requestBatching: false,
+  install: { framework: 'web', agent: 'claude-code' },
+});
+</script>
+<script type="module" src="/goals.js"></script>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+<symbol id="icon-home" viewBox="0 0 24 24"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v10h13V10"/><path d="M10 20v-6h4v6"/></symbol>
+<symbol id="icon-heart" viewBox="0 0 24 24"><path d="M20.8 5.6a5.5 5.5 0 0 0-7.8 0L12 6.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 22l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8Z"/></symbol>
+<symbol id="icon-flame" viewBox="0 0 24 24"><path d="M12 21.5c3.9 0 7-2.6 7-6.8 0-2.9-1.9-4.9-2.9-6.7-.3 1.9-1.3 2.9-1.9 2.9.5-2.9-1-5.8-3.4-7.2C11 6 9.1 7.9 9.1 10.7c-1-.5-1.7-1.6-1.9-2.9-1.4 1.9-1.9 3.8-1.9 6.7 0 4.2 2.9 6.8 6.7 6.8Z"/></symbol>
+<symbol id="icon-cart" viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="18" cy="21" r="1"/><path d="M1 1h3l2.3 12.4a2 2 0 0 0 2 1.6h8.4a2 2 0 0 0 2-1.6L21 6H5.2"/></symbol>
+<symbol id="icon-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><line x1="12" y1="11" x2="12" y2="16.300"/><circle cx="12" cy="7.700" r="0.900" fill="currentColor" stroke="none"/></symbol>
+<symbol id="icon-menu" viewBox="0 0 24 24"><line x1="3" y1="6.500" x2="21" y2="6.500"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="17.500" x2="21" y2="17.500"/></symbol>
+<symbol id="icon-phone" viewBox="0 0 24 24"><rect x="6" y="2.500" width="12" height="19" rx="2.500"/><line x1="10.500" y1="18.500" x2="13.500" y2="18.500"/></symbol>
+<symbol id="icon-sheet" viewBox="0 0 24 24"><rect x="3.500" y="3.500" width="17" height="17" rx="2"/><line x1="3.500" y1="9.500" x2="20.500" y2="9.500"/><line x1="3.500" y1="15" x2="20.500" y2="15"/><line x1="9.500" y1="3.500" x2="9.500" y2="20.500"/></symbol>
+<symbol id="icon-print" viewBox="0 0 24 24"><path d="M7 8V3h10v5"/><rect x="3.500" y="8" width="17" height="9" rx="2"/><rect x="7" y="14" width="10" height="7"/></symbol>
+<symbol id="icon-check" viewBox="0 0 24 24"><polyline points="4.500,12.500 10,18 19.500,6.500"/></symbol>
+<symbol id="icon-link" viewBox="0 0 24 24"><path d="M10 14a4 4 0 0 0 5.700 0l3-3a4 4 0 0 0-5.700-5.700l-1 1"/><path d="M14 10a4 4 0 0 0-5.700 0l-3 3a4 4 0 0 0 5.700 5.700l1-1"/></symbol>
+</defs></svg>
+<header class="site-header"><a href="/" class="site-header-brand">Debt Free <em>Empire</em></a><nav class="site-header-nav" aria-label="Primary"><div class="nav-dd"><button type="button" class="site-header-link nav-dd-btn" aria-expanded="false" aria-haspopup="true">Apps <span class="nav-dd-caret">⌄</span></button><div class="nav-dd-menu"><a class="nav-dd-item" href="/apps/empire-life-dashboard">Empire Life Dashboard</a><a class="nav-dd-item" href="/paper-and-prosperity">Paper &amp; Prosperity</a></div></div><div class="nav-dd"><button type="button" class="site-header-link nav-dd-btn" aria-expanded="false" aria-haspopup="true">Shop <span class="nav-dd-caret">⌄</span></button><div class="nav-dd-menu"><a class="nav-dd-item" href="https://www.etsy.com/shop/PaperandProsperity" target="_blank" rel="noopener">Spreadsheets</a><span class="nav-dd-item soon" aria-disabled="true">Workbooks<em>Coming soon</em></span></div></div><a class="site-header-link" href="/about">About</a><a class="site-header-link" href="/pricing">Pricing</a><a class="site-header-link" href="/support">Support</a></nav><a class="nav-cta" href="/apps/empire-life-dashboard">Explore Empire</a></header>
+<div class="mobile-topbar"><a href="/" class="nav-brand">Debt Free <em>Empire</em></a><button class="menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false" aria-controls="drawer"><svg class="icon-svg" style="width:20px;height:20px;" aria-hidden="true" focusable="false"><use href="#icon-menu"/></svg></button></div>
+<nav class="drawer" id="drawer" aria-label="Menu"><a href="/" class="drawer-brand">Debt Free <em>Empire</em></a><span class="drawer-item drawer-label">Apps</span><a class="drawer-item drawer-sub" href="/apps/empire-life-dashboard">Empire Life Dashboard</a><a class="drawer-item drawer-sub" href="/paper-and-prosperity">Paper &amp; Prosperity</a><span class="drawer-item drawer-label">Shop</span><a class="drawer-item drawer-sub" href="https://www.etsy.com/shop/PaperandProsperity" target="_blank" rel="noopener">Spreadsheets</a><span class="drawer-item drawer-sub soon">Workbooks <em>Coming soon</em></span><a class="drawer-item" href="/about">About</a><a class="drawer-item" href="/pricing">Pricing</a><a class="drawer-cta" href="/apps/empire-life-dashboard">Explore Empire</a><div class="drawer-divider"></div><a class="drawer-item" href="/support">Support</a><a class="drawer-item" href="/privacy">Privacy Policy</a></nav>
+<div class="scrim" id="scrim"></div>
+<main>
+<nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> <span aria-hidden="true">›</span> <span aria-current="page">Website privacy</span></nav>
+<article class="policy">
+<h1>Website Privacy &amp; Cookie Policy</h1>
+<p class="eff">Effective October 22, 2026</p>
+<p>This policy covers the Debt Free Empire website at debtfreeempire.com, including the blog. It does not cover our apps, which have their own policies: the <a href="/privacy">Empire Life Dashboard privacy policy</a> and the <a href="/paper-and-prosperity/privacy">Paper &amp; Prosperity privacy policy</a>. Our apps do not contain advertising or analytics, and nothing on this page changes that.</p>
+<div class="note"><p><strong>The short version:</strong> we count page views and clicks to understand which pages are useful, readers can comment through GitHub, and fonts are loaded from Google. We do not currently show ads on this website. If we start, we will update this page first.</p></div>
+
+<h2>Analytics</h2>
+<p>To see which pages are visited and which links are clicked, this website uses Vercel Web Analytics and HeyCatch analytics. They count page views and clicks (for example, clicks from an article to one of our apps), may store a random identifier in your browser, and do not collect your name or email address.</p>
+
+<h2>Comments on blog posts</h2>
+<p>Comments on blog posts are provided by Giscus, which stores them as public discussions in a GitHub repository. To comment, you sign in with your GitHub account. GitHub, and not us, handles that sign-in under <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement" target="_blank" rel="noopener">its privacy statement</a>, and we never see your GitHub password. Comments, your GitHub username and your profile picture are public. The comment box loads from giscus.app when a blog post opens.</p>
+
+<h2>Fonts</h2>
+<p>This website loads its fonts from Google Fonts. When a page loads, your browser requests the fonts from Google, which receives standard request information such as your IP address.</p>
+
+<h2>Messages and sign-ups</h2>
+<p>If you write to us through the contact form, we use your email address and message only to reply to you. If you ask to be notified about a product launch, we use your email only for that notice. We never sell or rent your email address.</p>
+
+<h2>Advertising</h2>
+<p>We do not currently show advertising on this website. We may begin showing ads on our blog pages through Google AdSense. If we do, Google and its advertising partners may use cookies and similar identifiers to serve and measure ads, and, where the law allows and you agree, to personalize them. Visitors in the European Economic Area, the United Kingdom and Switzerland will be asked for consent before ads that use cookies appear. You can manage ad personalization in <a href="https://adssettings.google.com" target="_blank" rel="noopener">Google Ads Settings</a> and learn more about how Google uses information from sites that use its services on <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener">Google's partner-sites page</a>. We will update this page before any ads are turned on. We will never put ads inside our apps.</p>
+
+<h2>Your choices</h2>
+<ul>
+<li>You can block or delete cookies and similar identifiers in your browser settings. The site will still work, and some features, such as comments, may not.</li>
+<li>You can read every page without signing in or giving us any information.</li>
+</ul>
+
+<h2>Children</h2>
+<p>This website is not directed to children under 13, and we do not knowingly collect personal information from them.</p>
+
+<h2>Changes to this policy</h2>
+<p>If this policy changes, we will update this page and its effective date.</p>
+
+<h2>Contact</h2>
+<p>Questions about your privacy? Send us a message through our <a href="/support#message">contact form</a>. We reply within 48 hours.</p>
+</article>
+</main>
+<footer class="footer">© 2026 Debt Free Empire ·
+<a href="/apps">Apps</a> · <a href="/apps/empire-life-dashboard">Empire Life Dashboard</a> · <a href="/paper-and-prosperity">Paper &amp; Prosperity</a> · <a href="/products">Products</a> · <a href="/pricing">Pricing</a> · <a href="/changelog">Changelog</a> · <a href="/resources">Resources</a> · <a href="/resources/blog">Blog</a> · <a href="/debt-calculator">Debt Calculator</a> · <a href="/about">About</a> · <a href="/support">Support</a> · <a href="/privacy">Privacy</a> · <a href="/paper-and-prosperity/privacy">App Privacy</a> · <a href="/website-privacy">Website Privacy</a> · <a href="/support#message">Contact</a>
+<span class="footer-close-line">Start where you are. Build what comes next.</span></footer>
+<script>(function(){var b=document.getElementById('menuBtn'),d=document.getElementById('drawer'),s=document.getElementById('scrim');function set(o){d.classList.toggle('open',o);s.classList.toggle('open',o);b.setAttribute('aria-expanded',String(o));}b.addEventListener('click',function(){set(!d.classList.contains('open'));});s.addEventListener('click',function(){set(false);});document.addEventListener('keydown',function(e){if(e.key==='Escape')set(false);});document.addEventListener('click',function(e){document.querySelectorAll('.nav-dd').forEach(function(d){var btn=e.target.closest('.nav-dd-btn');if(btn&&d.contains(btn)){d.classList.toggle('open');btn.setAttribute('aria-expanded',String(d.classList.contains('open')));}else{d.classList.remove('open');var bb=d.querySelector('.nav-dd-btn');if(bb)bb.setAttribute('aria-expanded','false');}});});})();</script>
+<script>window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };</script>
+<script defer src="/_vercel/insights/script.js"></script>
+<script src="/site-dynamic.js" defer></script>
+</body>
+</html>
