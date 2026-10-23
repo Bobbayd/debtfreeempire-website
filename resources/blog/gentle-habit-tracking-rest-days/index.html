@@ -50,6 +50,7 @@ a.cat-tag:hover { background: var(--lavender-soft); }
 .comments .seo-prose { max-width: 760px; }
 .comments-note { font-size: 14px !important; color: var(--text-secondary) !important; text-align: center; margin-bottom: 22px; }
 .giscus-wrap { margin-top: 10px; min-height: 120px; }
+.giscus-fallback { font-size: 14px; color: var(--text-secondary); text-align: center; }
 @media (max-width: 700px) { .post-head { padding: 32px 16px 36px; } .post-back { padding: 0 16px 44px; } }
 </style>
 <script type="application/ld+json">
@@ -251,7 +252,7 @@ analytics.init({
 <h3>Unplanned rest days</h3>
 <p>Sometimes you need a rest day you did not plan: you are sick, travelling, or just depleted. Log it as a rest day, not a miss, and carry on tomorrow. The point of rest days is to let you stop without giving up.</p>
 <h3>What rest days do to your streak</h3>
-<p>In a rest-day system, a rest day pauses your streak instead of resetting it. In Empire Life Dashboard, for example, the Health &amp;amp; Streaks card on the Dashboard lets you tap each day as "showed up" or "rest day", and rest days pause your streak and never break it.</p>
+<p>In a rest-day system, a rest day pauses your streak instead of resetting it. In Empire Life Dashboard, for example, the Health &amp; Streaks card on the Dashboard lets you tap each day as "showed up" or "rest day", and rest days pause your streak and never break it.</p>
 <h2 id="how-do-you-measure-progress-without-a">How do you measure progress without a perfect streak?</h2>
 <p>Look at your weekly rhythm: how many days out of seven you showed up. It is a more honest measure than an unbroken chain, and it forgives the occasional gap.</p>
 <h3>A sample week</h3>
@@ -277,7 +278,7 @@ analytics.init({
 <h2 id="how-do-you-build-a-money-habit">How do you build a money habit into this system?</h2>
 <p>Money habits respond well to gentle tracking. A weekly check-in is a good one: ten minutes to look at upcoming bills and your remaining spending money. If you log purchases for envelopes or a debit-card budget, a minimum version is "log everything over $10", with a fuller log on your weekly review. See our <a href="/resources/blog/cash-envelope-system-without-cash">cash envelope guide</a> and the <a href="/resources/blog/weekly-life-planning-routine">weekly life-planning routine</a> for how to fit it into a week.</p>
 <h3>Tracking in Empire Life Dashboard</h3>
-<p>The Lifestyle tab in <a href="/apps/empire-life-dashboard">Empire Life Dashboard</a> includes a Habit Tracker built as a 30-day challenge: you tap a square each day you show up, and it shows your showing-up percentage and longest streak. The Dashboard's Health &amp;amp; Streaks card handles the weekly view with rest days. It is a one-time purchase with no subscription, and it keeps your data on your device. A paper chart works with the same rules.</p>
+<p>The Lifestyle tab in <a href="/apps/empire-life-dashboard">Empire Life Dashboard</a> includes a Habit Tracker built as a 30-day challenge: you tap a square each day you show up, and it shows your showing-up percentage and longest streak. The Dashboard's Health &amp; Streaks card handles the weekly view with rest days. It is a one-time purchase with no subscription, and it keeps your data on your device. A paper chart works with the same rules.</p>
 <h2 id="faq">FAQ</h2>
 <div class="faq">
 <details><summary>What is a rest day in habit tracking?</summary><div class="answer"><p>A rest day is a day you deliberately skip a habit without it counting as a failure. In a gentle tracker, a rest day pauses your streak instead of breaking it. It is different from a missed day, which is an unplanned gap, and keeping the two separate keeps your record honest.</p></div></details>
@@ -315,6 +316,8 @@ analytics.init({
         async>
 </script>
 <noscript>Please enable JavaScript to view the comments.</noscript>
+<p class="giscus-fallback" hidden>Comments could not load here. You can read and join the conversation on <a href="https://github.com/Bobbayd/debtfreeempire-website/discussions" target="_blank" rel="noopener">GitHub Discussions</a>.</p>
+<script>setTimeout(function(){var w=document.querySelector('.giscus-wrap');if(w&&!w.querySelector('iframe')){w.style.minHeight='0';var p=w.querySelector('.giscus-fallback');if(p)p.hidden=false;}},8000);</script>
 </div>
 </div></section>
 </main>

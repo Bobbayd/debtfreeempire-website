@@ -50,6 +50,7 @@ a.cat-tag:hover { background: var(--lavender-soft); }
 .comments .seo-prose { max-width: 760px; }
 .comments-note { font-size: 14px !important; color: var(--text-secondary) !important; text-align: center; margin-bottom: 22px; }
 .giscus-wrap { margin-top: 10px; min-height: 120px; }
+.giscus-fallback { font-size: 14px; color: var(--text-secondary); text-align: center; }
 @media (max-width: 700px) { .post-head { padding: 32px 16px 36px; } .post-back { padding: 0 16px 44px; } }
 </style>
 <script type="application/ld+json">
@@ -271,7 +272,7 @@ analytics.init({
 <h2 id="do-you-need-an-app-for-a">Do you need an app for a weekly life review?</h2>
 <p>No. A notebook and a calendar are enough, and many people start there. The trouble is that money, time, home and goals tend to live in four different places, so the review becomes a scavenger hunt. A planner that holds them in one place makes the five stops faster.</p>
 <h3>What a single planner changes</h3>
-<p>In <a href="/apps/empire-life-dashboard">Empire Life Dashboard</a>, each stop has a home: the Dashboard shows your day at a glance, the Finance tab holds your bills and subscriptions, Time &amp;amp; Planning has a weekly schedule, Home &amp;amp; Life tracks maintenance and warranties, and Dreams &amp;amp; Goals holds the step you choose. It is a one-time purchase with no subscription, and it keeps your data on your device.</p>
+<p>In <a href="/apps/empire-life-dashboard">Empire Life Dashboard</a>, each stop has a home: the Dashboard shows your day at a glance, the Finance tab holds your bills and subscriptions, Time &amp; Planning has a weekly schedule, Home &amp; Life tracks maintenance and warranties, and Dreams &amp; Goals holds the step you choose. It is a one-time purchase with no subscription, and it keeps your data on your device.</p>
 <h3>The honest tradeoffs</h3>
 <p>It runs on Windows and Mac today, with an iPhone and iPad version planned but not yet released, so if you plan from your phone you will want a paper or phone-based backup for now. It also relies on you entering things yourself, which is the point of a review but is still a habit you have to keep.</p>
 <h2 id="faq">FAQ</h2>
@@ -311,6 +312,8 @@ analytics.init({
         async>
 </script>
 <noscript>Please enable JavaScript to view the comments.</noscript>
+<p class="giscus-fallback" hidden>Comments could not load here. You can read and join the conversation on <a href="https://github.com/Bobbayd/debtfreeempire-website/discussions" target="_blank" rel="noopener">GitHub Discussions</a>.</p>
+<script>setTimeout(function(){var w=document.querySelector('.giscus-wrap');if(w&&!w.querySelector('iframe')){w.style.minHeight='0';var p=w.querySelector('.giscus-fallback');if(p)p.hidden=false;}},8000);</script>
 </div>
 </div></section>
 </main>

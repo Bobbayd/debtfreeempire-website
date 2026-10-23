@@ -50,6 +50,7 @@ a.cat-tag:hover { background: var(--lavender-soft); }
 .comments .seo-prose { max-width: 760px; }
 .comments-note { font-size: 14px !important; color: var(--text-secondary) !important; text-align: center; margin-bottom: 22px; }
 .giscus-wrap { margin-top: 10px; min-height: 120px; }
+.giscus-fallback { font-size: 14px; color: var(--text-secondary); text-align: center; }
 @media (max-width: 700px) { .post-head { padding: 32px 16px 36px; } .post-back { padding: 0 16px 44px; } }
 </style>
 <script type="application/ld+json">
@@ -330,6 +331,8 @@ analytics.init({
         async>
 </script>
 <noscript>Please enable JavaScript to view the comments.</noscript>
+<p class="giscus-fallback" hidden>Comments could not load here. You can read and join the conversation on <a href="https://github.com/Bobbayd/debtfreeempire-website/discussions" target="_blank" rel="noopener">GitHub Discussions</a>.</p>
+<script>setTimeout(function(){var w=document.querySelector('.giscus-wrap');if(w&&!w.querySelector('iframe')){w.style.minHeight='0';var p=w.querySelector('.giscus-fallback');if(p)p.hidden=false;}},8000);</script>
 </div>
 </div></section>
 </main>
