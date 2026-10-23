@@ -36,8 +36,9 @@
 }
 
 .eai-header {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 14px 16px; background: #FFFFFF; border-bottom: 1px solid #DDD5E5;
+  position: relative;
+  display: flex; align-items: flex-start; justify-content: space-between; gap: 8px;
+  padding: 12px 10px 10px 16px; background: #FFFFFF; border-bottom: 1px solid #DDD5E5;
 }
 .eai-title { font-size: 16px; font-weight: 800; color: #1A1A1A; }
 .eai-close { background: none; border: none; font-size: 24px; line-height: 1; cursor: pointer; color: #1A1A1A; padding: 4px 8px; border-radius: 6px; }
@@ -132,3 +133,37 @@
 .eai-contact .eai-input { width: 100%; }
 .eai-check { display: flex; gap: 6px; align-items: flex-start; font-size: 11.5px; line-height: 1.4; color: #55515B; cursor: pointer; }
 .eai-check input { margin-top: 2px; accent-color: #725C9F; }
+
+/* Layout refresh: the chat gets the space; options live in the header menu */
+.eai-head-text { flex: 1; min-width: 0; }
+.eai-header .eai-privacy-note { padding: 0; margin: 3px 0 0; text-align: left; font-size: 11px; line-height: 1.35; }
+.eai-head-actions { display: flex; align-items: center; flex: 0 0 auto; }
+.eai-menu-btn { background: none; border: none; font-size: 22px; line-height: 1; cursor: pointer; color: #1A1A1A; padding: 2px 8px 6px; border-radius: 6px; letter-spacing: 1px; }
+.eai-menu-btn:hover, .eai-close:hover { background: #F4F0F8; }
+.eai-menu { position: absolute; right: 10px; top: 44px; z-index: 5; background: #FFFFFF; border: 1px solid #DDD5E5; border-radius: 10px; box-shadow: 0 10px 26px rgba(26,26,26,0.18); padding: 4px; min-width: 170px; display: flex; flex-direction: column; }
+.eai-menu[hidden] { display: none; }
+.eai-menu button { background: none; border: none; text-align: left; font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 600; color: #1A1A1A; padding: 9px 12px; border-radius: 8px; cursor: pointer; }
+.eai-menu button:hover { background: #F4F0F8; }
+.eai-chips[hidden] { display: none; }
+.eai-chips { padding-bottom: 8px; }
+.eai-footer { padding: 0 14px 9px; }
+.eai-foot-line { display: block; font-size: 11.5px; color: #55515B; }
+.eai-foot-line .eai-off-btn { font-weight: 700; color: #725C9F; }
+.eai-foot-fine { display: block; margin-top: 1px; font-size: 10px; color: #8a8590; }
+.eai-form[hidden] { display: none; }
+.eai-contact { padding: 8px 14px 10px; border-top: 1px solid #EFE9F5; background: #FBF8F3; gap: 8px; }
+.eai-contact-title { margin: 0; font-size: 13px; font-weight: 700; }
+.eai-contact-title span { font-weight: 500; color: #55515B; }
+.eai-contact-err { margin: 0; min-height: 0; font-size: 11.5px; color: #8E3B3B; }
+.eai-contact-err:empty { display: none; }
+.eai-contact-actions { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.eai-contact-actions .eai-send { padding: 10px 16px; }
+
+.eai-contact[hidden] { display: none; }
+
+/* The message box is a two-line textarea so the hint text can wrap instead of being cut off */
+textarea.eai-input { resize: none; line-height: 1.35; display: block; }
+.eai-input::placeholder { font-size: 14px; color: #8a8590; }
+
+.eai-footer .eai-remaining { display: block; margin-top: 2px; font-size: 11px; font-weight: 600; color: #8E6F3E; }
+.eai-footer .eai-remaining:empty { display: none; }

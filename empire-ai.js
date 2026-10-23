@@ -14,27 +14,41 @@
 </div>
 <section class="eai-panel" id="eaiPanel" role="dialog" aria-label="Empire AI chat" aria-modal="false">
   <div class="eai-header">
-    <div class="eai-title">Empire AI ⚡</div>
-    <button type="button" class="eai-close" id="eaiClose" aria-label="Close Empire AI chat">×</button>
+    <div class="eai-head-text">
+      <div class="eai-title">Empire AI ⚡</div>
+      <p class="eai-privacy-note" id="eaiPrivacyNote">Please don't enter passwords or personal info. Chats may be read by our team and are deleted after 30 days.</p>
+    </div>
+    <div class="eai-head-actions">
+      <button type="button" class="eai-menu-btn" id="eaiMenuBtn" aria-label="More options" aria-haspopup="true" aria-expanded="false">⋯</button>
+      <button type="button" class="eai-close" id="eaiClose" aria-label="Close Empire AI chat">×</button>
+    </div>
+    <div class="eai-menu" id="eaiMenu" role="menu" hidden>
+      <button type="button" role="menuitem" id="eaiDelete">Delete this chat</button>
+      <button type="button" role="menuitem" id="eaiOff">Turn off Empire AI</button>
+    </div>
   </div>
   <div class="eai-messages" id="eaiMessages" role="log" aria-live="polite"></div>
   <div class="eai-chips" id="eaiChips"></div>
-  <p class="eai-privacy-note" id="eaiPrivacyNote">Please don't enter passwords, account numbers or other personal information. Chats may be read by our team and are deleted after 30 days.</p>
   <div class="eai-contact" id="eaiContact" hidden>
-    <input class="eai-input" id="eaiEmail" type="email" maxlength="254" placeholder="Your email (optional, so we can reply by email)" autocomplete="email" aria-label="Your email, optional" />
+    <p class="eai-contact-title">Want a reply by email too? <span>(optional)</span></p>
+    <input class="eai-input" id="eaiEmail" type="email" maxlength="254" placeholder="Your email" autocomplete="email" aria-label="Your email, optional" />
     <label class="eai-check"><input type="checkbox" id="eaiOptIn"> Also send me occasional updates from Debt Free Empire</label>
+    <p class="eai-contact-err" id="eaiContactErr" role="alert"></p>
+    <div class="eai-contact-actions">
+      <button type="button" class="eai-send" id="eaiContactSend">Send message</button>
+      <button type="button" class="eai-off-btn" id="eaiContactSkip">Send without email</button>
+      <button type="button" class="eai-off-btn" id="eaiContactCancel">Cancel</button>
+    </div>
   </div>
   <form class="eai-form" id="eaiForm" autocomplete="off">
     <label for="eaiInput" style="position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0);">Ask Empire AI a question</label>
-    <input class="eai-input" id="eaiInput" type="text" maxlength="500" placeholder="Ask about building your empire…" />
+    <textarea class="eai-input" id="eaiInput" rows="2" maxlength="500" placeholder="Ask about our apps, pricing or budgeting…"></textarea>
     <button class="eai-send" id="eaiSend" type="submit">Send</button>
   </form>
   <div class="eai-footer">
+    <span class="eai-foot-line">Need a person? <button type="button" class="eai-off-btn" id="eaiHuman">Message the team</button></span>
     <span class="eai-remaining" id="eaiRemaining"></span>
-    <span class="eai-links"><button type="button" class="eai-off-btn" id="eaiHuman">Message the team</button> · <button type="button" class="eai-off-btn" id="eaiDelete">Delete this chat</button></span>
-    <button type="button" class="eai-off-btn" id="eaiOff">Turn off Empire AI</button>
-    <span class="eai-disclaimer" style="display:block; margin-top:2px;">Not legal or tax advice. For informational purposes only.</span>
-    <span class="eai-powered">Powered by Claude</span>
+    <span class="eai-foot-fine">Not legal or tax advice · Powered by Claude</span>
   </div>
   <div class="eai-disclaimer-overlay" id="eaiDisclaimer" role="alertdialog" aria-labelledby="eaiDisclaimerText">
     <div class="eai-disclaimer-box">
@@ -84,6 +98,8 @@
     var contactEl = document.getElementById('eaiContact');
     var emailEl = document.getElementById('eaiEmail');
     var optInEl = document.getElementById('eaiOptIn');
+    var contactErr = document.getElementById('eaiContactErr');
+    var pendingTeam = null; // a team message written but not yet sent (waiting on the optional email step)
     var lastAt = 0;        // newest message time we have seen from the server
     var lastOwnerAt = 0;   // newest team reply we have shown
     var pollTimer = null;
@@ -130,9 +146,10 @@
 
     function updateRemaining() {
       var left = remaining();
-      remainingEl.textContent = left > 0
-        ? left + ' of ' + DAILY_LIMIT + ' questions left today'
-        : "You've used all " + DAILY_LIMIT + ' questions for today';
+      // Only mention the daily AI limit once it matters (3 or fewer left); team messages never count.
+      remainingEl.textContent = left === 0
+        ? 'No AI questions left today. You can still message the team.'
+        : left <= 3 ? left + ' AI question' + (left === 1 ? '' : 's') + ' left today' : '';
       var off = busy || (left === 0 && !humanMode);
       input.disabled = off;
       sendBtn.disabled = off;
@@ -170,22 +187,34 @@
       return el;
     }
 
-    function ask(question) {
+    function showContactStep(show) {
+      contactEl.hidden = !show;
+      form.hidden = show;
+      contactErr.textContent = '';
+      if (show) { messagesEl.scrollTop = messagesEl.scrollHeight; emailEl.focus(); }
+    }
+
+    function ask(question, opts) {
+      opts = opts || {};
       question = (question || '').trim();
       if (!question || busy) return;
       if (looksSensitive(question)) { input.value = ''; addMessage(SENSITIVE_MSG, 'ai'); return; }
       if (remaining() === 0 && !humanMode) { addMessage(LIMIT_MSG, 'ai'); updateRemaining(); return; }
       var toTeam = humanMode;
-      var emailVal = '';
-      if (toTeam) {
-        emailVal = (emailEl.value || '').trim();
-        if (emailVal && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(emailVal)) { addMessage('That email address does not look right. Fix it, or leave it blank.', 'ai'); return; }
+      if (toTeam && !opts.confirmed) {
+        // Step 1: they wrote their message. Step 2: offer an optional email, then send.
+        pendingTeam = { text: question, el: addMessage(question, 'user') };
+        input.value = '';
+        showContactStep(true);
+        return;
       }
+      var emailVal = toTeam ? (opts.email || '') : '';
+      var optIn = toTeam && !!emailVal && !!opts.optIn;
       humanMode = false;
-      contactEl.hidden = true;
-      input.placeholder = 'Ask about building your empire…';
+      showContactStep(false);
+      input.placeholder = 'Ask about our apps, pricing or budgeting…';
 
-      addMessage(question, 'user');
+      if (!toTeam) { addMessage(question, 'user'); chipsEl.hidden = true; }
       input.value = '';
       busy = true;
       updateRemaining();
@@ -194,7 +223,7 @@
       fetch('/api/empire-ai', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ question: question, history: history.slice(-6), cid: getCid(true), page: location.pathname, human: toTeam, email: emailVal, optIn: toTeam && !!emailVal && optInEl.checked })
+        body: JSON.stringify({ question: question, history: history.slice(-6), cid: getCid(true), page: location.pathname, human: toTeam, email: emailVal, optIn: optIn })
       }).then(function (res) {
         if (res.status === 429) { var e = new Error('limit'); e.limit = true; throw e; }
         if (res.status === 400) { return res.json().then(function (d) { var e = new Error('bad'); e.msg = d && d.error; throw e; }); }
@@ -207,11 +236,18 @@
         addMessage(answer, 'ai');
         history.push({ role: 'user', content: question }, { role: 'assistant', content: answer });
         if (!toTeam) ls(false, todayKey(), String(usedToday() + 1));
-        if (toTeam) { emailEl.value = ''; optInEl.checked = false; }
+        if (toTeam) { pendingTeam = null; emailEl.value = ''; optInEl.checked = false; }
       }).catch(function (err) {
         thinking.remove();
-        if (toTeam && err && err.msg) { humanMode = true; contactEl.hidden = false; }
-        addMessage(err && err.limit ? (toTeam ? HUMAN_LIMIT_MSG : LIMIT_MSG) : (err && err.msg ? err.msg : ERROR_MSG), 'ai');
+        if (toTeam && err && err.msg) {
+          // the server rejected the email: go back to the email step with the reason
+          humanMode = true;
+          showContactStep(true);
+          contactErr.textContent = err.msg;
+          return;
+        }
+        if (toTeam) pendingTeam = null;
+        addMessage(err && err.limit ? (toTeam ? HUMAN_LIMIT_MSG : LIMIT_MSG) : ERROR_MSG, 'ai');
       }).then(function () {
         busy = false;
         updateRemaining();
@@ -243,6 +279,7 @@
               if (m.at > lastOwnerAt) lastOwnerAt = m.at;
             }
           });
+          if (initial && msgs.some(function (m) { return m.role === 'user'; })) chipsEl.hidden = true;
           if (fresh && !panel.classList.contains('open')) {
             fab.classList.add('has-reply');
             fab.setAttribute('aria-label', 'Open Empire AI chat. You have a new reply from our team.');
@@ -294,6 +331,7 @@
     }
     function closePanel() {
       stopPolling();
+      setMenu(false);
       panel.classList.remove('open');
       fab.setAttribute('aria-expanded', 'false');
       fab.setAttribute('aria-label', 'Open Empire AI chat');
@@ -329,10 +367,28 @@
       }
     });
     document.getElementById('eaiClose').addEventListener('click', closePanel);
+    function sendPending(withEmail) {
+      if (!pendingTeam || busy) return;
+      var e = withEmail ? (emailEl.value || '').trim() : '';
+      if (e && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(e)) { contactErr.textContent = 'That email address does not look right. Fix it, or leave it blank.'; return; }
+      ask(pendingTeam.text, { confirmed: true, email: e, optIn: withEmail && optInEl.checked });
+    }
+    document.getElementById('eaiContactSend').addEventListener('click', function () { sendPending(true); });
+    document.getElementById('eaiContactSkip').addEventListener('click', function () { sendPending(false); });
+    document.getElementById('eaiContactCancel').addEventListener('click', function () {
+      if (pendingTeam && pendingTeam.el) pendingTeam.el.remove();
+      pendingTeam = null; humanMode = false; showContactStep(false);
+      input.placeholder = 'Ask about our apps, pricing or budgeting…';
+      updateRemaining(); input.focus();
+    });
+    var menuBtn = document.getElementById('eaiMenuBtn'), menu = document.getElementById('eaiMenu');
+    function setMenu(open) { menu.hidden = !open; menuBtn.setAttribute('aria-expanded', String(open)); }
+    menuBtn.addEventListener('click', function (e) { e.stopPropagation(); setMenu(menu.hidden); });
+    menu.addEventListener('click', function () { setMenu(false); });
+    document.addEventListener('click', function (e) { if (!menu.hidden && !menu.contains(e.target)) setMenu(false); });
     document.getElementById('eaiHuman').addEventListener('click', function () {
       humanMode = true;
       updateRemaining();
-      contactEl.hidden = false;
       input.placeholder = 'Write your message for our team…';
       addMessage("Okay! Type your message for our team below. They'll reply right here in this chat.", 'ai');
       input.focus();
@@ -343,8 +399,8 @@
       if (c) fetch('/api/empire-ai', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'delete', cid: c }) }).catch(function () {});
       try { localStorage.removeItem(K_CID); localStorage.removeItem(K_SEEN); } catch (e) {}
       messagesEl.textContent = '';
-      history = []; lastAt = 0; lastOwnerAt = 0; humanMode = false; contactEl.hidden = true;
-      input.placeholder = 'Ask about building your empire…';
+      history = []; lastAt = 0; lastOwnerAt = 0; humanMode = false; pendingTeam = null; showContactStep(false); chipsEl.hidden = false;
+      input.placeholder = 'Ask about our apps, pricing or budgeting…';
       fab.classList.remove('has-reply');
       addMessage(GREETING, 'ai');
       updateRemaining();
@@ -361,7 +417,12 @@
       input.focus();
     });
     form.addEventListener('submit', function (e) { e.preventDefault(); ask(input.value); });
+    // Enter sends; Shift+Enter adds a new line (the box is a two-line textarea so the hint text can wrap).
+    input.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' && !e.shiftKey && !e.isComposing) { e.preventDefault(); form.dispatchEvent(new Event('submit', { cancelable: true })); }
+    });
     document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && !menu.hidden) { setMenu(false); return; }
       if (e.key === 'Escape' && panel.classList.contains('open')) closePanel();
     });
 
