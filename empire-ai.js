@@ -94,6 +94,8 @@
     var K_CID = 'empire_ai_cid';
     var K_SEEN = 'empire_ai_seen';
     var HUMAN_LIMIT_MSG = "You've sent the maximum number of messages to our team today. Please try again tomorrow.";
+    var openedOnce = false;
+    function tr(name, props) { try { if (window.dfeTrack) window.dfeTrack(name, props); } catch (e) {} }
     var humanMode = false;
     var contactEl = document.getElementById('eaiContact');
     var emailEl = document.getElementById('eaiEmail');
@@ -236,6 +238,7 @@
         addMessage(answer, 'ai');
         history.push({ role: 'user', content: question }, { role: 'assistant', content: answer });
         if (!toTeam) ls(false, todayKey(), String(usedToday() + 1));
+        if (toTeam) tr('empire_ai_team_message', { with_email: !!emailVal }); else tr('empire_ai_ask');
         if (toTeam) { pendingTeam = null; emailEl.value = ''; optInEl.checked = false; }
       }).catch(function (err) {
         thinking.remove();
@@ -315,6 +318,7 @@
     var fabLabel = document.getElementById('eaiFabLabel');
     var openedAt = 0;
     function openPanel() {
+      if (!openedOnce) { openedOnce = true; tr('empire_ai_open'); }
       hideBubble();
       openedAt = Date.now();
       panel.classList.add('open');

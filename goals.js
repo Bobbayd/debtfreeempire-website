@@ -3,6 +3,41 @@
 // the HeyCatch funnel counts. Same SDK URL as the page snippet, so it shares that instance.
 import { analytics } from 'https://esm.sh/@heycatch/sdk@0.8.3';
 
+// ---------------------------------------------------------------------------
+// Shared helpers. Every event carries the visitor's general device type and operating system so
+// "visited but did not download" can be compared with what is actually installable on that device
+// (Empire Life Dashboard is Windows and Mac only; the iPhone version is not out yet).
+// Nothing personal is collected: no text the visitor types, no query strings, no names or emails.
+// ---------------------------------------------------------------------------
+function deviceInfo() {
+  var ua = navigator.userAgent || '';
+  var touchMac = /Macintosh/.test(ua) && navigator.maxTouchPoints > 1; // iPadOS reports a Mac user agent
+  var os = /iPhone|iPad|iPod/.test(ua) || touchMac ? 'ios'
+    : /Android/.test(ua) ? 'android'
+    : /Windows/.test(ua) ? 'windows'
+    : /Macintosh|Mac OS X/.test(ua) ? 'mac'
+    : /CrOS/.test(ua) ? 'chromeos'
+    : /Linux/.test(ua) ? 'linux' : 'other';
+  var device = /iPad|Tablet/.test(ua) || touchMac || (/Android/.test(ua) && !/Mobile/.test(ua)) ? 'tablet'
+    : /Mobi|iPhone|Android.*Mobile/.test(ua) ? 'mobile' : 'desktop';
+  return { device: device, os: os };
+}
+function track(name, props) {
+  var data = Object.assign({ page: location.pathname }, deviceInfo(), props || {});
+  // Test switch: set localStorage dfe_track_test=1 to record events in window.__dfeEvents instead of sending them.
+  try {
+    if (localStorage.getItem('dfe_track_test') === '1') { (window.__dfeEvents = window.__dfeEvents || []).push({ name: name, props: data }); return; }
+  } catch (err) {}
+  try { analytics.trackEvent(name, data); } catch (err) {}
+}
+window.dfeTrack = track; // lets other scripts (Empire AI) report events without loading the SDK twice
+var HOST = location.hostname.replace(/^www\./, '');
+function placement(el) {
+  var sec = el.closest ? el.closest('[id], section, header, footer, nav') : null;
+  if (!sec) return 'unknown';
+  return String(sec.id || (sec.className && String(sec.className).split(' ')[0]) || sec.tagName.toLowerCase()).slice(0, 40);
+}
+
 var STORES = [
   { match: 'apps.apple.com/us/app/empire-life-dashboard', store: 'mac_app_store' },
   { match: 'apps.microsoft.com/detail/9NFTF14DSH6S', store: 'microsoft_store' }
@@ -15,7 +50,7 @@ document.addEventListener('click', function (e) {
   for (var i = 0; i < STORES.length; i++) {
     if (href.indexOf(STORES[i].match) !== -1) {
       try {
-        analytics.trackEvent('eld_store_click', { store: STORES[i].store, page: location.pathname });
+        track('eld_store_click', { store: STORES[i].store, placement: placement(a) });
       } catch (err) {}
       return;
     }
@@ -31,7 +66,7 @@ document.addEventListener('click', function (e) {
   var toStore = STORES.some(function (s) { return href.indexOf(s.match) !== -1; });
   if (!toEld && !toStore) return;
   try {
-    analytics.trackEvent('article_cta_click', { destination: href, page: location.pathname });
+    track('article_cta_click', { destination: href });
   } catch (err) {}
 }, true);
 
@@ -43,7 +78,7 @@ document.addEventListener('click', function (e) {
   var toPP = (host === 'debtfreeempire.com' && a.pathname.indexOf('/paper-and-prosperity') === 0) || host === 'app.paperandprosperity.shop';
   if (!toPP) return;
   try {
-    analytics.trackEvent('pp_cta_click', { destination: a.href, page: location.pathname });
+    track('pp_cta_click', { destination: a.href, placement: placement(a) });
   } catch (err) {}
 }, true);
 
@@ -58,7 +93,7 @@ if (location.pathname.indexOf('empire-life-dashboard') !== -1) {
     [25, 50, 75, 100].forEach(function (d) {
       if (pct >= d - 0.5 && !fired[d]) {
         fired[d] = true;
-        try { analytics.trackEvent('eld_scroll_depth', { depth: d }); } catch (err) {}
+        track('eld_scroll_depth', { depth: d });
       }
     });
   };
@@ -74,9 +109,93 @@ window.fetch = function (input) {
     var url = typeof input === 'string' ? input : (input && input.url) || '';
     if (url.indexOf('/api/waitlist') !== -1) {
       p.then(function (res) {
-        if (res && res.ok) analytics.trackEvent('waitlist_signup', { page: location.pathname });
+        if (res && res.ok) track('waitlist_signup');
       }).catch(function () {});
     }
   } catch (err) {}
   return p;
 };
+
+// ---------------------------------------------------------------------------
+// NEW: Paper & Prosperity store clicks (App Store, Google Play). Same idea as eld_store_click, so both
+// apps can be compared. (Clicks to the web app are already counted by pp_cta_click above.)
+// ---------------------------------------------------------------------------
+var PP_STORES = [
+  { match: 'apps.apple.com/us/app/paper-prosperity', store: 'app_store' },
+  { match: 'play.google.com/store/apps/details?id=com.paperandprosperity', store: 'google_play' }
+];
+document.addEventListener('click', function (e) {
+  var a = e.target && e.target.closest ? e.target.closest('a[href]') : null;
+  if (!a) return;
+  var href = a.href || '';
+  for (var i = 0; i < PP_STORES.length; i++) {
+    if (href.indexOf(PP_STORES[i].match) !== -1) { track('pp_store_click', { store: PP_STORES[i].store, placement: placement(a) }); return; }
+  }
+}, true);
+
+// NEW: every link that leaves the site (Etsy, social, stores...), host and path only.
+document.addEventListener('click', function (e) {
+  var a = e.target && e.target.closest ? e.target.closest('a[href]') : null;
+  if (!a || !/^https?:$/.test(a.protocol)) return;
+  var host = a.hostname.replace(/^www\./, '');
+  if (host === HOST) return;
+  track('outbound_click', { destination: host + a.pathname.slice(0, 80), placement: placement(a) });
+}, true);
+
+// ---------------------------------------------------------------------------
+// NEW: app-page behaviour. Runs on the pages where people decide whether to download.
+// ---------------------------------------------------------------------------
+var path = location.pathname.replace(/\/index\.html$/, '').replace(/\/$/, '');
+var APP = path === '/apps/empire-life-dashboard' ? 'empire_life_dashboard'
+  : path === '/paper-and-prosperity' ? 'paper_and_prosperity'
+  : path === '/apps' ? 'apps_overview'
+  : path === '/pricing' ? 'pricing' : '';
+if (APP) {
+  var d = deviceInfo();
+  // Where did they come from? Category only; for visits inside the site, just the page path.
+  var ref = document.referrer, refType = 'direct', fromPath = '';
+  if (ref) {
+    try {
+      var ru = new URL(ref), rh = ru.hostname.replace(/^www\./, '');
+      if (rh === HOST) { refType = 'internal'; fromPath = ru.pathname.slice(0, 80); }
+      else if (/(^|\.)(google|bing|duckduckgo|yahoo|ecosia|brave)\./.test(rh)) refType = 'search';
+      else if (/(facebook|instagram|tiktok|x\.com|twitter|t\.co|linkedin|youtube|pinterest|reddit)/.test(rh)) refType = 'social';
+      else refType = 'other:' + rh.slice(0, 40);
+    } catch (err) {}
+  }
+  // Empire Life Dashboard installs only on Windows and Mac, so a phone visit cannot convert today.
+  var props = { app: APP, referrer_type: refType, from_path: fromPath };
+  if (APP === 'empire_life_dashboard') props.can_install = d.os === 'windows' || d.os === 'mac';
+  track('app_page_view', props);
+
+  // Scroll depth (each milestone once), for both apps.
+  var seen = {};
+  var onAppScroll = function () {
+    var doc = document.documentElement, scrollable = doc.scrollHeight - window.innerHeight;
+    if (scrollable <= 0) return;
+    var pct = (window.scrollY / scrollable) * 100;
+    [25, 50, 75, 100].forEach(function (m) { if (pct >= m - 0.5 && !seen[m]) { seen[m] = true; track('app_scroll_depth', { app: APP, depth: m }); } });
+  };
+  window.addEventListener('scroll', onAppScroll, { passive: true });
+  onAppScroll();
+
+  // Time actually spent looking at the page (tab visible): 15 and 60 seconds.
+  [15, 60].forEach(function (sec) {
+    setTimeout(function () { if (document.visibilityState === 'visible') track('app_engaged', { app: APP, seconds: sec }); }, sec * 1000);
+  });
+
+  // Which questions do people open? (the question text from the page, never anything typed by the visitor)
+  document.addEventListener('toggle', function (e) {
+    var el = e.target;
+    if (el && el.tagName === 'DETAILS' && el.open) {
+      var q = el.querySelector('summary');
+      track('app_faq_open', { app: APP, question: q ? q.textContent.trim().slice(0, 80) : '' });
+    }
+  }, true);
+
+  // Does anyone watch the walkthrough video?
+  document.querySelectorAll('video').forEach(function (v) {
+    v.addEventListener('play', function () { track('app_video_play', { app: APP }); }, { once: true });
+    v.addEventListener('ended', function () { track('app_video_complete', { app: APP }); }, { once: true });
+  });
+}
