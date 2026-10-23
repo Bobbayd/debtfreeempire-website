@@ -1,6 +1,7 @@
 import { randomUUID } from 'node:crypto';
 import { isLoggedIn, noStore } from './_adminAuth.js';
 import { redis } from './_redis.js';
+import { validId, STATUSES as CHAT_STATUSES, listThreads, getThread, saveThread, deleteThread, addMessage, needsReplyCount } from './_chat.js';
 import { K, LISTS, SUPPORT_STATUSES, PRODUCT_IDS, PRODUCT_STATUSES, rows, str, isEmail, cleanLink, richToHtml, richToText, emailHtml, unsubUrl } from './_store.js';
 
 // ADMIN endpoint for every dashboard tab. Requires the admin login cookie.
@@ -20,8 +21,11 @@ const readers = {
   async support() { const m = rows(await getHash(K.support)).sort(byDateDesc); return { messages: m, unread: m.filter((x) => x.status === 'unread').length }; },
   async badge() {
     const [flat, h] = await redis([['HGETALL', K.support], ['HGET', 'health:last', 'count']]);
-    return { unread: rows(flat).filter((x) => x.status === 'unread').length, healthFails: Number(h) || 0 };
+    let chats = 0; try { chats = await needsReplyCount(); } catch (e) { /* chats are optional */ }
+    return { unread: rows(flat).filter((x) => x.status === 'unread').length, healthFails: Number(h) || 0, chats };
   },
+  async chats() { const [list, needs] = [await listThreads(), await needsReplyCount()]; return { chats: list, needs }; },
+  async chat(q) { return { thread: validId(q && q.id) ? await getThread(q.id) : null }; },
   async announcement() {
     const flat = await getHash(K.announcement); const a = {};
     for (let i = 0; i + 1 < flat.length; i += 2) a[flat[i]] = flat[i + 1];
@@ -52,6 +56,27 @@ const writers = {
       const m = JSON.parse(raw); m.status = status;
       await redis([['HSET', K.support, id, JSON.stringify(m)]]);
       return [null, {}];
+    }
+    return ['Unknown action.'];
+  },
+
+  // Empire AI chats: read, reply (shows up in the visitor's chat window), set status, delete.
+  async chats(b) {
+    if (!validId(b.id)) return ['Unknown chat.'];
+    if (b.action === 'delete') { await deleteThread(b.id); return [null, {}]; }
+    const t = await getThread(b.id);
+    if (!t) return ['That chat has expired or was deleted.', null, 404];
+    if (b.action === 'read') { t.unread = false; await saveThread(t, { keepTtl: true }); return [null, { thread: t }]; }
+    if (b.action === 'status') {
+      if (!CHAT_STATUSES.includes(b.status)) return ['Unknown status.'];
+      t.status = b.status; await saveThread(t, { keepTtl: true }); return [null, { thread: t }];
+    }
+    if (b.action === 'reply') {
+      const text = str(b.text, 1000);
+      if (!text) return ['Write a reply first.'];
+      addMessage(t, 'owner', text); t.status = 'replied'; t.unread = false;
+      await saveThread(t);
+      return [null, { thread: t }];
     }
     return ['Unknown action.'];
   },
@@ -175,7 +200,7 @@ export default async function handler(req, res) {
     if (req.method === 'GET') {
       const read = readers[req.query && req.query.r];
       if (!read) return bad(res, 'Unknown section.');
-      return res.status(200).json(await read());
+      return res.status(200).json(await read(req.query || {}));
     }
     if (req.method !== 'POST') return bad(res, 'Method not allowed', 405);
     const b = req.body || {};

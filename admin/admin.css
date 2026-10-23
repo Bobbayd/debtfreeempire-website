@@ -95,3 +95,14 @@ textarea.field { resize: vertical; line-height: 1.6; }
 .m-table { margin: 0 0 4px; } .m-table th { width: 70px; vertical-align: top; } .m-table td { word-break: break-word; }
 .m-facts { margin: 14px 0 4px 20px; font-size: 13.5px; line-height: 1.7; }
 .badge.red { background: #B23A3A; }
+
+/* Empire AI chats */
+.chat-thread { display: flex; flex-direction: column; gap: 8px; margin-top: 14px; }
+.chat-line { max-width: 86%; padding: 10px 14px; border-radius: 12px; font-size: 14px; line-height: 1.6; white-space: pre-wrap; word-break: break-word; }
+.chat-line .who { display: block; font-size: 10px; font-weight: 800; letter-spacing: 1.2px; text-transform: uppercase; opacity: .7; margin-bottom: 2px; }
+.chat-line.user { align-self: flex-start; background: #fff; border: 1px solid var(--gold); }
+.chat-line.assistant { align-self: flex-start; background: #F3EFF8; border: 1px solid #DDD5E5; }
+.chat-line.owner { align-self: flex-end; background: #FAF3E3; border: 1px solid var(--gold-d); }
+.chat-time { font-size: 11px; color: var(--muted); margin: 0 4px; }
+.unread-dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; background: var(--gold-d); margin-right: 6px; vertical-align: middle; }
+.msg-card.needs-reply { border-left-color: var(--lav); }

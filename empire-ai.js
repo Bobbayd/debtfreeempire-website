@@ -19,7 +19,11 @@
   </div>
   <div class="eai-messages" id="eaiMessages" role="log" aria-live="polite"></div>
   <div class="eai-chips" id="eaiChips"></div>
-  <p class="eai-privacy-note" id="eaiPrivacyNote">Please don't enter passwords, account numbers or other personal information.</p>
+  <p class="eai-privacy-note" id="eaiPrivacyNote">Please don't enter passwords, account numbers or other personal information. Chats may be read by our team and are deleted after 30 days.</p>
+  <div class="eai-contact" id="eaiContact" hidden>
+    <input class="eai-input" id="eaiEmail" type="email" maxlength="254" placeholder="Your email (optional, so we can reply by email)" autocomplete="email" aria-label="Your email, optional" />
+    <label class="eai-check"><input type="checkbox" id="eaiOptIn"> Also send me occasional updates from Debt Free Empire</label>
+  </div>
   <form class="eai-form" id="eaiForm" autocomplete="off">
     <label for="eaiInput" style="position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0);">Ask Empire AI a question</label>
     <input class="eai-input" id="eaiInput" type="text" maxlength="500" placeholder="Ask about building your empire…" />
@@ -27,6 +31,7 @@
   </form>
   <div class="eai-footer">
     <span class="eai-remaining" id="eaiRemaining"></span>
+    <span class="eai-links"><button type="button" class="eai-off-btn" id="eaiHuman">Message the team</button> · <button type="button" class="eai-off-btn" id="eaiDelete">Delete this chat</button></span>
     <button type="button" class="eai-off-btn" id="eaiOff">Turn off Empire AI</button>
     <span class="eai-disclaimer" style="display:block; margin-top:2px;">Not legal or tax advice. For informational purposes only.</span>
     <span class="eai-powered">Powered by Claude</span>
@@ -72,6 +77,16 @@
     var K_DISABLED = 'empire_ai_disabled';
     var isHome = location.pathname === '/' || location.pathname === '/index.html';
     var K_ACCEPTED = 'empire_ai_disclaimer_accepted';
+    var K_CID = 'empire_ai_cid';
+    var K_SEEN = 'empire_ai_seen';
+    var HUMAN_LIMIT_MSG = "You've sent the maximum number of messages to our team today. Please try again tomorrow.";
+    var humanMode = false;
+    var contactEl = document.getElementById('eaiContact');
+    var emailEl = document.getElementById('eaiEmail');
+    var optInEl = document.getElementById('eaiOptIn');
+    var lastAt = 0;        // newest message time we have seen from the server
+    var lastOwnerAt = 0;   // newest team reply we have shown
+    var pollTimer = null;
 
     var fab = document.getElementById('eaiFab');
     var panel = document.getElementById('eaiPanel');
@@ -88,12 +103,27 @@
     var history = [];
     var busy = false;
 
+    // A random id kept in this browser ties a conversation together. It is not a name or email.
+    function uuid() {
+      try { if (window.crypto && crypto.randomUUID) return crypto.randomUUID(); } catch (e) {}
+      var b = new Uint8Array(16);
+      try { crypto.getRandomValues(b); } catch (e) { for (var i = 0; i < 16; i++) b[i] = Math.floor(Math.random() * 256); }
+      b[6] = (b[6] & 15) | 64; b[8] = (b[8] & 63) | 128;
+      var h = Array.prototype.map.call(b, function (x) { return ('0' + x.toString(16)).slice(-2); }).join('');
+      return h.slice(0, 8) + '-' + h.slice(8, 12) + '-' + h.slice(12, 16) + '-' + h.slice(16, 20) + '-' + h.slice(20);
+    }
+
     function ls(get, key, val) {
       try { return get ? localStorage.getItem(key) : localStorage.setItem(key, val); } catch (e) { return null; }
     }
     function todayKey() {
       var d = new Date();
       return 'empire_ai_count_' + d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
+    }
+    function getCid(create) {
+      var c = ls(true, K_CID);
+      if (!c && create) { c = uuid(); ls(false, K_CID, c); }
+      return c;
     }
     function usedToday() { return parseInt(ls(true, todayKey()), 10) || 0; }
     function remaining() { return Math.max(0, DAILY_LIMIT - usedToday()); }
@@ -103,7 +133,7 @@
       remainingEl.textContent = left > 0
         ? left + ' of ' + DAILY_LIMIT + ' questions left today'
         : "You've used all " + DAILY_LIMIT + ' questions for today';
-      var off = busy || left === 0;
+      var off = busy || (left === 0 && !humanMode);
       input.disabled = off;
       sendBtn.disabled = off;
       chipsEl.querySelectorAll('button').forEach(function (b) { b.disabled = off; });
@@ -113,6 +143,19 @@
       var el = document.createElement('div');
       el.className = 'eai-msg ' + who;
       el.textContent = text;
+      messagesEl.appendChild(el);
+      messagesEl.scrollTop = messagesEl.scrollHeight;
+      return el;
+    }
+
+    function addTeam(text) {
+      var el = document.createElement('div');
+      el.className = 'eai-msg team';
+      var who = document.createElement('strong');
+      who.textContent = 'Debt Free Empire team';
+      el.appendChild(who);
+      el.appendChild(document.createElement('br'));
+      el.appendChild(document.createTextNode(text));
       messagesEl.appendChild(el);
       messagesEl.scrollTop = messagesEl.scrollHeight;
       return el;
@@ -131,7 +174,16 @@
       question = (question || '').trim();
       if (!question || busy) return;
       if (looksSensitive(question)) { input.value = ''; addMessage(SENSITIVE_MSG, 'ai'); return; }
-      if (remaining() === 0) { addMessage(LIMIT_MSG, 'ai'); updateRemaining(); return; }
+      if (remaining() === 0 && !humanMode) { addMessage(LIMIT_MSG, 'ai'); updateRemaining(); return; }
+      var toTeam = humanMode;
+      var emailVal = '';
+      if (toTeam) {
+        emailVal = (emailEl.value || '').trim();
+        if (emailVal && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(emailVal)) { addMessage('That email address does not look right. Fix it, or leave it blank.', 'ai'); return; }
+      }
+      humanMode = false;
+      contactEl.hidden = true;
+      input.placeholder = 'Ask about building your empire…';
 
       addMessage(question, 'user');
       input.value = '';
@@ -142,9 +194,10 @@
       fetch('/api/empire-ai', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ question: question, history: history.slice(-6) })
+        body: JSON.stringify({ question: question, history: history.slice(-6), cid: getCid(true), page: location.pathname, human: toTeam, email: emailVal, optIn: toTeam && !!emailVal && optInEl.checked })
       }).then(function (res) {
         if (res.status === 429) { var e = new Error('limit'); e.limit = true; throw e; }
+        if (res.status === 400) { return res.json().then(function (d) { var e = new Error('bad'); e.msg = d && d.error; throw e; }); }
         if (!res.ok) throw new Error('bad status');
         return res.json();
       }).then(function (data) {
@@ -153,16 +206,55 @@
         thinking.remove();
         addMessage(answer, 'ai');
         history.push({ role: 'user', content: question }, { role: 'assistant', content: answer });
-        ls(false, todayKey(), String(usedToday() + 1));
+        if (!toTeam) ls(false, todayKey(), String(usedToday() + 1));
+        if (toTeam) { emailEl.value = ''; optInEl.checked = false; }
       }).catch(function (err) {
         thinking.remove();
-        addMessage(err && err.limit ? LIMIT_MSG : ERROR_MSG, 'ai');
+        if (toTeam && err && err.msg) { humanMode = true; contactEl.hidden = false; }
+        addMessage(err && err.limit ? (toTeam ? HUMAN_LIMIT_MSG : LIMIT_MSG) : (err && err.msg ? err.msg : ERROR_MSG), 'ai');
       }).then(function () {
         busy = false;
         updateRemaining();
         if (!input.disabled) input.focus();
       });
     }
+
+    // Show the saved conversation (and any reply from our team). since = 0 on first load.
+    function loadThread(initial) {
+      var c = getCid(false);
+      if (!c) return;
+      fetch('/api/empire-ai?cid=' + encodeURIComponent(c) + '&since=' + (initial ? 0 : lastAt))
+        .then(function (r) { return r.ok ? r.json() : { messages: [] }; })
+        .then(function (d) {
+          var msgs = (d && d.messages) || [];
+          if (!msgs.length) return;
+          var seen = parseInt(ls(true, K_SEEN), 10) || 0, fresh = false;
+          msgs.forEach(function (m) {
+            if (m.at > lastAt) lastAt = m.at;
+            if (initial) {
+              if (m.role === 'user') { addMessage(m.text, 'user'); history.push({ role: 'user', content: m.text }); }
+              else if (m.role === 'assistant') { addMessage(m.text, 'ai'); history.push({ role: 'assistant', content: m.text }); }
+              else if (m.role === 'owner') { addTeam(m.text); }
+            } else if (m.role === 'owner' && m.at > lastOwnerAt) {
+              addTeam(m.text);
+            }
+            if (m.role === 'owner') {
+              if (m.at > seen) fresh = true;
+              if (m.at > lastOwnerAt) lastOwnerAt = m.at;
+            }
+          });
+          if (fresh && !panel.classList.contains('open')) {
+            fab.classList.add('has-reply');
+            fab.setAttribute('aria-label', 'Open Empire AI chat. You have a new reply from our team.');
+          }
+          if (panel.classList.contains('open')) ls(false, K_SEEN, String(lastOwnerAt));
+        }).catch(function () {});
+    }
+    function startPolling() {
+      stopPolling();
+      pollTimer = setInterval(function () { if (!document.hidden) loadThread(false); }, 45000);
+    }
+    function stopPolling() { if (pollTimer) { clearInterval(pollTimer); pollTimer = null; } }
 
     var bubble = document.getElementById('eaiBubble');
     var bubbleTimer = null;
@@ -194,9 +286,14 @@
       if (fabLabel) fabLabel.textContent = 'Close chat';
       // The disclaimer is shown in the panel footer, so open straight to the chat.
       ls(false, K_ACCEPTED, '1');
+      fab.classList.remove('has-reply');
+      if (lastOwnerAt) ls(false, K_SEEN, String(lastOwnerAt));
+      loadThread(false);
+      startPolling();
       input.focus();
     }
     function closePanel() {
+      stopPolling();
       panel.classList.remove('open');
       fab.setAttribute('aria-expanded', 'false');
       fab.setAttribute('aria-label', 'Open Empire AI chat');
@@ -232,6 +329,26 @@
       }
     });
     document.getElementById('eaiClose').addEventListener('click', closePanel);
+    document.getElementById('eaiHuman').addEventListener('click', function () {
+      humanMode = true;
+      updateRemaining();
+      contactEl.hidden = false;
+      input.placeholder = 'Write your message for our team…';
+      addMessage("Okay! Type your message for our team below. They'll reply right here in this chat.", 'ai');
+      input.focus();
+    });
+    document.getElementById('eaiDelete').addEventListener('click', function () {
+      if (!confirm('Delete this chat from our servers and this browser?')) return;
+      var c = getCid(false);
+      if (c) fetch('/api/empire-ai', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'delete', cid: c }) }).catch(function () {});
+      try { localStorage.removeItem(K_CID); localStorage.removeItem(K_SEEN); } catch (e) {}
+      messagesEl.textContent = '';
+      history = []; lastAt = 0; lastOwnerAt = 0; humanMode = false; contactEl.hidden = true;
+      input.placeholder = 'Ask about building your empire…';
+      fab.classList.remove('has-reply');
+      addMessage(GREETING, 'ai');
+      updateRemaining();
+    });
     document.getElementById('eaiOff').addEventListener('click', turnOff);
     document.getElementById('eaiOn').addEventListener('click', function () {
       try { localStorage.removeItem(K_DISABLED); } catch (e) {}
@@ -259,6 +376,7 @@
       note.hidden = false;
     } else {
       fab.hidden = false;
+      loadThread(true);
       if (isHome && ls(true, K_BUBBLE_DISMISSED) !== '1') bubbleTimer = setTimeout(showBubble, 3000);
     }
   }

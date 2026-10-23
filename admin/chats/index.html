@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+<title>Empire AI chats (private)</title>
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="stylesheet" href="/admin/admin.css">
+</head>
+<body>
+<header class="bar">
+  <a class="bar-brand" href="/admin/">Debt Free Empire · Admin</a>
+  <nav class="bar-nav" aria-label="Admin"><a href="/admin/">Dashboard</a><a href="/admin/support/">Support</a><a href="/admin/chats/" aria-current="page">Chats</a><a href="/admin/announcement/">Announcement</a><a href="/admin/products/">Products</a><a href="/admin/updates/">Updates</a><a href="/admin/promos/">Promo codes</a><a href="/admin/broadcast/">Broadcast</a><a href="/admin/emails/">Email signups</a><a href="/admin/health/">Site health</a><a href="/admin/store-links/">Store links</a><a href="/admin/links/">Quick links</a><a href="/" target="_blank" rel="noopener">View site</a><button type="button" id="logoutBtn" hidden>Log out</button></nav>
+</header>
+<div class="wrap">
+  <div class="card" id="loginCard" hidden>
+    <h1>Admin login</h1>
+    <p class="sub">Private. Not linked anywhere and hidden from search engines.</p>
+    <form id="loginForm" autocomplete="off">
+      <label for="pw">Password</label>
+      <input type="password" id="pw" autocomplete="current-password" required>
+      <div class="row"><button type="submit" class="btn" id="loginBtn">Log in</button></div>
+      <p class="msg" id="loginMsg" role="status" aria-live="polite"></p>
+    </form>
+  </div>
+  <div id="app" hidden>
+    <h1>Empire AI chats</h1>
+    <p class="sub">Questions visitors ask Empire AI. Chats are kept for 30 days and then deleted automatically. Your reply appears inside the visitor's chat window the next time they open it. You cannot reach them any other way, because chats have no name or email.</p>
+    <div class="filters">
+      <input type="search" id="search" class="field" placeholder="Search the first question or page" aria-label="Search chats">
+      <select id="fStatus" class="field" aria-label="Filter by status"><option value="needs-reply">Needs a reply</option><option value="">All chats</option><option value="open">Open</option><option value="replied">Replied</option><option value="resolved">Resolved</option></select>
+      <button type="button" class="mini" id="refresh">Refresh</button>
+    </div>
+    <p class="count" id="count"></p>
+    <p class="msg" id="toast" role="status" aria-live="polite"></p>
+    <div id="list"></div>
+  </div>
+</div>
+<script src="/admin/admin.js"></script>
+<script>
+(function () {
+  var A = window.Admin, all = [], open = {}; // open[id] = full thread once expanded
+  var listEl = document.getElementById('list'), toast = document.getElementById('toast'), count = document.getElementById('count');
+  var LABEL = { 'needs-reply': 'Needs a reply', 'open': 'Open', 'replied': 'Replied', 'resolved': 'Resolved' };
+  var PILL = { 'needs-reply': 'info', 'open': 'warn', 'replied': 'ok', 'resolved': 'ok' };
+  var WHO = { user: 'Visitor', assistant: 'Empire AI', owner: 'You' };
+  function say(t) { toast.textContent = t; clearTimeout(say.t); say.t = setTimeout(function () { toast.textContent = ''; }, 4000); }
+  function call(body) { return A.act('chats', body); }
+  function load() {
+    return A.get('chats').then(function (x) {
+      if (x.status === 401) return 'unauthorized';
+      if (!x.ok) throw new Error('failed');
+      all = x.j.chats; render();
+    });
+  }
+
+  function openThread(id) {
+    return A.get('chat&id=' + encodeURIComponent(id)).then(function (x) {
+      if (!x.ok || !x.j.thread) { say('That chat has expired or was deleted.'); return; }
+      open[id] = x.j.thread; render();
+      if (x.j.thread.unread) call({ action: 'read', id: id }).then(function () {
+        var s = all.filter(function (c) { return c.id === id; })[0]; if (s) s.unread = false; render(); window.dispatchEvent(new Event('admin:badge'));
+      });
+    });
+  }
+
+  function threadView(t) {
+    var wrap = document.createElement('div'); wrap.className = 'chat-thread';
+    t.messages.forEach(function (m) {
+      var line = document.createElement('div'); line.className = 'chat-line ' + m.role;
+      line.appendChild(A.cell('span', (WHO[m.role] || m.role) + ' · ' + A.fmt(m.at), 'who'));
+      line.appendChild(document.createTextNode(m.text));
+      wrap.appendChild(line);
+    });
+    return wrap;
+  }
+
+  function render() {
+    var q = document.getElementById('search').value.trim().toLowerCase(), s = document.getElementById('fStatus').value;
+    var shown = all.filter(function (c) { return (!s || c.status === s) && (!q || (c.preview + ' ' + c.page).toLowerCase().indexOf(q) !== -1); });
+    var needs = all.filter(function (c) { return c.status === 'needs-reply'; }).length;
+    count.textContent = shown.length + ' of ' + all.length + ' chat' + (all.length === 1 ? '' : 's') + ' · ' + needs + ' need a reply';
+    listEl.textContent = '';
+    if (!shown.length) { listEl.appendChild(A.cell('p', all.length ? 'No chats match.' : 'No chats yet. They appear here as visitors use Empire AI.', 'empty')); return; }
+    shown.forEach(function (c) {
+      var card = document.createElement('section'); card.className = 'card msg-card ' + c.status;
+      var head = document.createElement('div'); head.className = 'msg-head';
+      var title = document.createElement('div'); title.className = 'msg-subject';
+      if (c.unread) title.appendChild(A.cell('span', '', 'unread-dot'));
+      title.appendChild(document.createTextNode(c.preview || '(no question)'));
+      head.appendChild(title);
+      head.appendChild(A.cell('span', LABEL[c.status] || c.status, 'pill ' + (PILL[c.status] || 'warn')));
+      card.appendChild(head);
+      card.appendChild(A.cell('div', 'Started ' + A.fmt(c.created) + ' · last activity ' + A.fmt(c.updated) + ' · ' + c.count + ' message' + (c.count === 1 ? '' : 's') + (c.page ? ' · from ' + c.page : '') + (c.email ? ' · left an email' : ''), 'msg-meta'));
+      var t = open[c.id];
+      if (!t) {
+        var row = document.createElement('div'); row.className = 'row';
+        row.appendChild(A.btn('Open chat', 'btn', function () { openThread(c.id); }));
+        card.appendChild(row);
+      } else {
+        if (t.contact && t.contact.email) {
+          var ct = document.createElement('div'); ct.className = 'msg-meta'; ct.style.marginTop = '10px';
+          ct.appendChild(document.createTextNode('Email: ' + t.contact.email + (t.contact.updates ? ' · ticked "send me updates" (added to the newsletter list)' : '') + ' · '));
+          var mail = document.createElement('a'); mail.textContent = 'Reply by email'; mail.href = 'mailto:' + encodeURIComponent(t.contact.email).replace('%40', '@') + '?subject=' + encodeURIComponent('Re: your message to Debt Free Empire');
+          ct.appendChild(mail); card.appendChild(ct);
+        }
+        card.appendChild(threadView(t));
+        var ta = document.createElement('textarea'); ta.className = 'field wide'; ta.rows = 3; ta.maxLength = 1000; ta.style.marginTop = '14px';
+        ta.placeholder = 'Write a reply. It appears in the visitor\'s chat window as a message from the team.'; ta.setAttribute('aria-label', 'Reply');
+        card.appendChild(ta);
+        var r2 = document.createElement('div'); r2.className = 'row';
+        r2.appendChild(A.btn('Send reply', 'btn', function () {
+          var text = ta.value.trim(); if (!text) { say('Write a reply first.'); return; }
+          call({ action: 'reply', id: c.id, text: text }).then(function (x) {
+            if (!x.ok) { say(x.j.error || 'Could not send.'); return; }
+            open[c.id] = x.j.thread; c.status = 'replied'; c.count = x.j.thread.messages.length; c.updated = x.j.thread.updated; c.unread = false;
+            render(); say('Reply sent. They will see it next time they open the chat.'); window.dispatchEvent(new Event('admin:badge'));
+          });
+        }));
+        var sel = document.createElement('select'); sel.className = 'field'; sel.setAttribute('aria-label', 'Status');
+        Object.keys(LABEL).forEach(function (k) { var o = document.createElement('option'); o.value = k; o.textContent = LABEL[k]; if (k === c.status) o.selected = true; sel.appendChild(o); });
+        sel.addEventListener('change', function () {
+          call({ action: 'status', id: c.id, status: sel.value }).then(function (x) {
+            if (!x.ok) { say(x.j.error || 'Could not update.'); sel.value = c.status; return; }
+            c.status = sel.value; open[c.id] = x.j.thread; render(); window.dispatchEvent(new Event('admin:badge'));
+          });
+        });
+        r2.appendChild(sel);
+        r2.appendChild(A.btn('Hide', 'mini', function () { delete open[c.id]; render(); }));
+        r2.appendChild(A.btn('Delete', 'mini danger', function () {
+          if (!confirm('Delete this chat? This cannot be undone.')) return;
+          call({ action: 'delete', id: c.id }).then(function (x) {
+            if (!x.ok) { say(x.j.error || 'Could not delete.'); return; }
+            all = all.filter(function (z) { return z.id !== c.id; }); delete open[c.id]; render(); say('Deleted.'); window.dispatchEvent(new Event('admin:badge'));
+          });
+        }));
+        card.appendChild(r2);
+      }
+      listEl.appendChild(card);
+    });
+  }
+
+  ['search', 'fStatus'].forEach(function (id) { document.getElementById(id).addEventListener('input', render); });
+  document.getElementById('refresh').addEventListener('click', function () { load().then(function () { say('Updated.'); window.dispatchEvent(new Event('admin:badge')); }); });
+  A.init(function () { return load(); });
+})();
+</script>
+</body>
+</html>

@@ -119,3 +119,16 @@
 
 /* Reminder above the input: no passwords or personal info */
 .eai-privacy-note { margin: 0; padding: 0 16px 6px; font-size: 11.5px; line-height: 1.4; color: #55515B; text-align: center; }
+
+/* Replies from the team, saved chats, and the new-reply dot */
+.eai-msg.team { align-self: flex-start; background: #FFFFFF; color: #1A1A1A; border: 1.5px solid #E4C590; border-bottom-left-radius: 4px; }
+.eai-msg.team strong { display: block; font-size: 10.5px; letter-spacing: 0.8px; text-transform: uppercase; color: #725C9F; margin-bottom: 2px; }
+.eai-links { display: block; margin-bottom: 2px; }
+.eai-fab { position: fixed; }
+.eai-fab.has-reply::after { content: ""; position: absolute; top: 2px; right: 4px; width: 14px; height: 14px; border-radius: 50%; background: #B23A3A; border: 2px solid #FFFFFF; }
+
+/* Optional email for messages to the team */
+.eai-contact { padding: 0 14px 6px; display: flex; flex-direction: column; gap: 6px; }
+.eai-contact .eai-input { width: 100%; }
+.eai-check { display: flex; gap: 6px; align-items: flex-start; font-size: 11.5px; line-height: 1.4; color: #55515B; cursor: pointer; }
+.eai-check input { margin-top: 2px; accent-color: #725C9F; }
