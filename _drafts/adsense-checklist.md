@@ -9,6 +9,11 @@ Status as of 2026-10-22: the site is prepared for an AdSense application. No Goo
 - About (/about), contact (/support#message), privacy, sitemap and robots.txt (all crawlers allowed except /admin and /api/) are in place.
 - Google Search Console is verified (bobbayd@gmail.com), sitemap submitted.
 
+## Update 2026-10-22
+- AdSense account exists (publisher ID ca-pub-3565608548741693). The old site ledger-and-life.vercel.app (flagged "low value content") was removed from the account at the owner's request; debtfreeempire.com was added ("Requires review").
+- Added the verification meta tag `google-adsense-account` to every public page and /ads.txt. No AdSense script is on any page, so no ads can appear.
+- Remaining: deploy, click Verify and then Request review in AdSense (owner clicks any terms or policy checkboxes).
+
 ## You do (Claude cannot create accounts or accept terms)
 1. Sign up at https://adsense.google.com with the Google account that owns the site (bobbayd@gmail.com).
 2. Enter the site as https://www.debtfreeempire.com, your country, and accept the terms.
