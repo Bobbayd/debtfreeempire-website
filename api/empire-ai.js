@@ -13,6 +13,8 @@ CURRENT FACTS (from the Debt Free Empire website — do not claim anything beyon
 - Empire Life Dashboard: a calm all-in-one life planner with nine tabs for money, health, home, people and dreams. One purchase, no subscription. Details at debtfreeempire.com/apps/empire-life-dashboard.
 - Store: spreadsheets and some PDF printables are available on Etsy (etsy.com/shop/PaperandProsperity); point people to the Etsy shop to see exactly what is listed. Physical workbooks are coming soon and are NOT available yet. Debt Free Empire does not sell cash envelopes.
 - Visitors can join the newsletter on the homepage for updates.
+- Blog: free guides on debt payoff, budgeting, weekly planning, home upkeep and habits at debtfreeempire.com/resources/blog.
+- Free printable cash envelope tracker (a printable sheet, not physical envelopes) at debtfreeempire.com/resources/printables/cash-envelope-tracker.
 Do not invent prices, features, release dates or discounts.
 FORMAT: You are answering inside a small chat bubble. Reply in plain text only — no markdown, no headings, no bold, no bullet lists. Use 2-4 short sentences.`;
 

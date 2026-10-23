@@ -1,0 +1,118 @@
+/* Empire AI chat widget. Shared by every page via /empire-ai.js.
+   Colors are hard-coded so the widget looks the same on pages that retheme the site tokens. */
+.eai-fab {
+  position: fixed; right: 20px; bottom: 20px; z-index: 90;
+  width: 60px; height: 60px; border-radius: 50%;
+  background: #E4C590; color: #1A1A1A;
+  border: 1px solid rgba(26,26,26,0.12);
+  box-shadow: 0 8px 22px rgba(26,26,26,0.22);
+  font-size: 26px; line-height: 1; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.eai-fab:hover { transform: translateY(-2px); box-shadow: 0 12px 26px rgba(26,26,26,0.28); }
+.eai-fab:focus-visible, .eai-panel button:focus-visible, .eai-panel input:focus-visible { outline: 2px solid #1A1A1A; outline-offset: 2px; }
+.eai-fab[hidden], .eai-panel[hidden] { display: none; }
+
+.eai-panel {
+  position: fixed; right: 20px; bottom: 92px; z-index: 95;
+  width: 360px; max-width: calc(100vw - 24px);
+  height: min(580px, calc(100vh - 120px));
+  background: #FFFFFF; color: #1A1A1A;
+  border: 1px solid #DDD5E5; border-radius: 16px;
+  box-shadow: 0 20px 50px rgba(26,26,26,0.22);
+  display: flex; flex-direction: column; overflow: hidden;
+  opacity: 0; visibility: hidden; transform: translateY(24px);
+  transition: opacity 0.25s ease, transform 0.25s ease, visibility 0s linear 0.25s;
+}
+.eai-panel.open { opacity: 1; visibility: visible; transform: translateY(0); transition: opacity 0.25s ease, transform 0.25s ease; }
+@media (max-width: 480px) {
+  .eai-fab { right: 14px; bottom: 14px; }
+  .eai-panel { right: 12px; left: 12px; width: auto; max-width: none; bottom: 84px; height: min(560px, calc(100vh - 110px)); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .eai-panel, .eai-panel.open, .eai-fab { transition: none; }
+  .eai-thinking-dots span { animation: none !important; }
+}
+
+.eai-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 16px; background: #FFFFFF; border-bottom: 1px solid #DDD5E5;
+}
+.eai-title { font-size: 16px; font-weight: 800; color: #1A1A1A; }
+.eai-close { background: none; border: none; font-size: 24px; line-height: 1; cursor: pointer; color: #1A1A1A; padding: 4px 8px; border-radius: 6px; }
+
+.eai-messages { flex: 1; min-height: 0; overflow-y: auto; padding: 14px; display: flex; flex-direction: column; gap: 10px; }
+.eai-msg { max-width: 86%; padding: 10px 13px; border-radius: 14px; font-size: 13.5px; line-height: 1.5; white-space: pre-wrap; overflow-wrap: anywhere; }
+.eai-msg.ai { align-self: flex-start; background: #E4C590; color: #1A1A1A; border-bottom-left-radius: 4px; }
+.eai-msg.user { align-self: flex-end; background: #1A1A1A; color: #FFFFFF; border-bottom-right-radius: 4px; }
+
+.eai-thinking-dots span { display: inline-block; width: 6px; height: 6px; margin-right: 4px; border-radius: 50%; background: #1A1A1A; animation: eaiPulse 1s infinite ease-in-out; }
+.eai-thinking-dots span:nth-child(2) { animation-delay: 0.15s; }
+.eai-thinking-dots span:nth-child(3) { animation-delay: 0.3s; margin-right: 0; }
+@keyframes eaiPulse { 0%, 80%, 100% { opacity: 0.25; } 40% { opacity: 1; } }
+
+.eai-chips { display: flex; flex-wrap: wrap; gap: 6px; padding: 0 14px 10px; }
+.eai-chip { background: #FFFFFF; border: 1px solid #E4C590; color: #1A1A1A; border-radius: 999px; padding: 7px 12px; font-family: 'Montserrat', sans-serif; font-size: 12px; font-weight: 600; cursor: pointer; text-align: left; }
+.eai-chip:hover:not([disabled]) { background: #FAF3E3; }
+.eai-chip[disabled] { opacity: 0.5; cursor: not-allowed; }
+
+.eai-form { display: flex; gap: 8px; padding: 0 14px 8px; }
+.eai-input { flex: 1; min-width: 0; border: 1.5px solid #DDD5E5; border-radius: 10px; padding: 10px 12px; font-family: 'Montserrat', sans-serif; font-size: 16px; color: #1A1A1A; background: #FFFFFF; }
+.eai-send { flex: 0 0 auto; background: #1A1A1A; color: #FFFFFF; border: none; border-radius: 10px; padding: 0 16px; font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 700; cursor: pointer; }
+.eai-send[disabled], .eai-input[disabled] { opacity: 0.5; cursor: not-allowed; }
+
+.eai-footer { padding: 2px 14px 10px; text-align: center; font-size: 10.5px; line-height: 1.5; color: #55515B; }
+.eai-remaining { display: block; margin-bottom: 2px; }
+.eai-off-btn { background: none; border: none; padding: 0; font: inherit; color: #55515B; text-decoration: underline; cursor: pointer; }
+.eai-powered { display: block; margin-top: 2px; }
+
+.eai-disclaimer-overlay { position: absolute; inset: 0; background: rgba(255,255,255,0.97); display: none; align-items: center; justify-content: center; padding: 24px; text-align: center; z-index: 2; }
+.eai-disclaimer-overlay.show { display: flex; }
+.eai-disclaimer-box p { font-size: 14px; line-height: 1.6; color: #1A1A1A; margin-bottom: 18px; }
+.eai-disclaimer-btn { background: #E4C590; color: #1A1A1A; border: 1.5px solid #1A1A1A; border-radius: 8px; padding: 12px 24px; font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 700; cursor: pointer; }
+
+.eai-bubble {
+  position: fixed; right: 20px; bottom: 92px; z-index: 91;
+  max-width: min(250px, calc(100vw - 40px));
+  background: #FFFFFF; color: #1A1A1A;
+  border: 1.5px solid #E4C590; border-radius: 14px;
+  box-shadow: 0 8px 22px rgba(26,26,26,0.16);
+  padding: 10px 30px 10px 14px;
+  opacity: 0; transform: translateY(6px);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+.eai-bubble.show { opacity: 1; transform: translateY(0); }
+.eai-bubble[hidden] { display: none; }
+/* small gold pointer aimed at the button below */
+.eai-bubble::after {
+  content: ""; position: absolute; bottom: -10px; right: 21px;
+  border-left: 9px solid transparent; border-right: 9px solid transparent; border-top: 10px solid #E4C590;
+}
+.eai-bubble-text {
+  background: none; border: none; padding: 0; margin: 0; text-align: left; cursor: pointer;
+  font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 600; line-height: 1.45; color: #1A1A1A;
+}
+.eai-bubble-close {
+  position: absolute; top: 4px; right: 6px; width: 22px; height: 22px;
+  background: none; border: none; border-radius: 6px; cursor: pointer;
+  font-size: 16px; line-height: 1; color: #1A1A1A; padding: 0;
+}
+.eai-bubble-text:focus-visible, .eai-bubble-close:focus-visible { outline: 2px solid #1A1A1A; outline-offset: 2px; }
+@media (max-width: 480px) { .eai-bubble { right: 14px; bottom: 84px; } }
+@media (prefers-reduced-motion: reduce) { .eai-bubble { transition: none; transform: none; } }
+
+.eai-disabled-note { text-align: center; font-size: 11px; color: #55515B; padding: 10px 16px 18px; background: #FFF9F3; }
+
+/* Turn-back-on control (shown only after a visitor turns Empire AI off) */
+.eai-on-btn { background: none; border: 0; padding: 0; margin-left: 4px; font: inherit; font-weight: 700; color: #725C9F; text-decoration: underline; cursor: pointer; }
+.eai-on-btn:focus-visible { outline: 2px solid #1A1A1A; outline-offset: 2px; }
+
+/* Never print the chat widget */
+@media print { .eai-fab, .eai-bubble, .eai-panel, .eai-disabled-note { display: none !important; } }
+
+/* Labelled pill button ("Ask Empire AI"), gold-and-cream to match the site */
+.eai-fab { background: #F3EBDD !important; border-color: #E4C590 !important; }
+.eai-fab { width: auto; height: 52px; padding: 0 20px 0 16px; gap: 8px; border-radius: 999px; font-size: 18px; }
+.eai-fab-label { font-family: 'Montserrat', sans-serif; font-size: 14px; font-weight: 700; letter-spacing: .2px; color: #3D352E; white-space: nowrap; }
+.eai-panel { bottom: 84px; }

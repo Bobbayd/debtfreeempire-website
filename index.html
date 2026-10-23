@@ -1313,110 +1313,6 @@
     .hero-divider { margin-top: 30px; }
   }
 
-  /* EMPIRE AI CHAT WIDGET */
-  .eai-fab {
-    position: fixed; right: 20px; bottom: 20px; z-index: 90;
-    width: 60px; height: 60px; border-radius: 50%;
-    background: #E4C590; color: var(--text-primary);
-    border: 1px solid rgba(26,26,26,0.12);
-    box-shadow: 0 8px 22px rgba(26,26,26,0.22);
-    font-size: 26px; line-height: 1; cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-  }
-  .eai-fab:hover { transform: translateY(-2px); box-shadow: 0 12px 26px rgba(26,26,26,0.28); }
-  .eai-fab:focus-visible, .eai-panel button:focus-visible, .eai-panel input:focus-visible { outline: 2px solid var(--text-primary); outline-offset: 2px; }
-  .eai-fab[hidden], .eai-panel[hidden] { display: none; }
-
-  .eai-panel {
-    position: fixed; right: 20px; bottom: 92px; z-index: 95;
-    width: 360px; max-width: calc(100vw - 24px);
-    height: min(580px, calc(100vh - 120px));
-    background: var(--card-white); color: var(--text-primary);
-    border: 1px solid var(--border); border-radius: 16px;
-    box-shadow: 0 20px 50px rgba(26,26,26,0.22);
-    display: flex; flex-direction: column; overflow: hidden;
-    opacity: 0; visibility: hidden; transform: translateY(24px);
-    transition: opacity 0.25s ease, transform 0.25s ease, visibility 0s linear 0.25s;
-  }
-  .eai-panel.open { opacity: 1; visibility: visible; transform: translateY(0); transition: opacity 0.25s ease, transform 0.25s ease; }
-  @media (max-width: 480px) {
-    .eai-fab { right: 14px; bottom: 14px; }
-    .eai-panel { right: 12px; left: 12px; width: auto; max-width: none; bottom: 84px; height: min(560px, calc(100vh - 110px)); }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .eai-panel, .eai-panel.open, .eai-fab { transition: none; }
-    .eai-thinking-dots span { animation: none !important; }
-  }
-
-  .eai-header {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 14px 16px; background: var(--card-white); border-bottom: 1px solid var(--border);
-  }
-  .eai-title { font-size: 16px; font-weight: 800; color: var(--text-primary); }
-  .eai-close { background: none; border: none; font-size: 24px; line-height: 1; cursor: pointer; color: var(--text-primary); padding: 4px 8px; border-radius: 6px; }
-
-  .eai-messages { flex: 1; min-height: 0; overflow-y: auto; padding: 14px; display: flex; flex-direction: column; gap: 10px; }
-  .eai-msg { max-width: 86%; padding: 10px 13px; border-radius: 14px; font-size: 13.5px; line-height: 1.5; white-space: pre-wrap; overflow-wrap: anywhere; }
-  .eai-msg.ai { align-self: flex-start; background: #E4C590; color: var(--text-primary); border-bottom-left-radius: 4px; }
-  .eai-msg.user { align-self: flex-end; background: #1A1A1A; color: #FFFFFF; border-bottom-right-radius: 4px; }
-
-  .eai-thinking-dots span { display: inline-block; width: 6px; height: 6px; margin-right: 4px; border-radius: 50%; background: var(--text-primary); animation: eaiPulse 1s infinite ease-in-out; }
-  .eai-thinking-dots span:nth-child(2) { animation-delay: 0.15s; }
-  .eai-thinking-dots span:nth-child(3) { animation-delay: 0.3s; margin-right: 0; }
-  @keyframes eaiPulse { 0%, 80%, 100% { opacity: 0.25; } 40% { opacity: 1; } }
-
-  .eai-chips { display: flex; flex-wrap: wrap; gap: 6px; padding: 0 14px 10px; }
-  .eai-chip { background: var(--card-white); border: 1px solid #E4C590; color: var(--text-primary); border-radius: 999px; padding: 7px 12px; font-family: 'Montserrat', sans-serif; font-size: 12px; font-weight: 600; cursor: pointer; text-align: left; }
-  .eai-chip:hover:not([disabled]) { background: #FAF3E3; }
-  .eai-chip[disabled] { opacity: 0.5; cursor: not-allowed; }
-
-  .eai-form { display: flex; gap: 8px; padding: 0 14px 8px; }
-  .eai-input { flex: 1; min-width: 0; border: 1.5px solid var(--border); border-radius: 10px; padding: 10px 12px; font-family: 'Montserrat', sans-serif; font-size: 16px; color: var(--text-primary); background: var(--card-white); }
-  .eai-send { flex: 0 0 auto; background: #1A1A1A; color: #FFFFFF; border: none; border-radius: 10px; padding: 0 16px; font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 700; cursor: pointer; }
-  .eai-send[disabled], .eai-input[disabled] { opacity: 0.5; cursor: not-allowed; }
-
-  .eai-footer { padding: 2px 14px 10px; text-align: center; font-size: 10.5px; line-height: 1.5; color: var(--text-secondary); }
-  .eai-remaining { display: block; margin-bottom: 2px; }
-  .eai-off-btn { background: none; border: none; padding: 0; font: inherit; color: var(--text-secondary); text-decoration: underline; cursor: pointer; }
-  .eai-powered { display: block; margin-top: 2px; }
-
-  .eai-disclaimer-overlay { position: absolute; inset: 0; background: rgba(255,255,255,0.97); display: none; align-items: center; justify-content: center; padding: 24px; text-align: center; z-index: 2; }
-  .eai-disclaimer-overlay.show { display: flex; }
-  .eai-disclaimer-box p { font-size: 14px; line-height: 1.6; color: var(--text-primary); margin-bottom: 18px; }
-  .eai-disclaimer-btn { background: #E4C590; color: var(--text-primary); border: 1.5px solid #1A1A1A; border-radius: 8px; padding: 12px 24px; font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 700; cursor: pointer; }
-
-  .eai-bubble {
-    position: fixed; right: 20px; bottom: 92px; z-index: 91;
-    max-width: min(250px, calc(100vw - 40px));
-    background: #FFFFFF; color: #1A1A1A;
-    border: 1.5px solid #E4C590; border-radius: 14px;
-    box-shadow: 0 8px 22px rgba(26,26,26,0.16);
-    padding: 10px 30px 10px 14px;
-    opacity: 0; transform: translateY(6px);
-    transition: opacity 0.35s ease, transform 0.35s ease;
-  }
-  .eai-bubble.show { opacity: 1; transform: translateY(0); }
-  .eai-bubble[hidden] { display: none; }
-  /* small gold pointer aimed at the button below */
-  .eai-bubble::after {
-    content: ""; position: absolute; bottom: -10px; right: 21px;
-    border-left: 9px solid transparent; border-right: 9px solid transparent; border-top: 10px solid #E4C590;
-  }
-  .eai-bubble-text {
-    background: none; border: none; padding: 0; margin: 0; text-align: left; cursor: pointer;
-    font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 600; line-height: 1.45; color: #1A1A1A;
-  }
-  .eai-bubble-close {
-    position: absolute; top: 4px; right: 6px; width: 22px; height: 22px;
-    background: none; border: none; border-radius: 6px; cursor: pointer;
-    font-size: 16px; line-height: 1; color: #1A1A1A; padding: 0;
-  }
-  .eai-bubble-text:focus-visible, .eai-bubble-close:focus-visible { outline: 2px solid #1A1A1A; outline-offset: 2px; }
-  @media (max-width: 480px) { .eai-bubble { right: 14px; bottom: 84px; } }
-  @media (prefers-reduced-motion: reduce) { .eai-bubble { transition: none; transform: none; } }
-
-  .eai-disabled-note { text-align: center; font-size: 11px; color: var(--text-secondary); padding: 10px 16px 18px; background: var(--bg-main); }
 
 /* NAV: right-aligned CTA + label rows */
 .site-header-nav { margin-left: auto; }
@@ -1737,10 +1633,6 @@ main#main { display: block; }
 .email-popup-btn { background: var(--dfe-btn) !important; }
 .email-popup-btn:hover { background: var(--dfe-btn-hover) !important; }
 .email-popup-btn:focus-visible, .email-btn:focus-visible { outline-color: var(--dfe-ink) !important; }
-.eai-fab { background: var(--dfe-band) !important; border-color: var(--dfe-gold) !important; }
-.eai-fab { width: auto; height: 52px; padding: 0 20px 0 16px; gap: 8px; border-radius: 999px; font-size: 18px; }
-.eai-fab-label { font-family: 'Montserrat', sans-serif; font-size: 14px; font-weight: 700; letter-spacing: .2px; color: var(--dfe-ink, #3D352E); white-space: nowrap; }
-.eai-panel { bottom: 84px; }
 .sidebar:not(.open) { box-shadow: none; }
 .site-header-brand em, .nav-brand em, .sidebar-brand em { font-family: Georgia, 'Times New Roman', serif; font-style: italic; font-weight: 400; text-transform: none; letter-spacing: 0; color: var(--dfe-gold-deep); font-size: 1.22em; margin-left: 2px; }
 .site-header-brand { font-size: 19px; letter-spacing: 1.8px; }
@@ -1934,7 +1826,7 @@ main#main { display: block; }
   </defs>
 </svg>
 
-<header class="site-header"><a href="/" class="site-header-brand">Debt Free <em>Empire</em></a><nav class="site-header-nav" aria-label="Primary"><div class="nav-dd"><button type="button" class="site-header-link nav-dd-btn" aria-expanded="false" aria-haspopup="true">Apps <span class="nav-dd-caret">⌄</span></button><div class="nav-dd-menu"><a class="nav-dd-item" href="/paper-and-prosperity">Paper &amp; Prosperity</a><a class="nav-dd-item" href="/apps/empire-life-dashboard">Empire Life Dashboard</a></div></div><div class="nav-dd"><button type="button" class="site-header-link nav-dd-btn" aria-expanded="false" aria-haspopup="true">Shop <span class="nav-dd-caret">⌄</span></button><div class="nav-dd-menu"><a class="nav-dd-item" href="https://www.etsy.com/shop/PaperandProsperity" target="_blank" rel="noopener">Spreadsheets</a><span class="nav-dd-item soon" aria-disabled="true">Workbooks<em>Coming soon</em></span></div></div><a class="site-header-link" href="/about">About</a><a class="site-header-link" href="/pricing">Pricing</a><a class="site-header-link" href="/support">Support</a></nav><a class="nav-cta" href="https://app.paperandprosperity.shop" target="_blank" rel="noopener">Start Free</a></header>
+<header class="site-header"><a href="/" class="site-header-brand">Debt Free <em>Empire</em></a><nav class="site-header-nav" aria-label="Primary"><div class="nav-dd"><button type="button" class="site-header-link nav-dd-btn" aria-expanded="false" aria-haspopup="true">Apps <span class="nav-dd-caret">⌄</span></button><div class="nav-dd-menu"><a class="nav-dd-item" href="/paper-and-prosperity">Paper &amp; Prosperity</a><a class="nav-dd-item" href="/apps/empire-life-dashboard">Empire Life Dashboard</a></div></div><div class="nav-dd"><button type="button" class="site-header-link nav-dd-btn" aria-expanded="false" aria-haspopup="true">Shop <span class="nav-dd-caret">⌄</span></button><div class="nav-dd-menu"><a class="nav-dd-item" href="https://www.etsy.com/shop/PaperandProsperity" target="_blank" rel="noopener">Spreadsheets</a><span class="nav-dd-item soon" aria-disabled="true">Workbooks<em>Coming soon</em></span></div></div><a class="site-header-link" href="/resources/blog">Blog</a><a class="site-header-link" href="/about">About</a><a class="site-header-link" href="/pricing">Pricing</a><a class="site-header-link" href="/support">Support</a></nav><a class="nav-cta" href="https://app.paperandprosperity.shop" target="_blank" rel="noopener">Start Free</a></header>
 
 <div class="mobile-topbar">
   <a href="#top" class="nav-brand">Debt Free <em>Empire</em></a>
@@ -1953,6 +1845,7 @@ main#main { display: block; }
     <span class="sidebar-label">Shop</span>
     <a class="sidebar-item" href="https://www.etsy.com/shop/PaperandProsperity" target="_blank" rel="noopener" style="padding-left:40px"><span class="sidebar-item-text">Spreadsheets</span></a>
     <span class="sidebar-item" style="padding-left:40px;opacity:.7;cursor:default"><span class="sidebar-item-text">Workbooks <em style="font-style:normal;font-size:9px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;background:var(--dfe-soft);border:1px solid var(--dfe-gold);color:var(--dfe-btn);padding:3px 8px;border-radius:20px;margin-left:6px">Coming soon</em></span></span>
+    <a class="sidebar-item" href="/resources/blog"><span class="sidebar-item-text">Blog</span></a>
     <a class="sidebar-item" href="/about"><span class="sidebar-item-text">About</span></a>
     <a class="drawer-cta" href="https://app.paperandprosperity.shop" target="_blank" rel="noopener" style="margin:14px 8px">Start Free</a>
   </aside>
@@ -2283,42 +2176,9 @@ main#main { display: block; }
 <footer class="footer">© 2026 Debt Free Empire ·
 <a href="/apps">Apps</a> · <a href="/paper-and-prosperity">Paper &amp; Prosperity</a> · <a href="/products">Products</a> · <a href="/pricing">Pricing</a> · <a href="/changelog">Changelog</a> · <a href="/resources">Resources</a> · <a href="/resources/blog">Blog</a> · <a href="/debt-calculator">Debt Calculator</a> · <a href="/about">About</a> · <a href="/support">Support</a> · <a href="/privacy">Privacy</a> · <a href="/paper-and-prosperity/privacy">App Privacy</a> · <a href="/website-privacy">Website Privacy</a> · <a href="/support#message">Contact</a>
 <span class="footer-close-line">Start where you are. Build what comes next.</span></footer>
-  <p class="eai-disabled-note" id="eaiDisabledNote" hidden>Empire AI is disabled. Enable it in your browser settings.</p>
   </div><!-- /main-content -->
 </div><!-- /app-shell -->
 
-
-<!-- EMPIRE AI CHAT WIDGET -->
-<button type="button" class="eai-fab" id="eaiFab" aria-label="Open Empire AI chat" aria-expanded="false" aria-controls="eaiPanel" hidden><span aria-hidden="true">⚡</span><span class="eai-fab-label" id="eaiFabLabel">Ask Empire AI</span></button>
-<div class="eai-bubble" id="eaiBubble" role="status" hidden>
-  <button type="button" class="eai-bubble-text" id="eaiBubbleText">Hey! Need help finding the right tools? 👋</button>
-  <button type="button" class="eai-bubble-close" id="eaiBubbleClose" aria-label="Dismiss Empire AI greeting">×</button>
-</div>
-<section class="eai-panel" id="eaiPanel" role="dialog" aria-label="Empire AI chat" aria-modal="false">
-  <div class="eai-header">
-    <div class="eai-title">Empire AI ⚡</div>
-    <button type="button" class="eai-close" id="eaiClose" aria-label="Close Empire AI chat">×</button>
-  </div>
-  <div class="eai-messages" id="eaiMessages" role="log" aria-live="polite"></div>
-  <div class="eai-chips" id="eaiChips"></div>
-  <form class="eai-form" id="eaiForm" autocomplete="off">
-    <label for="eaiInput" style="position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0);">Ask Empire AI a question</label>
-    <input class="eai-input" id="eaiInput" type="text" maxlength="500" placeholder="Ask about building your empire…" />
-    <button class="eai-send" id="eaiSend" type="submit">Send</button>
-  </form>
-  <div class="eai-footer">
-    <span class="eai-remaining" id="eaiRemaining"></span>
-    <button type="button" class="eai-off-btn" id="eaiOff">Turn off Empire AI</button>
-    <span class="eai-disclaimer" style="display:block; margin-top:2px;">Not legal or tax advice. For informational purposes only.</span>
-    <span class="eai-powered">Powered by Claude</span>
-  </div>
-  <div class="eai-disclaimer-overlay" id="eaiDisclaimer" role="alertdialog" aria-labelledby="eaiDisclaimerText">
-    <div class="eai-disclaimer-box">
-      <p id="eaiDisclaimerText">Empire AI provides general information about Debt Free Empire products only. It is not legal, tax, or financial advice.</p>
-      <button type="button" class="eai-disclaimer-btn" id="eaiDisclaimerBtn">Got it! 💪</button>
-    </div>
-  </div>
-</section>
 
 <!-- PAPER & PROSPERITY POPUP -->
 <div class="popup-overlay" id="pp-popup-overlay" onclick="closeBrand(event, 'pp')">
@@ -2618,214 +2478,13 @@ main#main { display: block; }
   }
   document.addEventListener('DOMContentLoaded', initNewsletterPopupTrigger);
 
-  /* ---------------------------------------------------------------------
-     EMPIRE AI — website chat widget. Talks to /api/empire-ai; 10 questions
-     per visitor per day (counted here and enforced per-IP on the server).
-  --------------------------------------------------------------------- */
-  (function () {
-    var DAILY_LIMIT = 10;
-    var GREETING = "Hey! I'm Empire AI. Ask me anything about building your debt free empire. 💪";
-    var LIMIT_MSG = "You've reached today's limit of 10 Empire AI questions. Come back tomorrow! 💪";
-    var ERROR_MSG = "Something went wrong reaching Empire AI. Please try again in a moment.";
-    var SUGGESTED = [
-      'What app should I start with?',
-      'How do the workbooks work?',
-      "What's in the store?",
-      'How do I get started?',
-      'Tell me about Paper & Prosperity'
-    ];
-    var K_DISABLED = 'empire_ai_disabled';
-    var K_ACCEPTED = 'empire_ai_disclaimer_accepted';
-
-    var fab = document.getElementById('eaiFab');
-    var panel = document.getElementById('eaiPanel');
-    var messagesEl = document.getElementById('eaiMessages');
-    var chipsEl = document.getElementById('eaiChips');
-    var form = document.getElementById('eaiForm');
-    var input = document.getElementById('eaiInput');
-    var sendBtn = document.getElementById('eaiSend');
-    var remainingEl = document.getElementById('eaiRemaining');
-    var disclaimer = document.getElementById('eaiDisclaimer');
-    var note = document.getElementById('eaiDisabledNote');
-    if (!fab || !panel) return;
-
-    var history = [];
-    var busy = false;
-
-    function ls(get, key, val) {
-      try { return get ? localStorage.getItem(key) : localStorage.setItem(key, val); } catch (e) { return null; }
-    }
-    function todayKey() {
-      var d = new Date();
-      return 'empire_ai_count_' + d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
-    }
-    function usedToday() { return parseInt(ls(true, todayKey()), 10) || 0; }
-    function remaining() { return Math.max(0, DAILY_LIMIT - usedToday()); }
-
-    function updateRemaining() {
-      var left = remaining();
-      remainingEl.textContent = left > 0
-        ? left + ' of ' + DAILY_LIMIT + ' questions left today'
-        : "You've used all " + DAILY_LIMIT + ' questions for today';
-      var off = busy || left === 0;
-      input.disabled = off;
-      sendBtn.disabled = off;
-      chipsEl.querySelectorAll('button').forEach(function (b) { b.disabled = off; });
-    }
-
-    function addMessage(text, who) {
-      var el = document.createElement('div');
-      el.className = 'eai-msg ' + who;
-      el.textContent = text;
-      messagesEl.appendChild(el);
-      messagesEl.scrollTop = messagesEl.scrollHeight;
-      return el;
-    }
-
-    function addThinking() {
-      var el = document.createElement('div');
-      el.className = 'eai-msg ai';
-      el.innerHTML = 'Empire AI is thinking <span class="eai-thinking-dots" aria-hidden="true"><span></span><span></span><span></span></span>';
-      messagesEl.appendChild(el);
-      messagesEl.scrollTop = messagesEl.scrollHeight;
-      return el;
-    }
-
-    function ask(question) {
-      question = (question || '').trim();
-      if (!question || busy) return;
-      if (remaining() === 0) { addMessage(LIMIT_MSG, 'ai'); updateRemaining(); return; }
-
-      addMessage(question, 'user');
-      input.value = '';
-      busy = true;
-      updateRemaining();
-      var thinking = addThinking();
-
-      fetch('/api/empire-ai', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ question: question, history: history.slice(-6) })
-      }).then(function (res) {
-        if (res.status === 429) { var e = new Error('limit'); e.limit = true; throw e; }
-        if (!res.ok) throw new Error('bad status');
-        return res.json();
-      }).then(function (data) {
-        var answer = String((data && data.answer) || '').replace(/^#{1,6}\s*/gm, '').replace(/\*\*/g, '').replace(/^\s*[-*]\s+/gm, '• ').trim();
-        if (!answer) throw new Error('empty');
-        thinking.remove();
-        addMessage(answer, 'ai');
-        history.push({ role: 'user', content: question }, { role: 'assistant', content: answer });
-        ls(false, todayKey(), String(usedToday() + 1));
-      }).catch(function (err) {
-        thinking.remove();
-        addMessage(err && err.limit ? LIMIT_MSG : ERROR_MSG, 'ai');
-      }).then(function () {
-        busy = false;
-        updateRemaining();
-        if (!input.disabled) input.focus();
-      });
-    }
-
-    var bubble = document.getElementById('eaiBubble');
-    var bubbleTimer = null;
-    var bubbleHideTimer = null;
-    var K_BUBBLE_DISMISSED = 'empire_ai_bubble_dismissed';
-
-    function hideBubble() {
-      clearTimeout(bubbleTimer);
-      clearTimeout(bubbleHideTimer);
-      bubble.classList.remove('show');
-      bubble.hidden = true;
-    }
-    function showBubble() {
-      if (panel.classList.contains('open') || ls(true, K_DISABLED) === '1' || ls(true, K_BUBBLE_DISMISSED) === '1') return;
-      bubble.hidden = false;
-      void bubble.offsetWidth; // apply display first so the fade-in transition runs
-      bubble.classList.add('show');
-      bubbleHideTimer = setTimeout(hideBubble, 10000);
-    }
-
-    var fabLabel = document.getElementById('eaiFabLabel');
-    var openedAt = 0;
-    function openPanel() {
-      hideBubble();
-      openedAt = Date.now();
-      panel.classList.add('open');
-      fab.setAttribute('aria-expanded', 'true');
-      fab.setAttribute('aria-label', 'Close Empire AI chat');
-      if (fabLabel) fabLabel.textContent = 'Close chat';
-      // The disclaimer is shown in the panel footer, so open straight to the chat.
-      ls(false, K_ACCEPTED, '1');
-      input.focus();
-    }
-    function closePanel() {
-      panel.classList.remove('open');
-      fab.setAttribute('aria-expanded', 'false');
-      fab.setAttribute('aria-label', 'Open Empire AI chat');
-      if (fabLabel) fabLabel.textContent = 'Ask Empire AI';
-      fab.focus();
-    }
-    function turnOff() {
-      hideBubble();
-      ls(false, K_DISABLED, '1');
-      panel.classList.remove('open');
-      fab.hidden = true;
-      note.hidden = false;
-    }
-
-    // build UI
-    addMessage(GREETING, 'ai');
-    SUGGESTED.forEach(function (q) {
-      var b = document.createElement('button');
-      b.type = 'button';
-      b.className = 'eai-chip';
-      b.textContent = q;
-      b.addEventListener('click', function () { ask(q); });
-      chipsEl.appendChild(b);
-    });
-    updateRemaining();
-
-    fab.addEventListener('click', function () {
-      if (panel.classList.contains('open')) {
-        if (Date.now() - openedAt < 600) return; // ignore a quick double-click so the chat doesn't flash shut
-        closePanel();
-      } else {
-        openPanel();
-      }
-    });
-    document.getElementById('eaiClose').addEventListener('click', closePanel);
-    document.getElementById('eaiOff').addEventListener('click', turnOff);
-    document.getElementById('eaiDisclaimerBtn').addEventListener('click', function () {
-      ls(false, K_ACCEPTED, '1');
-      disclaimer.classList.remove('show');
-      input.focus();
-    });
-    form.addEventListener('submit', function (e) { e.preventDefault(); ask(input.value); });
-    document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape' && panel.classList.contains('open')) closePanel();
-    });
-
-    document.getElementById('eaiBubbleText').addEventListener('click', function () { hideBubble(); openPanel(); });
-    document.getElementById('eaiBubbleClose').addEventListener('click', function (e) {
-      e.stopPropagation();
-      ls(false, K_BUBBLE_DISMISSED, '1');
-      hideBubble();
-    });
-
-    if (ls(true, K_DISABLED) === '1') {
-      note.hidden = false;
-    } else {
-      fab.hidden = false;
-      if (ls(true, K_BUBBLE_DISMISSED) !== '1') bubbleTimer = setTimeout(showBubble, 3000);
-    }
-  })();
 </script>
 <script>document.addEventListener('click',function(e){document.querySelectorAll('.nav-dd').forEach(function(d){var btn=e.target.closest('.nav-dd-btn');if(btn&&d.contains(btn)){d.classList.toggle('open');btn.setAttribute('aria-expanded',String(d.classList.contains('open')));}else{d.classList.remove('open');var bb=d.querySelector('.nav-dd-btn');if(bb)bb.setAttribute('aria-expanded','false');}});});</script>
 <script>fetch('/api/site-config').then(function(r){return r.json();}).then(function(c){var u=c&&c.macAppStoreUrl;if(u&&u.indexOf('https://apps.apple.com/')===0){var e=document.getElementById('eldStatus');if(e)e.textContent='Available on Mac & Windows';}}).catch(function(){});</script>
 <script>window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };</script>
 <script defer src="/_vercel/insights/script.js"></script>
 <script src="/site-dynamic.js" defer></script>
+<script src="/empire-ai.js" defer></script>
 <script src="/store-badges.js" defer></script>
 </body>
 </html>
