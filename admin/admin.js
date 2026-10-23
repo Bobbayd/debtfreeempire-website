@@ -15,6 +15,39 @@
     return getJson(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body || {}) });
   }
 
+  // Groups the flat list of nav links under small headings so the sidebar reads at a glance.
+  (function groupNav() {
+    var nav = document.querySelector('.bar-nav');
+    if (!nav || nav.dataset.grouped) return;
+    nav.dataset.grouped = '1';
+    var groups = [
+      ['', ['/admin/']],
+      ['Inbox', ['/admin/support/', '/admin/chats/']],
+      ['Insights', ['/admin/survey/', '/admin/emails/']],
+      ['Site content', ['/admin/announcement/', '/admin/products/', '/admin/updates/', '/admin/promos/']],
+      ['Send', ['/admin/broadcast/']],
+      ['Tools', ['/admin/health/', '/admin/store-links/', '/admin/links/']]
+    ];
+    var byHref = {};
+    Array.prototype.forEach.call(nav.querySelectorAll('a'), function (a) { byHref[a.getAttribute('href')] = a; });
+    var logout = nav.querySelector('button'), site = byHref['/'];
+    var frag = document.createDocumentFragment();
+    groups.forEach(function (g) {
+      var items = g[1].map(function (h) { return byHref[h]; }).filter(Boolean);
+      if (!items.length) return;
+      var sec = document.createElement('div'); sec.className = 'nav-group';
+      if (g[0]) { var t = document.createElement('div'); t.className = 'nav-title'; t.textContent = g[0]; sec.appendChild(t); }
+      items.forEach(function (a) { sec.appendChild(a); });
+      frag.appendChild(sec);
+    });
+    var foot = document.createElement('div'); foot.className = 'nav-group nav-foot';
+    if (site) foot.appendChild(site);
+    if (logout) foot.appendChild(logout);
+    frag.appendChild(foot);
+    nav.textContent = '';
+    nav.appendChild(frag);
+  })();
+
   // Unread-count badge on the Support tab, on every admin page.
   function badge() {
     getJson('/api/admin-content?r=badge').then(function (x) {
