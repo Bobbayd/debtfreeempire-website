@@ -35,6 +35,18 @@ document.addEventListener('click', function (e) {
   } catch (err) {}
 }, true);
 
+// Site-wide: clicks on links to Paper & Prosperity (its page or the web app), tracked separately from Empire.
+document.addEventListener('click', function (e) {
+  var a = e.target && e.target.closest ? e.target.closest('a[href]') : null;
+  if (!a) return;
+  var host = a.hostname.replace(/^www\./, '');
+  var toPP = (host === 'debtfreeempire.com' && a.pathname.indexOf('/paper-and-prosperity') === 0) || host === 'app.paperandprosperity.shop';
+  if (!toPP) return;
+  try {
+    analytics.trackEvent('pp_cta_click', { destination: a.href, page: location.pathname });
+  } catch (err) {}
+}, true);
+
 // ELD page: scroll depth milestones, each fired once per page load.
 if (location.pathname.indexOf('empire-life-dashboard') !== -1) {
   var fired = {};
