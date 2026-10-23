@@ -106,3 +106,11 @@ textarea.field { resize: vertical; line-height: 1.6; }
 .chat-time { font-size: 11px; color: var(--muted); margin: 0 4px; }
 .unread-dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; background: var(--gold-d); margin-right: 6px; vertical-align: middle; }
 .msg-card.needs-reply { border-left-color: var(--lav); }
+
+/* Visitor survey */
+.bar-row { display: grid; grid-template-columns: 210px 1fr 64px; gap: 10px; align-items: center; margin: 7px 0; font-size: 13.5px; }
+.bar-track { background: #F3EBDD; border-radius: 8px; height: 14px; overflow: hidden; }
+.bar-fill { background: var(--gold-d); height: 100%; border-radius: 8px; min-width: 2px; }
+.bar-num { text-align: right; font-weight: 700; color: var(--muted); }
+.survey-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+@media (max-width: 640px) { .bar-row { grid-template-columns: 1fr 1fr 48px; } .bar-row > :first-child { grid-column: 1 / -1; } }

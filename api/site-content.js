@@ -2,6 +2,7 @@ import { randomUUID } from 'node:crypto';
 import { countRequestToday, getClientIp } from './_rateLimit.js';
 import { redis, redisConfig } from './_redis.js';
 import { K, LISTS, SUPPORT_PRODUCTS, PRODUCT_IDS, rows, str, isEmail, unsubToken } from './_store.js';
+import { saveAnswer } from './_survey.js';
 
 // PUBLIC endpoint.
 //   GET                -> announcement bar, product overrides and the 3 latest published updates (cached ~30s)
@@ -70,6 +71,15 @@ export default async function handler(req, res) {
 
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
   const b = req.body || {};
+  // One-question survey on the app pages ("what is holding you back from downloading?"). Stored without any contact details.
+  if (b.type === 'survey') {
+    if ((await countRequestToday('survey', getClientIp(req))) > 6) return res.status(429).json({ error: 'Thanks, we already have your answers.' });
+    if (!redisConfig()) return res.status(200).json({ ok: true });
+    try {
+      const saved = await saveAnswer(b);
+      return saved ? res.status(200).json({ ok: true }) : res.status(400).json({ error: 'Please pick one of the options.' });
+    } catch (e) { return res.status(200).json({ ok: true }); }
+  }
   if (b.website) return res.status(200).json({ ok: true }); // honeypot
 
   const name = str(b.name, 100), email = str(b.email, 254).toLowerCase(), subject = str(b.subject, 150), message = str(b.message, 6000);

@@ -16,6 +16,7 @@ const login = await post('/api/admin-login', { password: 'test-admin-pass' });
 const cookie = (login.headers.get('set-cookie') || '').split(';')[0];
 ok(login.status === 200 && cookie.startsWith('dfe_admin='), 'right password logs in');
 const A = { Cookie: cookie };
+const emailBase = (await emails()).length; // other suites may already have sent mail through the same rig
 const aget = (q) => j('/api/admin-content?' + q, { headers: A });
 const apost = (b) => post('/api/admin-content', b, A);
 
@@ -47,9 +48,9 @@ await post('/api/empire-ai', { question: 'Can I get a refund?', cid: c3 });
 const needsBefore = (await aget('r=badge')).body.chats;
 ok(needsBefore === 1, 'badge shows 1 chat needing a reply', 'got ' + needsBefore);
 let em = await emails();
-ok(em.length === 1 && /needs a reply/.test(em[0].subject) && em[0].to[0] === 'hello@debtfreeempire.com', 'owner emailed');
+ok(em.length === emailBase + 1 && /needs a reply/.test(em[emailBase].subject) && em[emailBase].to[0] === 'hello@debtfreeempire.com', 'owner emailed');
 await post('/api/empire-ai', { question: 'Any update on the refund?', cid: c3 });
-ok((await emails()).length === 1, 'no second email for the same waiting chat');
+ok((await emails()).length === emailBase + 1, 'no second email for the same waiting chat');
 
 console.log('Messaging the team: not counted against the AI limit');
 const c4 = uuid();
@@ -61,7 +62,7 @@ const rlKeys = (await redisKeys()).filter(([k]) => k.startsWith('rl:empire-ai:')
 ok(rlKeys.length === aiBefore, 'AI question counter untouched', JSON.stringify(rlKeys.map((x) => x[0])));
 ok(!(await redisKeys()).some(([k]) => k.startsWith('rl:empire-ai-global')) || true, 'global AI counter not used by team messages');
 ok((await aget('r=badge')).body.chats === 2, 'badge now 2');
-ok((await emails()).length === 2, 'owner emailed about the team message');
+ok((await emails()).length === emailBase + 2, 'owner emailed about the team message');
 
 console.log('Team messages still work after the daily AI limit is reached');
 const c5 = uuid();

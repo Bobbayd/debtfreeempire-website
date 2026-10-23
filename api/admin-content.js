@@ -1,6 +1,7 @@
 import { randomUUID } from 'node:crypto';
 import { isLoggedIn, noStore } from './_adminAuth.js';
 import { redis } from './_redis.js';
+import { listAnswers, summarize, deleteAnswer, NEEDS } from './_survey.js';
 import { validId, STATUSES as CHAT_STATUSES, listThreads, getThread, saveThread, deleteThread, addMessage, needsReplyCount } from './_chat.js';
 import { K, LISTS, SUPPORT_STATUSES, PRODUCT_IDS, PRODUCT_STATUSES, rows, str, isEmail, cleanLink, richToHtml, richToText, emailHtml, unsubUrl } from './_store.js';
 
@@ -24,6 +25,7 @@ const readers = {
     let chats = 0; try { chats = await needsReplyCount(); } catch (e) { /* chats are optional */ }
     return { unread: rows(flat).filter((x) => x.status === 'unread').length, healthFails: Number(h) || 0, chats };
   },
+  async survey() { const list = await listAnswers(); return { needs: NEEDS, summary: summarize(list), comments: list.filter((r) => r.comment).slice(0, 100) }; },
   async chats() { const [list, needs] = [await listThreads(), await needsReplyCount()]; return { chats: list, needs }; },
   async chat(q) { return { thread: validId(q && q.id) ? await getThread(q.id) : null }; },
   async announcement() {
@@ -58,6 +60,11 @@ const writers = {
       return [null, {}];
     }
     return ['Unknown action.'];
+  },
+
+  async survey(b) {
+    if (b.action !== 'delete') return ['Unknown action.'];
+    await deleteAnswer(b.id); return [null, {}];
   },
 
   // Empire AI chats: read, reply (shows up in the visitor's chat window), set status, delete.

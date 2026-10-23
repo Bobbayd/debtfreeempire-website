@@ -23,6 +23,7 @@ function deviceInfo() {
   return { device: device, os: os };
 }
 function track(name, props) {
+  if (/^(eld_store_click|pp_store_click)$/.test(name) || (name === 'pp_cta_click' && /app\.paperandprosperity\.shop/.test((props || {}).destination || ''))) window.__dfeClickedDownload = true;
   var data = Object.assign({ page: location.pathname }, deviceInfo(), props || {});
   // Test switch: set localStorage dfe_track_test=1 to record events in window.__dfeEvents instead of sending them.
   try {
@@ -133,23 +134,13 @@ document.addEventListener('click', function (e) {
   }
 }, true);
 
-// NEW: every link that leaves the site (Etsy, social, stores...), host and path only.
-document.addEventListener('click', function (e) {
-  var a = e.target && e.target.closest ? e.target.closest('a[href]') : null;
-  if (!a || !/^https?:$/.test(a.protocol)) return;
-  var host = a.hostname.replace(/^www\./, '');
-  if (host === HOST) return;
-  track('outbound_click', { destination: host + a.pathname.slice(0, 80), placement: placement(a) });
-}, true);
-
 // ---------------------------------------------------------------------------
-// NEW: app-page behaviour. Runs on the pages where people decide whether to download.
+// NEW: the two app pages, where people decide whether to download. Only what helps answer "why not?":
+// where they came from, whether they are on a device that can install, and how far they got.
 // ---------------------------------------------------------------------------
 var path = location.pathname.replace(/\/index\.html$/, '').replace(/\/$/, '');
 var APP = path === '/apps/empire-life-dashboard' ? 'empire_life_dashboard'
-  : path === '/paper-and-prosperity' ? 'paper_and_prosperity'
-  : path === '/apps' ? 'apps_overview'
-  : path === '/pricing' ? 'pricing' : '';
+  : path === '/paper-and-prosperity' ? 'paper_and_prosperity' : '';
 if (APP) {
   var d = deviceInfo();
   // Where did they come from? Category only; for visits inside the site, just the page path.
@@ -167,35 +158,17 @@ if (APP) {
   var props = { app: APP, referrer_type: refType, from_path: fromPath };
   if (APP === 'empire_life_dashboard') props.can_install = d.os === 'windows' || d.os === 'mac';
   track('app_page_view', props);
+  // One optional question, shown at most once per app after ~20 seconds (see survey.js).
+  import('/survey.js').then(function (m) { m.start({ app: APP, device: d.device, os: d.os, ref: refType, canInstall: props.can_install }); }).catch(function () {});
 
-  // Scroll depth (each milestone once), for both apps.
+  // How far down they got (halfway and the bottom, once each).
   var seen = {};
   var onAppScroll = function () {
     var doc = document.documentElement, scrollable = doc.scrollHeight - window.innerHeight;
     if (scrollable <= 0) return;
     var pct = (window.scrollY / scrollable) * 100;
-    [25, 50, 75, 100].forEach(function (m) { if (pct >= m - 0.5 && !seen[m]) { seen[m] = true; track('app_scroll_depth', { app: APP, depth: m }); } });
+    [50, 100].forEach(function (m) { if (pct >= m - 0.5 && !seen[m]) { seen[m] = true; track('app_scroll_depth', { app: APP, depth: m }); } });
   };
   window.addEventListener('scroll', onAppScroll, { passive: true });
   onAppScroll();
-
-  // Time actually spent looking at the page (tab visible): 15 and 60 seconds.
-  [15, 60].forEach(function (sec) {
-    setTimeout(function () { if (document.visibilityState === 'visible') track('app_engaged', { app: APP, seconds: sec }); }, sec * 1000);
-  });
-
-  // Which questions do people open? (the question text from the page, never anything typed by the visitor)
-  document.addEventListener('toggle', function (e) {
-    var el = e.target;
-    if (el && el.tagName === 'DETAILS' && el.open) {
-      var q = el.querySelector('summary');
-      track('app_faq_open', { app: APP, question: q ? q.textContent.trim().slice(0, 80) : '' });
-    }
-  }, true);
-
-  // Does anyone watch the walkthrough video?
-  document.querySelectorAll('video').forEach(function (v) {
-    v.addEventListener('play', function () { track('app_video_play', { app: APP }); }, { once: true });
-    v.addEventListener('ended', function () { track('app_video_complete', { app: APP }); }, { once: true });
-  });
 }

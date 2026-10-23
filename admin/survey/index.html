@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+<title>Visitor survey (private)</title>
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="stylesheet" href="/admin/admin.css">
+</head>
+<body>
+<header class="bar">
+  <a class="bar-brand" href="/admin/">Debt Free Empire · Admin</a>
+  <nav class="bar-nav" aria-label="Admin"><a href="/admin/">Dashboard</a><a href="/admin/support/">Support</a><a href="/admin/chats/">Chats</a><a href="/admin/survey/" aria-current="page">Survey</a><a href="/admin/announcement/">Announcement</a><a href="/admin/products/">Products</a><a href="/admin/updates/">Updates</a><a href="/admin/promos/">Promo codes</a><a href="/admin/broadcast/">Broadcast</a><a href="/admin/emails/">Email signups</a><a href="/admin/health/">Site health</a><a href="/admin/store-links/">Store links</a><a href="/admin/links/">Quick links</a><a href="/" target="_blank" rel="noopener">View site</a><button type="button" id="logoutBtn" hidden>Log out</button></nav>
+</header>
+<div class="wrap">
+  <div class="card" id="loginCard" hidden>
+    <h1>Admin login</h1>
+    <p class="sub">Private. Not linked anywhere and hidden from search engines.</p>
+    <form id="loginForm" autocomplete="off">
+      <label for="pw">Password</label>
+      <input type="password" id="pw" autocomplete="current-password" required>
+      <div class="row"><button type="submit" class="btn" id="loginBtn">Log in</button></div>
+      <p class="msg" id="loginMsg" role="status" aria-live="polite"></p>
+    </form>
+  </div>
+  <div id="app" hidden>
+    <h1>Visitor survey</h1>
+    <p class="sub">One optional question on the Empire Life Dashboard and Paper &amp; Prosperity pages: "What are you hoping to get help with?" Answers are stored without any name, email or IP address and deleted after 90 days. Compare what visitors want with which page they were on and what device they use.</p>
+    <p class="msg" id="toast" role="status" aria-live="polite"></p>
+    <p class="count" id="total"></p>
+    <div id="cards" class="survey-grid"></div>
+    <h2 style="margin-top:28px">Comments</h2>
+    <p class="sub">Short notes from people who picked "Something else".</p>
+    <div id="comments"></div>
+  </div>
+</div>
+<script src="/admin/admin.js"></script>
+<script>
+(function () {
+  var A = window.Admin, NEEDS = {}, data = null;
+  var APPNAME = { empire_life_dashboard: 'Empire Life Dashboard page', paper_and_prosperity: 'Paper & Prosperity page' };
+  var DEVNAME = { mobile: 'On a phone', tablet: 'On a tablet', desktop: 'On a computer' };
+  var toast = document.getElementById('toast');
+  function say(t) { toast.textContent = t; clearTimeout(say.t); say.t = setTimeout(function () { toast.textContent = ''; }, 4000); }
+  function card(title, split, sub) {
+    var c = document.createElement('section'); c.className = 'card';
+    var h = document.createElement('h3'); h.textContent = title; h.style.margin = '0 0 4px'; c.appendChild(h);
+    c.appendChild(A.cell('div', split.total + ' answer' + (split.total === 1 ? '' : 's') + (sub ? ' · ' + sub : ''), 'msg-meta'));
+    if (!split.total) { c.appendChild(A.cell('p', 'No answers yet.', 'empty')); return c; }
+    var max = Math.max.apply(null, Object.keys(NEEDS).map(function (k) { return split.needs[k] || 0; }));
+    Object.keys(NEEDS).forEach(function (k) {
+      var n = split.needs[k] || 0, row = document.createElement('div'); row.className = 'bar-row';
+      row.appendChild(A.cell('span', NEEDS[k]));
+      var track = document.createElement('div'); track.className = 'bar-track';
+      var fill = document.createElement('div'); fill.className = 'bar-fill'; fill.style.width = (max ? Math.round(n / max * 100) : 0) + '%'; track.appendChild(fill);
+      row.appendChild(track);
+      row.appendChild(A.cell('span', n + ' (' + Math.round(n / split.total * 100) + '%)', 'bar-num'));
+      c.appendChild(row);
+    });
+    return c;
+  }
+  function render() {
+    var s = data.summary, cards = document.getElementById('cards'); cards.textContent = '';
+    document.getElementById('total').textContent = s.all.total + ' answer' + (s.all.total === 1 ? '' : 's') + ' in the last 90 days';
+    cards.appendChild(card('Everyone', s.all));
+    Object.keys(APPNAME).forEach(function (a) { cards.appendChild(card(APPNAME[a], s.byApp[a])); });
+    Object.keys(DEVNAME).forEach(function (d) { cards.appendChild(card(DEVNAME[d], s.byDevice[d])); });
+    cards.appendChild(card('Empire Life Dashboard visitors who cannot install it', s.cannotInstall, 'on a phone or tablet, since it is for Windows and Mac'));
+    var list = document.getElementById('comments'); list.textContent = '';
+    if (!data.comments.length) { list.appendChild(A.cell('p', 'No comments yet.', 'empty')); return; }
+    data.comments.forEach(function (r) {
+      var c = document.createElement('section'); c.className = 'card msg-card';
+      c.appendChild(A.cell('div', r.comment, 'msg-body'));
+      c.appendChild(A.cell('div', (APPNAME[r.app] || r.app) + ' · ' + (DEVNAME[r.device] || r.device) + ' (' + r.os + ') · ' + A.fmt(r.at), 'msg-meta'));
+      var row = document.createElement('div'); row.className = 'row';
+      row.appendChild(A.btn('Delete', 'mini danger', function () {
+        if (!confirm('Delete this comment?')) return;
+        A.act('survey', { action: 'delete', id: r.id }).then(function (x) {
+          if (!x.ok) { say(x.j.error || 'Could not delete.'); return; }
+          data.comments = data.comments.filter(function (z) { return z.id !== r.id; }); render(); say('Deleted.');
+        });
+      }));
+      c.appendChild(row); list.appendChild(c);
+    });
+  }
+  A.init(function () {
+    return A.get('survey').then(function (x) {
+      if (x.status === 401) return 'unauthorized';
+      if (!x.ok) throw new Error('failed');
+      data = x.j; NEEDS = x.j.needs; render();
+    });
+  });
+})();
+</script>
+</body>
+</html>
