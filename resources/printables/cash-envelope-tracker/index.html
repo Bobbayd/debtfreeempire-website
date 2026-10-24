@@ -49,6 +49,11 @@
   .sheet:last-child { page-break-after: auto; break-after: auto; }
   .sheet td { height: 9mm; }
 }
+.kit-box { margin: 0 0 22px; padding: 20px 22px; background: #FFFDF9; border: 1px solid #E4C590; border-left: 4px solid #C89B45; border-radius: 12px; }
+.kit-eyebrow { font-size: 11px; font-weight: 800; letter-spacing: 1.6px; text-transform: uppercase; color: #8E6F3E; margin: 0 0 4px; }
+.kit-title { font-size: 20px; font-weight: 800; margin: 0 0 6px; }
+.kit-sub { font-size: 14px; color: #55515B; margin: 0 0 14px; line-height: 1.6; }
+@media print { .kit-box { display: none; } }
 </style>
 <script type="application/ld+json">
 {
@@ -106,6 +111,7 @@ analytics.init({
 <li>Once a week, compare each sheet with your bank balance. If they drift apart, a purchase went unrecorded.</li>
 <li>At the end of the pay period, move any leftover balance to your debt payoff.</li>
 </ol>
+<div class="kit-box"><p class="kit-eyebrow">Free PDF</p><p class="kit-title">Cash Envelope Budget Kit</p><p class="kit-sub">A 5-page printable: how it works, a payday plan, two envelope tracker sheets and a month-end review.</p><a class="btn-primary" href="/assets/printables/cash-envelope-budget-kit.pdf" download>Download the PDF kit</a></div>
 <div class="tracker-actions"><button type="button" class="btn-primary" onclick="window.print()">Print the tracker</button><a class="btn-secondary" href="/resources/blog/cash-envelope-system-without-cash">Read the setup guide</a></div>
 <p style="font-size:13px;color:var(--text-secondary)">Tip: in your print dialog, choose "Save as PDF" if you would rather keep a digital copy.</p>
 </section>
