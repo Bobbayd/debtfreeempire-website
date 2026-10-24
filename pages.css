@@ -212,3 +212,19 @@
 .eld-phone-note { margin: 14px 0 0; padding: 12px 16px; background: #F3EBDD; border: 1px solid #E4C590; border-left: 3px solid #C89B45; border-radius: 10px; font-size: 13.5px; line-height: 1.6; color: #4A4238; max-width: 560px; }
 .eld-phone-note a { color: #6B5430; font-weight: 700; }
 @media (max-width: 900px) { .eld-phone-note { margin-left: auto; margin-right: auto; text-align: left; } }
+/* Email signup box at the end of blog posts */
+.post-body .post-signup { margin: 40px 0 0; padding: 26px 28px; background: #FFFDF9; border: 1px solid #E4C590; border-top: 3px solid #C89B45; border-radius: 12px; text-align: center; }
+.post-body .post-signup .pb-eyebrow { margin: 0 0 6px; }
+.post-body .post-signup .post-signup-title { font-size: 22px; font-weight: 900; line-height: 1.25; margin: 0 0 8px; }
+.post-body .post-signup .post-signup-sub { font-size: 14.5px; line-height: 1.65; color: #55515B; margin: 0 auto 16px; max-width: 520px; }
+.post-signup form { display: flex; gap: 10px; max-width: 460px; margin: 0 auto; flex-wrap: wrap; justify-content: center; }
+.post-signup input[type=email] { flex: 1 1 220px; min-width: 0; font: inherit; font-size: 15px; padding: 12px 14px; border: 1.5px solid #E4C590; border-radius: 8px; background: #fff; }
+.post-signup input[type=email]:focus { outline: 2px solid #C89B45; outline-offset: 1px; }
+.post-signup .hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+.post-signup button { font: inherit; font-size: 13px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; padding: 12px 20px; border: 0; border-radius: 8px; background: #8E6F3E; color: #fff; cursor: pointer; }
+.post-signup button:hover { background: #76592F; }
+.post-signup button:disabled { opacity: .6; cursor: default; }
+.post-signup .post-signup-note { font-size: 12px; color: #6A6577; margin: 10px 0 0; }
+.post-signup .post-signup-msg { min-height: 20px; margin-top: 10px; font-size: 14px; font-weight: 700; }
+.post-signup .post-signup-msg.ok { color: #527A5A; }
+.post-signup .post-signup-msg.err { color: #9B3B3B; }

@@ -49,8 +49,8 @@
     document.body.appendChild(a); a.click(); a.remove(); setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
   }
   function csvFor(lists) {
-    var rows = [['List', 'Email', 'Signed up (ISO)']];
-    lists.forEach(function (l) { l.items.forEach(function (it) { rows.push([l.title, it.email, it.date || '']); }); });
+    var rows = [['List', 'Email', 'Signed up (ISO)', 'Came from']];
+    lists.forEach(function (l) { l.items.forEach(function (it) { rows.push([l.title, it.email, it.date || '', it.source || '']); }); });
     return rows.map(function (r) { return r.map(csvCell).join(','); }).join('\r\n');
   }
   var stamp = function () { return new Date().toISOString().slice(0, 10); };
@@ -59,6 +59,19 @@
       .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); });
   }
   function btn(text, cls, fn) { var b = document.createElement('button'); b.type = 'button'; b.textContent = text; b.className = cls; b.addEventListener('click', fn); return b; }
+
+  // Friendly names for where a signup came from (set by the form that collected it).
+  function sourceName(src) {
+    if (!src) return 'Before tracking';
+    var fixed = { 'home:hero': 'Homepage form', 'home:popup': 'Homepage popup', 'eld:waitlist': 'Empire Life Dashboard page', admin: 'Added by hand' };
+    if (fixed[src]) return fixed[src];
+    if (src.indexOf('blog:') === 0) return 'Blog: ' + src.slice(5);
+    return src;
+  }
+  function sourceSummary(items) {
+    var counts = {}; items.forEach(function (it) { var n = sourceName(it.source); counts[n] = (counts[n] || 0) + 1; });
+    return Object.keys(counts).sort(function (a, b) { return counts[b] - counts[a]; }).map(function (k) { return k + ': ' + counts[k]; }).join('  ·  ');
+  }
 
   function render() {
     listsEl.textContent = '';
@@ -77,6 +90,7 @@
       }));
       right.appendChild(btn('CSV', 'mini', function () { download('email-signups-' + l.id + '-' + stamp() + '.csv', csvFor([{ title: l.title, items: shown }])); }));
       head.appendChild(right); card.appendChild(head);
+      if (l.items.length) card.appendChild(A.cell('p', 'Where they came from: ' + sourceSummary(l.items), 'note'));
 
       var add = document.createElement('form'); add.className = 'row'; add.noValidate = true;
       var inp = document.createElement('input'); inp.type = 'email'; inp.className = 'field'; inp.placeholder = 'Add an email by hand'; inp.setAttribute('aria-label', 'Add an email to ' + l.title);
@@ -88,10 +102,10 @@
       if (!shown.length) { card.appendChild(A.cell('p', q ? 'No matches.' : 'No signups yet.', 'empty')); }
       else {
         var t = document.createElement('table'), thead = document.createElement('thead'), tr = document.createElement('tr');
-        ['Email', 'Signed up', ''].forEach(function (h) { tr.appendChild(A.cell('th', h)); }); thead.appendChild(tr); t.appendChild(thead);
+        ['Email', 'Signed up', 'Came from', ''].forEach(function (h) { tr.appendChild(A.cell('th', h)); }); thead.appendChild(tr); t.appendChild(thead);
         var tb = document.createElement('tbody');
         shown.forEach(function (it) {
-          var r = document.createElement('tr'); r.appendChild(A.cell('td', it.email)); r.appendChild(A.cell('td', A.fmt(it.date), 'date'));
+          var r = document.createElement('tr'); r.appendChild(A.cell('td', it.email)); r.appendChild(A.cell('td', A.fmt(it.date), 'date')); r.appendChild(A.cell('td', sourceName(it.source), 'date'));
           var td = document.createElement('td'); td.className = 'act';
           td.appendChild(btn('Remove', 'mini danger', function () {
             if (!confirm('Remove ' + it.email + ' from this list?')) return;

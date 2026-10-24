@@ -63,6 +63,8 @@ export default async function handler(req, res) {
 
   const email = String(body.email || '').trim().toLowerCase();
   const list = LISTS[body.list];
+  // Where the signup came from (a page or form), e.g. 'home:hero' or 'blog:snowball-vs-avalanche'. Optional; junk is dropped.
+  const source = /^[a-z0-9:_\-.]{1,80}$/.test(String(body.source || '')) ? String(body.source) : '';
   if (!list || email.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
     return res.status(400).json({ error: 'Please enter a valid email address.' });
   }
@@ -81,7 +83,8 @@ export default async function handler(req, res) {
       headers: { Authorization: `Bearer ${redis.token}` },
       body: JSON.stringify([
         ['SADD', list, email],
-        ['HSETNX', `${list}:times`, email, new Date().toISOString()]
+        ['HSETNX', `${list}:times`, email, new Date().toISOString()],
+        ...(source ? [['HSETNX', `${list}:sources`, email, source]] : [])
       ])
     });
     const out = await r.json();

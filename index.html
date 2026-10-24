@@ -2365,18 +2365,18 @@ main#main { display: block; }
     if (event.target === document.getElementById(brand + '-popup-overlay')) closePopup(brand);
   }
 
-  function saveNewsletterEmail(email) {
+  function saveNewsletterEmail(email, source) {
     return fetch('/api/waitlist', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: email, list: 'newsletter' })
+      body: JSON.stringify({ email: email, list: 'newsletter', source: source || 'home' })
     }).then(r => r.ok);
   }
 
   function handleHeroEmail() {
     const email = document.getElementById('heroEmail').value.trim();
     if (email && email.includes('@')) {
-      saveNewsletterEmail(email).then(ok => {
+      saveNewsletterEmail(email, 'home:hero').then(ok => {
         if (!ok) throw new Error('save failed');
         document.getElementById('heroSuccess').style.display = 'block';
         document.getElementById('heroEmail').value = '';
@@ -2395,7 +2395,7 @@ main#main { display: block; }
   function handlePopupEmail() {
     const email = document.getElementById('popupEmail').value.trim();
     if (email && email.includes('@')) {
-      saveNewsletterEmail(email).then(ok => {
+      saveNewsletterEmail(email, 'home:popup').then(ok => {
         if (!ok) throw new Error('save failed');
         document.getElementById('emailPopupForm').style.display = 'none';
         document.getElementById('popupSuccess').style.display = 'block';

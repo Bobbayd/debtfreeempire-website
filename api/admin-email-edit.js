@@ -15,9 +15,9 @@ export default async function handler(req, res) {
   if (email.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) return res.status(400).json({ error: 'Please enter a valid email address.' });
   try {
     if (action === 'add') {
-      await redis([['SADD', key, email], ['HSETNX', `${key}:times`, email, new Date().toISOString()]]);
+      await redis([['SADD', key, email], ['HSETNX', `${key}:times`, email, new Date().toISOString()], ['HSETNX', `${key}:sources`, email, 'admin']]);
     } else if (action === 'remove') {
-      await redis([['SREM', key, email], ['HDEL', `${key}:times`, email]]);
+      await redis([['SREM', key, email], ['HDEL', `${key}:times`, email], ['HDEL', `${key}:sources`, email]]);
     } else {
       return res.status(400).json({ error: 'Unknown action.' });
     }
