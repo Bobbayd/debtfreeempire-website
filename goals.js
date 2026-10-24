@@ -172,3 +172,27 @@ if (APP) {
   window.addEventListener('scroll', onAppScroll, { passive: true });
   onAppScroll();
 }
+
+// Homepage only: which sections people actually reach (each fires once per visit) and how far down they scroll.
+// Helps decide what to keep, cut or move. Nothing personal is collected.
+(function () {
+  var path = location.pathname.replace(/\/index\.html$/, '').replace(/\/+$/, '');
+  if (path !== '') return;
+  var ids = ['how-it-works', 'debt-free-moment', 'apps', 'fit', 'guides', 'founder', 'faq', 'newsletter'];
+  var seenSec = {}, seenDepth = {};
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting && !seenSec[en.target.id]) { seenSec[en.target.id] = true; track('home_section_view', { section: en.target.id }); io.unobserve(en.target); }
+      });
+    }, { threshold: 0.35 });
+    ids.forEach(function (id) { var el = document.getElementById(id); if (el) io.observe(el); });
+  }
+  var onHomeScroll = function () {
+    var doc = document.documentElement, scrollable = doc.scrollHeight - window.innerHeight;
+    if (scrollable <= 0) return;
+    var pct = (window.scrollY / scrollable) * 100;
+    [25, 50, 75, 100].forEach(function (m) { if (pct >= m - 0.5 && !seenDepth[m]) { seenDepth[m] = true; track('home_scroll_depth', { depth: m }); } });
+  };
+  window.addEventListener('scroll', onHomeScroll, { passive: true });
+})();
