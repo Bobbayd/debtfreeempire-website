@@ -16,21 +16,21 @@ function redisConfig() {
 
 
 // A short welcome email for each brand-new signup (repeat signups and bots get nothing). Failures are ignored: the signup is already saved.
-const KIT_URL = `${SITE}/assets/printables/cash-envelope-budget-kit.pdf`;
+const KIT_PAGE = `${SITE}/starter-kit`;
 const WELCOME = {
   newsletter: {
-    subject: 'Your free Cash Envelope Budget Kit',
-    html: `<p>Thanks for joining Debt Free Empire. Here is your free printable:</p>
-<p style="margin:18px 0"><a href="${KIT_URL}" style="background:#8E6F3E;color:#fff;text-decoration:none;font-weight:700;padding:12px 20px;border-radius:8px;display:inline-block">Download the Cash Envelope Budget Kit (PDF)</a></p>
-<p>It has a payday plan, envelope tracker sheets and a month-end review, so you can give every dollar a job. To see the whole method worked out with real numbers, read <a href="${SITE}/resources/blog/cash-envelope-budgeting-real-math" style="color:#725C9F">Cash Envelope for Budgeting: How It Works, With Real Math</a>.</p>
-<p>We send practical budgeting tips and the occasional update, never anything pushy. If you have a question, just reply to this email. A real person reads it.</p>`,
-    text: `Thanks for joining Debt Free Empire. Here is your free printable, the Cash Envelope Budget Kit (PDF):\n${KIT_URL}\n\nIt has a payday plan, envelope tracker sheets and a month-end review. To see the method worked out with real numbers: ${SITE}/resources/blog/cash-envelope-budgeting-real-math\n\nIf you have a question, just reply to this email. A real person reads it.`
+    subject: 'Your free Debt-Free Date Starter Kit',
+    html: `<p>Thanks for joining Debt Free Empire. Here is your free 12-page printable:</p>
+<p style="margin:18px 0"><a href="${KIT_PAGE}" style="background:#8E6F3E;color:#fff;text-decoration:none;font-weight:700;padding:12px 20px;border-radius:8px;display:inline-block">Get the Debt-Free Date Starter Kit</a></p>
+<p>It walks you through listing your debts, choosing snowball or avalanche, finding your debt-free date and coloring in every win. Want the exact date with interest included? Try the free <a href="${SITE}/debt-calculator" style="color:#8E6F3E;font-weight:700">debt payoff calculator</a>.</p>
+<p>We send calm, practical money tips and the occasional new printable, never anything pushy. If you have a question, just reply to this email. A real person reads it.</p>`,
+    text: `Thanks for joining Debt Free Empire. Here is your free 12-page printable, the Debt-Free Date Starter Kit:\n${KIT_PAGE}\n\nIt walks you through listing your debts, choosing snowball or avalanche, finding your debt-free date and coloring in every win. Find your exact date with the free calculator: ${SITE}/debt-calculator\n\nIf you have a question, just reply to this email. A real person reads it.`
   },
   'eld-ios': {
     subject: "You're on the Empire Life Dashboard iPhone list",
     html: `<p>Thanks for joining the iPhone list for Empire Life Dashboard. We will email you when the iPhone and iPad version arrives, and you will hear first about any launch pricing.</p>
 <p>Empire Life Dashboard is available now for Mac and Windows. We plan to release the iPhone and iPad version as part of the same App Store purchase, so people who buy from the Mac App Store should be able to download it at no extra cost when it arrives.</p>
-<p>Want a quick look first? <a href="${SITE}/apps/empire-life-dashboard#video" style="color:#725C9F">Watch the 90-second walkthrough</a>.</p>
+<p>Want a quick look first? <a href="${SITE}/apps/empire-life-dashboard#video" style="color:#8E6F3E;font-weight:700">Watch the 90-second walkthrough</a>.</p>
 <p>Questions? Just reply to this email. A real person reads it.</p>`,
     text: `Thanks for joining the iPhone list for Empire Life Dashboard. We will email you when the iPhone and iPad version arrives, and you will hear first about any launch pricing.\n\nEmpire Life Dashboard is available now for Mac and Windows. We plan to release the iPhone and iPad version as part of the same App Store purchase, so people who buy from the Mac App Store should be able to download it at no extra cost when it arrives.\n\nQuick look first: ${SITE}/apps/empire-life-dashboard#video\n\nQuestions? Just reply to this email.`
   }

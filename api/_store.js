@@ -59,11 +59,13 @@ export function unsubToken(email) {
 export const unsubUrl = (email) => `${SITE}/api/site-content?unsub=${encodeURIComponent(email)}&t=${unsubToken(email)}`;
 
 export function emailHtml(subject, bodyHtml, email) {
-  return `<!doctype html><html><body style="margin:0;background:#FFF9F3;font-family:Montserrat,-apple-system,Segoe UI,Arial,sans-serif;color:#1A1A1A">
-<div style="max-width:600px;margin:0 auto;padding:32px 20px">
-<div style="font-size:13px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;padding-bottom:14px;border-bottom:2px solid #E4C590">Debt Free Empire</div>
-<h1 style="font-size:22px;margin:26px 0 16px">${esc(subject)}</h1>
-<div style="font-size:15px;line-height:1.7">${bodyHtml}</div>
-<div style="margin-top:32px;padding-top:16px;border-top:1px solid #DDD5E5;font-size:12px;color:#55515B;line-height:1.6">You are receiving this because you signed up at debtfreeempire.com.<br>${email ? `<a href="${unsubUrl(email)}" style="color:#725C9F">Unsubscribe</a>` : 'Unsubscribe link appears here for each recipient.'}</div>
+  return `<!doctype html><html><body style="margin:0;background:#FAF7F2;font-family:Montserrat,-apple-system,Segoe UI,Arial,sans-serif;color:#3D352E">
+<div style="max-width:600px;margin:0 auto;padding:28px 16px">
+<div style="background:#FFFDF9;border:1px solid #E4C590;border-top:4px solid #A8864F;border-radius:14px;padding:30px 26px">
+<div style="font-size:13px;font-weight:800;letter-spacing:2px;text-transform:uppercase">Debt Free <em style="font-family:Georgia,serif;font-weight:400;text-transform:none;letter-spacing:0;color:#A8864F;font-size:17px">Empire</em></div>
+<h1 style="font-family:Georgia,serif;font-style:italic;font-weight:400;font-size:24px;line-height:1.3;margin:22px 0 14px">${esc(subject)}</h1>
+<div style="font-size:15px;line-height:1.7;color:#4A433B">${bodyHtml}</div>
+</div>
+<div style="padding:16px 8px 0;font-size:12px;color:#7A7066;line-height:1.6;text-align:center">You are receiving this because you signed up at debtfreeempire.com.<br>${email ? `<a href="${unsubUrl(email)}" style="color:#8E6F3E">Unsubscribe</a>` : 'Unsubscribe link appears here for each recipient.'}</div>
 </div></body></html>`;
 }
