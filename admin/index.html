@@ -55,6 +55,13 @@
         d.appendChild(A.cell('div', c.lastSevenDays + ' in the last 7 days', 'stat-s'));
         stats.appendChild(d);
       });
+      if (x.j.unsubscribed) {
+        var u = document.createElement('div'); u.className = 'stat';
+        u.appendChild(A.cell('div', String(x.j.unsubscribed.total), 'stat-n'));
+        u.appendChild(A.cell('div', 'Unsubscribed', 'stat-l'));
+        u.appendChild(A.cell('div', x.j.unsubscribed.lastSevenDays + ' in the last 7 days', 'stat-s'));
+        stats.appendChild(u);
+      }
       var rc = document.getElementById('recentCard'); rc.textContent = '';
       if (!x.j.recent.length) { rc.appendChild(A.cell('p', 'No signups yet.', 'empty')); }
       else {

@@ -83,6 +83,7 @@ export default async function handler(req, res) {
       headers: { Authorization: `Bearer ${redis.token}` },
       body: JSON.stringify([
         ['SADD', list, email],
+        ['HDEL', 'waitlist:unsubscribed', email], // rejoined, so no longer counted as unsubscribed
         ['HSETNX', `${list}:times`, email, new Date().toISOString()],
         ...(source ? [['HSETNX', `${list}:sources`, email, source]] : [])
       ])

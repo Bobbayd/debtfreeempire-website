@@ -10,20 +10,48 @@ import { saveAnswer } from './_survey.js';
 //   GET/POST ?unsub=.. -> one-click unsubscribe from email broadcasts
 const LIMIT = 5;
 
-function page(res, title, text) {
+function page(res, title, text, extra = '') {
   res.setHeader('Content-Type', 'text/html; charset=utf-8');
-  return res.status(200).send(`<!doctype html><meta name="viewport" content="width=device-width,initial-scale=1"><title>${title}</title><body style="font-family:Montserrat,-apple-system,Arial,sans-serif;background:#FFF9F3;color:#1A1A1A;text-align:center;padding:60px 20px"><h1 style="font-size:22px">${title}</h1><p style="color:#55515B">${text}</p><p><a href="/" style="color:#725C9F">Back to Debt Free Empire</a></p></body>`);
+  return res.status(200).send(`<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${title} · Debt Free Empire</title><link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700;900&display=swap" rel="stylesheet"><body style="margin:0;min-height:100vh;font-family:Montserrat,-apple-system,Arial,sans-serif;background:linear-gradient(180deg,#FAF7F2,#F3EBDD);color:#3D352E;display:flex;align-items:center;justify-content:center;padding:40px 16px;box-sizing:border-box"><main style="max-width:460px;width:100%;background:#FFFDF9;border:1px solid #E4C590;border-top:4px solid #A8864F;border-radius:16px;padding:36px 28px;text-align:center;box-shadow:0 14px 34px rgba(61,53,46,.08)"><div style="font-weight:900;font-size:15px;letter-spacing:2px;text-transform:uppercase">Debt Free <em style="font-family:Georgia,serif;font-weight:400;font-style:italic;text-transform:none;letter-spacing:0;color:#A8864F;font-size:1.3em">Empire</em></div><h1 style="font-family:Georgia,serif;font-style:italic;font-weight:400;font-size:28px;margin:22px 0 10px">${title}</h1><p style="font-size:15px;line-height:1.7;color:#4A433B;margin:0 0 6px">${text}</p>${extra}<p style="margin:26px 0 0"><a href="/" style="display:inline-block;background:#8E6F3E;color:#fff;text-decoration:none;font-weight:700;font-size:14px;padding:12px 22px;border-radius:10px">Back to Debt Free Empire</a></p></main></body></html>`);
 }
+
+const UNSUB = 'waitlist:unsubscribed'; // email -> time they unsubscribed (admin count)
 
 async function unsubscribe(req, res) {
   const email = str(req.query.unsub, 254).toLowerCase();
   if (!isEmail(email) || str(req.query.t, 64) !== unsubToken(email)) return page(res, 'Link not valid', 'This unsubscribe link is not valid. Use the contact form at debtfreeempire.com/support and we will remove you.');
   try {
-    await redis(Object.values(LISTS).flatMap((k) => [['SREM', k, email], ['HDEL', `${k}:times`, email]]));
-    return page(res, 'You are unsubscribed', 'You will not get any more emails from us.');
+    const out = await redis(Object.values(LISTS).flatMap((k) => [['SREM', k, email], ['HDEL', `${k}:times`, email]]));
+    // Only the first click counts: SREM returns 1 when the email was actually on a list.
+    const removed = out.some((r, i) => i % 2 === 0 && Number(r) > 0);
+    if (removed) {
+      await redis([['HSET', UNSUB, email, new Date().toISOString()]]).catch(() => {});
+      await sendUnsubConfirmation(email);
+    }
+    return page(res, 'You are unsubscribed', 'You will not get any more emails from Debt Free Empire.',
+      '<p style="font-size:14px;line-height:1.6;color:#7A7066;margin:14px 0 0">Changed your mind? You can rejoin anytime <a href="/#newsletter" style="color:#8E6F3E;font-weight:700">on our homepage</a>.</p>');
   } catch (e) {
     return page(res, 'Something went wrong', 'Please try again in a little while.');
   }
+}
+
+// One plain confirmation email after unsubscribing. No marketing, no further emails.
+async function sendUnsubConfirmation(email) {
+  const key = process.env.RESEND_API_KEY;
+  if (!key) return;
+  try {
+    const ctl = new AbortController(); const t = setTimeout(() => ctl.abort(), 6000);
+    await fetch('https://api.resend.com/emails', {
+      method: 'POST', signal: ctl.signal, headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        from: process.env.RESEND_FROM || 'Debt Free Empire <hello@debtfreeempire.com>', to: [email],
+        subject: "You're unsubscribed from Debt Free Empire",
+        text: "You're unsubscribed.\n\nYou won't get any more emails from Debt Free Empire. This is the last one, just to confirm.\n\nChanged your mind? You can rejoin anytime at https://www.debtfreeempire.com/#newsletter\n\nWishing you calm money days,\nDebt Free Empire",
+        html: `<div style="background:#FAF7F2;padding:28px 16px;font-family:Arial,sans-serif;color:#3D352E"><div style="max-width:520px;margin:0 auto;background:#FFFDF9;border:1px solid #E4C590;border-top:4px solid #A8864F;border-radius:14px;padding:30px 26px"><div style="font-weight:800;font-size:13px;letter-spacing:2px;text-transform:uppercase">Debt Free <em style="font-family:Georgia,serif;font-weight:400;text-transform:none;letter-spacing:0;color:#A8864F;font-size:17px">Empire</em></div><h1 style="font-family:Georgia,serif;font-style:italic;font-weight:400;font-size:24px;margin:20px 0 10px">You're unsubscribed.</h1><p style="font-size:15px;line-height:1.7;margin:0 0 12px">You won't get any more emails from Debt Free Empire. This is the last one, just to confirm.</p><p style="font-size:14px;line-height:1.7;color:#7A7066;margin:0">Changed your mind? You can <a href="https://www.debtfreeempire.com/#newsletter" style="color:#8E6F3E;font-weight:700">rejoin anytime</a>.</p><p style="font-size:14px;line-height:1.7;margin:20px 0 0">Wishing you calm money days,<br>Debt Free Empire</p></div></div>`
+      })
+    });
+    clearTimeout(t);
+  } catch (e) { /* the on-screen confirmation still shows */ }
 }
 
 // Emails each new support message to the owner. Reply-To is the visitor, so "Reply" in any mail app answers them.

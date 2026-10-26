@@ -1,5 +1,6 @@
 import { isLoggedIn, noStore } from './_adminAuth.js';
 import { loadLists } from './_emailStore.js';
+import { redis } from './_redis.js';
 
 // Dashboard numbers for the admin home page. Requires the admin login cookie.
 export default async function handler(req, res) {
@@ -17,7 +18,14 @@ export default async function handler(req, res) {
       .flatMap((l) => l.items.map((i) => ({ list: l.title, email: i.email, date: i.date })))
       .sort((a, b) => String(b.date || '').localeCompare(String(a.date || '')))
       .slice(0, 8);
-    return res.status(200).json({ counts, recent });
+    let unsubscribed = { total: 0, lastSevenDays: 0 };
+    try {
+      const [flat] = await redis([['HGETALL', 'waitlist:unsubscribed']]);
+      const times = [];
+      for (let i = 1; i < (flat || []).length; i += 2) times.push(Date.parse(flat[i]));
+      unsubscribed = { total: times.length, lastSevenDays: times.filter((t) => now - t < week).length };
+    } catch (e) { /* show 0 rather than failing the whole dashboard */ }
+    return res.status(200).json({ counts, recent, unsubscribed });
   } catch (e) {
     return res.status(500).json({ error: 'Could not load the numbers.' });
   }
