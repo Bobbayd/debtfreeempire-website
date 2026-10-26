@@ -88,6 +88,26 @@ analytics.init({
   .sk-pages, .sk-tools { grid-template-columns:1fr; } .sk-peek { display:flex; gap:16px; margin:28px -16px 0; padding:0 16px 8px; overflow-x:auto; scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch; } .sk-peek figure { flex:0 0 78%; scroll-snap-align:center; }
   .sk-form { flex-direction:column; } .sk-form button { padding:13px; }
 }
+.sk-sheet { position:fixed; inset:0; z-index:200; display:flex; align-items:flex-end; justify-content:center; }
+.sk-sheet[hidden] { display:none; }
+.sk-sheet-bg { position:absolute; inset:0; background:rgba(61,53,46,.35); opacity:0; transition:opacity .25s; }
+.sk-sheet-card { position:relative; width:min(560px,100%); margin:0 12px 12px; background:#FFFDF9; border:1px solid #E4C590; border-top:4px solid #A8864F; border-radius:18px; padding:26px 24px 22px; text-align:center; box-shadow:0 24px 60px rgba(61,53,46,.25); transform:translateY(30px); opacity:0; transition:transform .25s, opacity .25s; }
+.sk-sheet.open .sk-sheet-bg { opacity:1; } .sk-sheet.open .sk-sheet-card { transform:none; opacity:1; }
+.sk-sheet-x { position:absolute; top:10px; right:12px; font:inherit; font-size:24px; line-height:1; background:none; border:none; color:#7A7066; cursor:pointer; padding:6px; }
+.sk-sheet-ok { font-size:12px; font-weight:800; letter-spacing:1.6px; text-transform:uppercase; color:#8E6F3E; }
+.sk-sheet-card h2 { font-family:Georgia,serif; font-style:italic; font-weight:400; font-size:25px; color:#3D352E; margin:8px 0 6px; }
+.sk-sheet-card p { font-size:15px; line-height:1.6; color:#4A433B; margin:0 0 16px; }
+.sk-sheet-no { font:inherit; font-size:13px; color:#7A7066; background:none; border:none; text-decoration:underline; cursor:pointer; margin-top:10px; }
+.sk-after { display:flex; align-items:center; justify-content:center; gap:8px; margin-top:12px; font-size:14px; color:#4A433B; }
+.sk-after a { color:#8E6F3E; font-weight:800; }
+@media (prefers-reduced-motion: reduce) { .sk-sheet-bg, .sk-sheet-card { transition:none; } }
+/* gated version */
+.sk-gate { background:#FFFDF9; border:1px solid #E4C590; border-top:4px solid #A8864F; border-radius:16px; padding:20px; max-width:480px; }
+.sk-gate b.t { display:block; font-size:15px; margin-bottom:10px; color:#3D352E; }
+.sk-gate .sk-form { max-width:none; margin:0; }
+.sk-gate-open p { font-size:15px; margin:0 0 12px; color:#3D352E; font-weight:700; }
+.sk-gate .sk-msg { text-align:left; }
+@media (max-width:860px) { .sk-gate { margin:0 auto; text-align:left; } }
 @media (prefers-reduced-motion: reduce) { .sk-btn, .sk-tool { transition:none; } }
 </style>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"CreativeWork","name":"Debt-Free Date Starter Kit","description":"A free 12-page printable kit to list your debts, choose snowball or avalanche, find your debt-free date and track your payoff.","url":"https://www.debtfreeempire.com/starter-kit","isAccessibleForFree":true,"inLanguage":"en","author":{"@type":"Person","name":"Robert Daniels","url":"https://www.debtfreeempire.com/author/robert-daniels"},"publisher":{"@type":"Organization","name":"Debt Free Empire","url":"https://www.debtfreeempire.com"}}</script>
@@ -143,23 +163,61 @@ analytics.init({
 <section class="sk-sec"><div class="sk-mail">
 <h2>Want a gentle nudge each month?</h2>
 <p>Join the Debt Free Empire list for calm money tips and new free printables. No spam, unsubscribe anytime.</p>
-<form class="sk-form" id="kitForm" novalidate><label class="sk-hp" aria-hidden="true">Website<input name="website" tabindex="-1" autocomplete="off"></label><label for="kitEmail" class="sk-hp">Email address</label><input id="kitEmail" type="email" placeholder="you@example.com" autocomplete="email" required><button type="submit">Join free</button></form>
+<form class="sk-form" id="kitForm" data-source="starter-kit:bottom" novalidate><label class="sk-hp" aria-hidden="true">Website<input name="website" tabindex="-1" autocomplete="off"></label><label for="kitEmail" class="sk-hp">Email address</label><input id="kitEmail" type="email" placeholder="you@example.com" autocomplete="email" required><button type="submit">Join free</button></form>
 <p class="sk-msg" id="kitMsg" role="status"></p>
 <p class="sk-fine">Your email is never sold.</p>
 </div></section>
 </main>
+<div class="sk-sheet" id="kitSheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle" hidden>
+<div class="sk-sheet-bg" data-close></div>
+<div class="sk-sheet-card">
+<button type="button" class="sk-sheet-x" data-close aria-label="Close">×</button>
+<div class="sk-sheet-ok">✓ Your kit is downloading</div>
+<h2 id="sheetTitle">Want the next one, too?</h2>
+<p>Join the Debt Free Empire list and get new free printables and one calm money tip a month. No spam, unsubscribe anytime.</p>
+<form class="sk-form" data-source="starter-kit:after-download" novalidate><label class="sk-hp" aria-hidden="true">Website<input name="website" tabindex="-1" autocomplete="off"></label><label for="sheetEmail" class="sk-hp">Email address</label><input id="sheetEmail" type="email" placeholder="you@example.com" autocomplete="email" required><button type="submit">Send me the next one</button></form>
+<p class="sk-msg" role="status"></p>
+<button type="button" class="sk-sheet-no" data-close>No thanks, just the kit</button>
+</div>
+</div>
+
 <script>
 (function(){
 function ev(name,props){try{import('https://esm.sh/@heycatch/sdk@0.8.3').then(function(m){m.analytics.trackEvent(name,props||{});});}catch(e){}}
-document.querySelectorAll('a[href$="debt-free-date-starter-kit.pdf"]').forEach(function(a){a.addEventListener('click',function(){ev('starter_kit_download',{page:location.pathname});});});
-var f=document.getElementById('kitForm'),msg=document.getElementById('kitMsg');
-f.addEventListener('submit',function(e){e.preventDefault();var email=document.getElementById('kitEmail').value.trim();
-if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)){msg.textContent='Please enter a valid email address.';return;}
-msg.textContent='Joining…';
-fetch('/api/waitlist',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({list:'newsletter',email:email,source:'starter-kit',website:f.website.value})})
-.then(function(r){return r.json().then(function(j){return {ok:r.ok,j:j};});})
-.then(function(x){if(x.ok){msg.textContent="You're in! Check your inbox for a welcome email. 🤍";f.reset();ev('newsletter_signup',{source:'starter-kit'});}else{msg.textContent=(x.j&&x.j.error)||'Something went wrong. Please try again.';}})
-.catch(function(){msg.textContent='Something went wrong. Please try again.';});});
+var GATED=document.body.hasAttribute('data-kit-gated');
+function signup(form,onOk){
+  var input=form.querySelector('input[type=email]'),msg=form.parentNode.querySelector('.sk-msg'),btn=form.querySelector('button');
+  form.addEventListener('submit',function(e){
+    e.preventDefault();var email=input.value.trim();
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)){msg.textContent='Please enter a valid email address.';input.focus();return;}
+    msg.textContent='One moment…';btn.disabled=true;
+    fetch('/api/waitlist',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({list:'newsletter',email:email,source:form.getAttribute('data-source')||'starter-kit',website:(form.querySelector('[name=website]')||{}).value||''})})
+    .then(function(r){return r.json().then(function(j){return {ok:r.ok,j:j};});})
+    .then(function(x){btn.disabled=false;if(x.ok){ev('newsletter_signup',{source:form.getAttribute('data-source')||'starter-kit'});onOk(msg,form);}else{msg.textContent=(x.j&&x.j.error)||'Something went wrong. Please try again.';}})
+    .catch(function(){btn.disabled=false;msg.textContent='Something went wrong. Please try again.';});
+  });
+}
+function joined(msg,form){form.reset();msg.textContent="You're in! Check your inbox for a welcome email. 🤍";}
+document.querySelectorAll('form.sk-form:not(.sk-gate-form)').forEach(function(f){if(!f.closest('#kitSheet'))signup(f,joined);});
+
+// Free page: after a download click, offer the newsletter (once per visit)
+var sheet=document.getElementById('kitSheet'),shown=false;
+function openSheet(){if(!sheet||shown)return;shown=true;try{if(localStorage.getItem('dfe_kit_joined'))return;}catch(e){}
+  sheet.hidden=false;requestAnimationFrame(function(){sheet.classList.add('open');});var i=sheet.querySelector('input[type=email]');setTimeout(function(){i&&i.focus({preventScroll:true});},350);}
+function closeSheet(){if(!sheet)return;sheet.classList.remove('open');setTimeout(function(){sheet.hidden=true;},250);}
+if(sheet){
+  sheet.querySelectorAll('[data-close]').forEach(function(b){b.addEventListener('click',closeSheet);});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!sheet.hidden)closeSheet();});
+  var sf=sheet.querySelector('form');signup(sf,function(msg,form){try{localStorage.setItem('dfe_kit_joined','1');}catch(e){}form.hidden=true;msg.innerHTML="You're in! 🤍 Check your inbox for a welcome email.";setTimeout(closeSheet,2600);});
+}
+document.querySelectorAll('a[href$="debt-free-date-starter-kit.pdf"]').forEach(function(a){a.addEventListener('click',function(){ev('starter_kit_download',{page:location.pathname,gated:GATED});if(!GATED)setTimeout(openSheet,600);});});
+
+// Gated page: email unlocks the download
+document.querySelectorAll('form.sk-gate-form').forEach(function(f){signup(f,function(msg,form){
+  var box=form.closest('.sk-gate');box.querySelector('.sk-gate-locked').hidden=true;box.querySelector('.sk-gate-open').hidden=false;
+  document.querySelectorAll('.sk-gate').forEach(function(b){b.querySelector('.sk-gate-locked').hidden=true;b.querySelector('.sk-gate-open').hidden=false;});
+  box.querySelector('.sk-gate-open a').focus();
+});});
 })();
 </script>
 
