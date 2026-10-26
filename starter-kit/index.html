@@ -57,8 +57,16 @@ analytics.init({
 .sk-page b { display:flex; align-items:center; gap:10px; font-size:15px; color:#3D352E; margin-bottom:6px; }
 .sk-page b em { font-style:normal; flex:0 0 28px; height:28px; border-radius:50%; background:#A8864F; color:#fff; font-size:12px; display:flex; align-items:center; justify-content:center; }
 .sk-page p { font-size:13.5px; line-height:1.55; color:#4A433B; margin:0; }
-.sk-peek { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-top:28px; }
-.sk-peek img { width:100%; height:auto; border-radius:6px; border:1px solid #EAE2D4; box-shadow:0 10px 24px rgba(61,53,46,.1); background:#fff; }
+.sk-peek { display:grid; grid-template-columns:repeat(3,1fr); gap:28px; margin:36px -60px 0; }
+.sk-peek figure { margin:0; }
+.sk-peek a { display:block; border-radius:8px; background:#fff; border:1px solid #EAE2D4; box-shadow:0 6px 18px rgba(61,53,46,.07); overflow:hidden; transition:transform .2s, box-shadow .2s; cursor:zoom-in; }
+.sk-peek a:hover { transform:translateY(-4px) scale(1.01); box-shadow:0 14px 30px rgba(61,53,46,.11); }
+.sk-peek a:focus-visible { outline:2px solid #8E6F3E; outline-offset:3px; }
+.sk-peek img { display:block; width:100%; height:auto; }
+.sk-peek figcaption { text-align:center; font-size:13.5px; font-weight:700; color:#4A433B; margin-top:12px; }
+.sk-zoom { text-align:center; font-size:13px; color:#7A7066; margin:14px 0 0; }
+@media (max-width:860px) { .sk-zoom::after { content:" Swipe for more →"; } }
+.sk-stack img { box-shadow:0 16px 36px rgba(61,53,46,.12) !important; }
 .sk-tools { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
 .sk-tool { display:flex; flex-direction:column; background:#FFFDF9; border:1px solid #E4C590; border-top:3px solid #A8864F; border-radius:14px; padding:22px; text-decoration:none; color:#3D352E; transition:transform .2s, box-shadow .2s; }
 .sk-tool:hover { transform:translateY(-3px); box-shadow:0 12px 26px rgba(61,53,46,.09); }
@@ -73,10 +81,11 @@ analytics.init({
 .sk-form button { font:inherit; font-weight:800; font-size:14px; background:#8E6F3E; color:#fff; border:none; border-radius:10px; padding:0 18px; cursor:pointer; }
 .sk-msg { font-size:14px; margin:12px 0 0 !important; min-height:1em; color:#3D352E; } .sk-fine { font-size:12px !important; color:#7A7066 !important; margin:10px 0 0 !important; }
 .sk-hp { position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden; }
+@media (max-width:1120px) { .sk-peek { margin-left:0; margin-right:0; } }
 @media (max-width:860px) {
   .sk-hero-in { grid-template-columns:1fr; gap:24px; text-align:center; } .sk-sub { margin-left:auto; margin-right:auto; } .sk-meta { justify-content:center; }
   .sk-stack { height:380px; } .sk-stack img { width:210px; } .sk-stack .s0 { margin-left:-105px; } .sk-stack .s1 { left:0; } .sk-stack .s2 { right:0; }
-  .sk-pages, .sk-tools { grid-template-columns:1fr; } .sk-peek { grid-template-columns:1fr 1fr; } .sk-peek img:nth-child(3) { display:none; }
+  .sk-pages, .sk-tools { grid-template-columns:1fr; } .sk-peek { display:flex; gap:16px; margin:28px -16px 0; padding:0 16px 8px; overflow-x:auto; scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch; } .sk-peek figure { flex:0 0 78%; scroll-snap-align:center; }
   .sk-form { flex-direction:column; } .sk-form button { padding:13px; }
 }
 @media (prefers-reduced-motion: reduce) { .sk-btn, .sk-tool { transition:none; } }
@@ -110,14 +119,14 @@ analytics.init({
 <a class="sk-btn" href="/assets/printables/debt-free-date-starter-kit.pdf" download>⬇ Download the free kit (PDF)</a>
 <div class="sk-meta"><span>No sign-up needed</span><span>Print or fill in on screen</span><span>US Letter</span></div>
 </div>
-<div class="sk-stack" aria-hidden="true"><img class="s1" src="/assets/starter-kit/p05.jpg" alt="" width="600" height="776"><img class="s2" src="/assets/starter-kit/p07.jpg" alt="" width="600" height="776"><img class="s0" src="/assets/starter-kit/p00.jpg" alt="" width="600" height="776"></div>
+<div class="sk-stack" aria-hidden="true"><img class="s1" src="/assets/starter-kit/p05.jpg" alt="" width="1100" height="1424"><img class="s2" src="/assets/starter-kit/p07.jpg" alt="" width="1100" height="1424"><img class="s0" src="/assets/starter-kit/p00.jpg" alt="" width="1100" height="1424"></div>
 </div></section>
 
 <section class="sk-sec"><div class="sk-in">
 <h2 class="sk-h2">What's <i>inside</i></h2>
 <p class="sk-lead">Twelve gentle pages that walk you from "where do I even start?" to a date on the calendar.</p>
 <div class="sk-pages"><div class="sk-page"><b><em>1</em>Money Snapshot</b><p>Money in, must-pay basics and what's left to work with.</p></div><div class="sk-page"><b><em>2</em>List It All</b><p>Every debt in one table: balance, rate, minimum and due day.</p></div><div class="sk-page"><b><em>3</em>Choose Your Order</b><p>Snowball or avalanche, explained simply, plus your payoff list.</p></div><div class="sk-page"><b><em>4</em>Find Your Debt-Free Date</b><p>A quick worksheet with a big box for your finish line.</p></div><div class="sk-page"><b><em>5</em>Color-In Trackers</b><p>A 100-circle tracker plus six debt-by-debt cards.</p></div><div class="sk-page"><b><em>6</em>Low-Buy &amp; Check-Ins</b><p>Find $100 this month, a 30-day tracker and a Paid-Off Wall.</p></div></div>
-<div class="sk-peek"><img src="/assets/starter-kit/p03.jpg" alt="List It All debt table page" loading="lazy" width="600" height="776"><img src="/assets/starter-kit/p08.jpg" alt="Find $100 This Month low-buy page" loading="lazy" width="600" height="776"><img src="/assets/starter-kit/p11.jpg" alt="Paid-Off Wall page" loading="lazy" width="600" height="776"></div>
+<div class="sk-peek"><figure><a href="/assets/starter-kit/p03.jpg" target="_blank" rel="noopener" aria-label="View List It All, a table for every debt full size"><img src="/assets/starter-kit/p03.jpg" alt="List It All, a table for every debt" loading="lazy" width="1100" height="1424"></a><figcaption>List It All, a table for every debt</figcaption></figure><figure><a href="/assets/starter-kit/p08.jpg" target="_blank" rel="noopener" aria-label="View Find $100 This Month, a gentle low-buy page full size"><img src="/assets/starter-kit/p08.jpg" alt="Find $100 This Month, a gentle low-buy page" loading="lazy" width="1100" height="1424"></a><figcaption>Find $100 This Month, a gentle low-buy page</figcaption></figure><figure><a href="/assets/starter-kit/p11.jpg" target="_blank" rel="noopener" aria-label="View The Paid-Off Wall and next steps full size"><img src="/assets/starter-kit/p11.jpg" alt="The Paid-Off Wall and next steps" loading="lazy" width="1100" height="1424"></a><figcaption>The Paid-Off Wall and next steps</figcaption></figure></div><p class="sk-zoom">Tap any page to see it full size.</p>
 <p style="text-align:center;margin-top:28px"><a class="sk-btn" href="/assets/printables/debt-free-date-starter-kit.pdf" download>⬇ Download the free kit</a></p>
 </div></section>
 
