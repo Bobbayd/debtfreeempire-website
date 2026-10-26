@@ -109,10 +109,11 @@ SETTINGS (phone: More tab; Mac and iPad: sidebar)
 - Appearance: light or dark mode and the theme color.
 - Data: "Export all data as JSON backup", "Import data from JSON backup", "Import transactions from CSV" (for a bank's CSV file), and "Reset app".
 - iCloud Sync (Apple devices): keeps the same data on their iPhone, iPad, and Mac.
+- Budget Together: share one household budget ("Our Budget") with a partner on their own phone, iPhone or Android. One partner taps "Start a shared budget" and sends the 16-character invite code; the other taps "Join my partner's" and enters it. A Personal / Our Budget switch then appears at the top of the sidebar (Mac and iPad) or the More tab (phone). Their personal budget stays private. "Leave" removes Our Budget from that phone.
 The moon or sun button at the top of a page switches between light and dark.
 
 GOOD TO KNOW
-- Everything is stored on their own device. There is no bank connection; they enter their own numbers.
+- Everything is stored on their own device. There is no bank connection; they enter their own numbers. A shared Our Budget is encrypted on the phone before it syncs to the partner.
 - Your Money Coach has a monthly question limit, shown under the message box.`;
 
 export default async function handler(req, res) {

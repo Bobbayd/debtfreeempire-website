@@ -104,5 +104,15 @@
       "path": "/api/admin-health",
       "schedule": "0 14 * * *"
     }
+  ],
+  "rewrites": [
+    {
+      "source": "/api/admin-login",
+      "destination": "/api/admin-session?op=login"
+    },
+    {
+      "source": "/api/admin-logout",
+      "destination": "/api/admin-session?op=logout"
+    }
   ]
 }
