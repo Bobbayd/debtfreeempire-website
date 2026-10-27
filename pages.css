@@ -245,3 +245,9 @@
 .read-next strong { display: block; font-size: 14.5px; line-height: 1.35; margin-bottom: 6px; }
 .read-next span { display: block; font-size: 12.5px; line-height: 1.5; color: #55515B; }
 @media (max-width: 700px) { .read-next ul { grid-template-columns: 1fr; } }
+.zbb-steps { margin: 12px 0 0 22px; padding: 0; line-height: 1.7; }
+.zbb-steps li { margin-bottom: 6px; }
+.post-sources { margin: 34px 0 0; }
+.post-sources h2 { font-size: 20px; margin: 0 0 8px; }
+.post-sources ul { margin: 0; padding-left: 20px; font-size: 14.5px; line-height: 1.65; color: #55515B; }
+.post-sources li { margin: 0 0 6px; }

@@ -22,9 +22,9 @@ const WELCOME = {
     subject: 'Your free Debt-Free Date Starter Kit',
     html: `<p>Thanks for joining Debt Free Empire. Here is your free 12-page printable:</p>
 <p style="margin:18px 0"><a href="${KIT_PAGE}" style="background:#8E6F3E;color:#fff;text-decoration:none;font-weight:700;padding:12px 20px;border-radius:8px;display:inline-block">Get the Debt-Free Date Starter Kit</a></p>
-<p>It walks you through listing your debts, choosing snowball or avalanche, finding your debt-free date and coloring in every win. Want the exact date with interest included? Try the free <a href="${SITE}/debt-calculator" style="color:#8E6F3E;font-weight:700">debt payoff calculator</a>.</p>
+<p>It walks you through listing your debts, choosing snowball or avalanche, finding your debt-free date and coloring in every win. Want a closer estimate with interest included? Try the free <a href="${SITE}/debt-calculator" style="color:#8E6F3E;font-weight:700">debt payoff calculator</a>.</p>
 <p>We send calm, practical money tips and the occasional new printable, never anything pushy. If you have a question, just reply to this email. A real person reads it.</p>`,
-    text: `Thanks for joining Debt Free Empire. Here is your free 12-page printable, the Debt-Free Date Starter Kit:\n${KIT_PAGE}\n\nIt walks you through listing your debts, choosing snowball or avalanche, finding your debt-free date and coloring in every win. Find your exact date with the free calculator: ${SITE}/debt-calculator\n\nIf you have a question, just reply to this email. A real person reads it.`
+    text: `Thanks for joining Debt Free Empire. Here is your free 12-page printable, the Debt-Free Date Starter Kit:\n${KIT_PAGE}\n\nIt walks you through listing your debts, choosing snowball or avalanche, finding your debt-free date and coloring in every win. Find your estimated date with the free calculator: ${SITE}/debt-calculator\n\nIf you have a question, just reply to this email. A real person reads it.`
   },
   'eld-ios': {
     subject: "You're on the Empire Life Dashboard iPhone list",
