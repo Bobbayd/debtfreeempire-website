@@ -129,6 +129,11 @@
       return h.slice(0, 8) + '-' + h.slice(8, 12) + '-' + h.slice(12, 16) + '-' + h.slice(16, 20) + '-' + h.slice(20);
     }
 
+    // Analytics goes through goals.js (window.dfeTrack). Counts and flags only: never the question, answer or email.
+    function track(name, props) {
+      try { if (window.dfeTrack) window.dfeTrack(name, props); } catch (e) {}
+    }
+
     function ls(get, key, val) {
       try { return get ? localStorage.getItem(key) : localStorage.setItem(key, val); } catch (e) { return null; }
     }
@@ -199,7 +204,7 @@
       question = (question || '').trim();
       if (!question || busy) return;
       if (looksSensitive(question)) { input.value = ''; addMessage(SENSITIVE_MSG, 'ai'); return; }
-      if (remaining() === 0 && !humanMode) { addMessage(LIMIT_MSG, 'ai'); updateRemaining(); return; }
+      if (remaining() === 0 && !humanMode) { track('empire_ai_limit_reached', { scope: 'ai', source: 'client' }); addMessage(LIMIT_MSG, 'ai'); updateRemaining(); return; }
       var toTeam = humanMode;
       if (toTeam && !opts.confirmed) {
         // Step 1: they wrote their message. Step 2: offer an optional email, then send.
@@ -219,6 +224,7 @@
       busy = true;
       updateRemaining();
       var thinking = addThinking();
+      if (!toTeam) track('empire_ai_question', { is_chip: !!opts.chip });
 
       fetch('/api/empire-ai', {
         method: 'POST',
@@ -235,8 +241,15 @@
         thinking.remove();
         addMessage(answer, 'ai');
         history.push({ role: 'user', content: question }, { role: 'assistant', content: answer });
-        if (!toTeam) ls(false, todayKey(), String(usedToday() + 1));
-        if (toTeam) { pendingTeam = null; emailEl.value = ''; optInEl.checked = false; }
+        if (!toTeam) {
+          ls(false, todayKey(), String(usedToday() + 1));
+          track('empire_ai_answer_received', { escalated: !!data.escalated });
+          if (data.escalated) track('empire_ai_escalated');
+        }
+        if (toTeam) {
+          track('empire_ai_team_message_sent', { has_email: !!emailVal, opted_in: optIn });
+          pendingTeam = null; emailEl.value = ''; optInEl.checked = false;
+        }
       }).catch(function (err) {
         thinking.remove();
         if (toTeam && err && err.msg) {
@@ -247,6 +260,7 @@
           return;
         }
         if (toTeam) pendingTeam = null;
+        if (err && err.limit) track('empire_ai_limit_reached', { scope: toTeam ? 'team' : 'ai', source: 'server' });
         addMessage(err && err.limit ? (toTeam ? HUMAN_LIMIT_MSG : LIMIT_MSG) : ERROR_MSG, 'ai');
       }).then(function () {
         busy = false;
@@ -314,7 +328,8 @@
 
     var fabLabel = document.getElementById('eaiFabLabel');
     var openedAt = 0;
-    function openPanel() {
+    function openPanel(source) {
+      track('empire_ai_open', { source: source || 'button' });
       hideBubble();
       openedAt = Date.now();
       panel.classList.add('open');
@@ -353,7 +368,7 @@
       b.type = 'button';
       b.className = 'eai-chip';
       b.textContent = q;
-      b.addEventListener('click', function () { ask(q); });
+      b.addEventListener('click', function () { ask(q, { chip: true }); });
       chipsEl.appendChild(b);
     });
     updateRemaining();
@@ -387,6 +402,7 @@
     menu.addEventListener('click', function () { setMenu(false); });
     document.addEventListener('click', function (e) { if (!menu.hidden && !menu.contains(e.target)) setMenu(false); });
     document.getElementById('eaiHuman').addEventListener('click', function () {
+      track('empire_ai_human_request');
       humanMode = true;
       updateRemaining();
       input.placeholder = 'Write your message for our team…';
@@ -395,6 +411,7 @@
     });
     document.getElementById('eaiDelete').addEventListener('click', function () {
       if (!confirm('Delete this chat from our servers and this browser?')) return;
+      track('empire_ai_chat_deleted');
       var c = getCid(false);
       if (c) fetch('/api/empire-ai', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'delete', cid: c }) }).catch(function () {});
       try { localStorage.removeItem(K_CID); localStorage.removeItem(K_SEEN); } catch (e) {}
@@ -426,7 +443,7 @@
       if (e.key === 'Escape' && panel.classList.contains('open')) closePanel();
     });
 
-    document.getElementById('eaiBubbleText').addEventListener('click', function () { hideBubble(); openPanel(); });
+    document.getElementById('eaiBubbleText').addEventListener('click', function () { hideBubble(); openPanel('bubble'); });
     document.getElementById('eaiBubbleClose').addEventListener('click', function (e) {
       e.stopPropagation();
       ls(false, K_BUBBLE_DISMISSED, '1');

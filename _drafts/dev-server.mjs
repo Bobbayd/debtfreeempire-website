@@ -81,11 +81,16 @@ globalThis.fetch = async (url, opts = {}) => {
 
 // ---------- tiny Vercel-style req/res ----------
 const MIME = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.png': 'image/png', '.jpg': 'image/jpeg', '.svg': 'image/svg+xml', '.xml': 'application/xml', '.txt': 'text/plain', '.mp4': 'video/mp4' };
+let VERCEL_REWRITES = [];
+try { VERCEL_REWRITES = JSON.parse(fs.readFileSync(path.join(ROOT, 'vercel.json'), 'utf8')).rewrites || []; } catch (e) { /* no rewrites */ }
 const server = http.createServer(async (req, res) => {
   const url = new URL(req.url, 'http://x');
   if (url.pathname === '/__dev/emails') { res.setHeader('Content-Type', 'application/json'); return res.end(JSON.stringify(emails)); }
   if (url.pathname === '/__dev/advance') { skewMs += Number(url.searchParams.get('days') || 0) * 86400000; return res.end('ok ' + skewMs); }
   if (url.pathname === '/__dev/redis') { res.setHeader('Content-Type', 'application/json'); return res.end(JSON.stringify([...db].filter(([k]) => live(k)).map(([k, e]) => [k, e.type, e.exp ? Math.round((e.exp - now()) / 1000) : -1]))); }
+  // Honor the exact-path "rewrites" in vercel.json (for example /api/admin-login -> /api/admin-session?op=login), like Vercel does.
+  const rw = (VERCEL_REWRITES.find((r) => r.source === url.pathname.replace(/\/$/, '')) || {}).destination;
+  if (rw) { const d = new URL(rw, 'http://x'); url.pathname = d.pathname; d.searchParams.forEach((v, k) => url.searchParams.set(k, v)); }
   if (url.pathname.startsWith('/api/')) {
     const name = url.pathname.slice(5).replace(/\/$/, '');
     const file = path.join(ROOT, 'api', name + '.js');

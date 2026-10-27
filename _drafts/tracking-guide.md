@@ -27,8 +27,16 @@ Not shown to anyone who already clicked a download link or answered/dismissed it
 whether the visitor can install, with no name, email or IP, and deleted after 90 days.
 Results: admin > Survey (overall, per page, per device, plus Empire Life Dashboard visitors who cannot install).
 
-## Empire AI
-Chats are saved 30 days for the owner (admin > Chats); not part of analytics.
+## Home page
+`home_section_view` (once per section reached: how-it-works, debt-free-moment, apps, fit, guides, founder, faq, newsletter) and `home_scroll_depth` (25 / 50 / 75 / 100).
+
+## Blog and signups
+`newsletter_signup` (blog signup box). Signup sources are also stored with each address (admin > Email signups > "Came from"), not in analytics.
+
+## Empire AI (counts only, never what is typed)
+`empire_ai_open` (`source` button or bubble), `empire_ai_question` (`is_chip`), `empire_ai_answer_received` (`escalated`),
+`empire_ai_human_request`, `empire_ai_team_message_sent` (`has_email`, `opted_in`), `empire_ai_limit_reached` (`scope`), `empire_ai_chat_deleted`.
+Chats themselves are saved for 30 days for the owner (admin > Chats).
 
 ## Questions to answer
 1. **Right device?** `app_page_view` for Empire Life Dashboard split by `can_install`. A high share of `false` means most visitors are on phones and cannot install a Windows/Mac app yet. The fix is a phone version or waitlist, not more persuasion.
