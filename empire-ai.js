@@ -99,6 +99,7 @@
     var emailEl = document.getElementById('eaiEmail');
     var optInEl = document.getElementById('eaiOptIn');
     var contactErr = document.getElementById('eaiContactErr');
+    var contactSendBtn = document.getElementById('eaiContactSend'), contactSkipBtn = document.getElementById('eaiContactSkip');
     var pendingTeam = null; // a team message written but not yet sent (waiting on the optional email step)
     var lastAt = 0;        // newest message time we have seen from the server
     var lastOwnerAt = 0;   // newest team reply we have shown
@@ -195,7 +196,11 @@
     function showContactStep(show) {
       contactEl.hidden = !show;
       form.hidden = show;
+      // The suggested questions crowd the email step on a phone; bring them back only before the first question.
+      chipsEl.hidden = show || history.length > 0;
       contactErr.textContent = '';
+      emailEl.classList.remove('eai-invalid'); emailEl.removeAttribute('aria-invalid');
+      contactSendBtn.disabled = false; contactSkipBtn.disabled = false; contactSendBtn.textContent = 'Send message';
       if (show) { messagesEl.scrollTop = messagesEl.scrollHeight; emailEl.focus(); }
     }
 
@@ -256,7 +261,7 @@
           // the server rejected the email: go back to the email step with the reason
           humanMode = true;
           showContactStep(true);
-          contactErr.textContent = err.msg;
+          emailProblem(err.msg);
           return;
         }
         if (toTeam) pendingTeam = null;
@@ -382,14 +387,31 @@
       }
     });
     document.getElementById('eaiClose').addEventListener('click', closePanel);
+    // A problem with the email must be impossible to miss: say what's wrong, outline the box and put the
+    // cursor in it. A quiet line of text alone made people press Send again and again.
+    function emailProblem(text) {
+      contactErr.textContent = text;
+      emailEl.classList.add('eai-invalid');
+      emailEl.setAttribute('aria-invalid', 'true');
+      emailEl.focus();
+      if (emailEl.select) emailEl.select();
+    }
+    emailEl.addEventListener('input', function () {
+      emailEl.classList.remove('eai-invalid'); emailEl.removeAttribute('aria-invalid'); contactErr.textContent = '';
+    });
     function sendPending(withEmail) {
-      if (!pendingTeam || busy) return;
+      if (!pendingTeam) return;
+      if (busy) { contactErr.textContent = 'One moment, still sending…'; return; }
       var e = withEmail ? (emailEl.value || '').trim() : '';
-      if (e && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(e)) { contactErr.textContent = 'That email address does not look right. Fix it, or leave it blank.'; return; }
+      if (e && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(e)) {
+        emailProblem('That email doesn\u2019t look complete (like name@example.com). Fix it, or tap \u201cSend without email\u201d.');
+        return;
+      }
+      contactSendBtn.disabled = true; contactSkipBtn.disabled = true; contactSendBtn.textContent = 'Sending…';
       ask(pendingTeam.text, { confirmed: true, email: e, optIn: withEmail && optInEl.checked });
     }
-    document.getElementById('eaiContactSend').addEventListener('click', function () { sendPending(true); });
-    document.getElementById('eaiContactSkip').addEventListener('click', function () { sendPending(false); });
+    contactSendBtn.addEventListener('click', function () { sendPending(true); });
+    contactSkipBtn.addEventListener('click', function () { sendPending(false); });
     document.getElementById('eaiContactCancel').addEventListener('click', function () {
       if (pendingTeam && pendingTeam.el) pendingTeam.el.remove();
       pendingTeam = null; humanMode = false; showContactStep(false);

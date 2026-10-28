@@ -154,7 +154,8 @@
 .eai-contact { padding: 8px 14px 10px; border-top: 1px solid #EFE9F5; background: #FBF8F3; gap: 8px; }
 .eai-contact-title { margin: 0; font-size: 13px; font-weight: 700; }
 .eai-contact-title span { font-weight: 500; color: #55515B; }
-.eai-contact-err { margin: 0; min-height: 0; font-size: 11.5px; color: #8E3B3B; }
+.eai-contact-err { margin: 0; min-height: 0; font-size: 12.5px; font-weight: 600; color: #8E3B3B; }
+.eai-input.eai-invalid { border-color: #A8864F; box-shadow: 0 0 0 3px rgba(168, 134, 79, .22); }
 .eai-contact-err:empty { display: none; }
 .eai-contact-actions { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
 .eai-contact-actions .eai-send { padding: 10px 16px; }

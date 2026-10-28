@@ -63,6 +63,30 @@
   }
   window.addEventListener('admin:badge', badge);
 
+  // The owner's own browsing and test clicks would otherwise show up in HeyCatch as a "visitor". Once you
+  // are logged in here, this browser is opted out of HeyCatch for good (the SDK keeps the choice in this
+  // browser's storage, and every page of the site respects it). Started with capturing off, so the admin
+  // page itself is never recorded. Same SDK URL as the site pages.
+  function excludeOwner() {
+    try {
+      import('https://esm.sh/@heycatch/sdk@0.8.3').then(function (m) {
+        m.analytics.init({
+          projectKey: 'hck_pk_INmEuZQrvLQFeRnp_RAAZCCCTR2g-Zh5',
+          optOutCapturingByDefault: true,
+          install: { framework: 'web', agent: 'claude-code' }
+        });
+        m.analytics.optOutCapturing();
+        try { localStorage.setItem('dfe_owner_untracked', '1'); } catch (e) {}
+        var foot = document.querySelector('.bar-nav .nav-foot');
+        if (foot && !foot.querySelector('.untracked')) {
+          var n = cell('div', 'Your visits on this browser are not counted in HeyCatch.', 'untracked');
+          n.style.cssText = 'font-size:11px;opacity:.7;padding:6px 12px;line-height:1.4';
+          foot.appendChild(n);
+        }
+      }).catch(function () {});
+    } catch (e) {}
+  }
+
   function init(loadFn) {
     var login = $('loginCard'), app = $('app'), form = $('loginForm'), pw = $('pw'), msg = $('loginMsg'), btn = $('loginBtn'), logout = $('logoutBtn');
 
@@ -70,7 +94,7 @@
       app.hidden = true; login.hidden = false; if (logout) logout.hidden = true; msg.textContent = text || '';
       pw.value = ''; pw.focus();
     }
-    function showApp() { login.hidden = true; app.hidden = false; if (logout) logout.hidden = false; badge(); }
+    function showApp() { login.hidden = true; app.hidden = false; if (logout) logout.hidden = false; badge(); excludeOwner(); }
 
     function load() {
       return loadFn(getJson).then(function (state) {
